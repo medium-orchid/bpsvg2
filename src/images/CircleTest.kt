@@ -1,8 +1,13 @@
+package images
+
+import SVGRoot
+
 fun main() {
     val root = SVGRoot("viewBox" to "0,0,10,10") {
         val circleID = "myCircle"
         val gradientID = "myGradient"
-        define(circleID,
+        define(
+            circleID,
             circle("cx" to 0, "cy" to 0, "r" to 5)
         )
         define(gradientID,
