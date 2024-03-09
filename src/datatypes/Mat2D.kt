@@ -1,10 +1,12 @@
 package datatypes
 
+import SVGBuilder
+
 data class Mat2D(val a: Double, val b: Double,
                  val c: Double, val d: Double,
                  val x: Double, val y: Double,
                  val unit: String?
-    ) {
+    ): DataType {
 
     companion object {
         val id = Mat2D(1.0, 0.0, 0.0, 1.0, 0.0, 0.0, null)
@@ -61,5 +63,16 @@ data class Mat2D(val a: Double, val b: Double,
     operator fun plus(other: Vec2): Mat2D {
         vectorGuard(other)
         return Mat2D(a, b, c, d, x + other.x, y + other.y, other.unit)
+    }
+
+    override fun put(builder: SVGBuilder) {
+        builder.append("matrix(")
+        builder.withComma(a)
+        builder.withComma(b)
+        builder.withComma(c)
+        builder.withComma(d)
+        builder.withComma(x)
+        builder.append(y)
+        builder.append(")")
     }
 }

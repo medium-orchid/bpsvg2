@@ -3,7 +3,7 @@ package images
 import SVGRoot
 
 fun main() {
-    val root = SVGRoot("viewBox" to "0,0,10,10") {
+    print(SVGRoot("viewBox" to "0,0,10,10") {
         val circleID = "myCircle"
         val gradientID = "myGradient"
         define(
@@ -17,7 +17,5 @@ fun main() {
             }
         )
         use(href(circleID), "x" to 5, "y" to 5, "fill" to url("myGradient"))
-    }
-
-    print(root)
+    })
 }

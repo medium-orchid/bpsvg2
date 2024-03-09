@@ -1,8 +1,9 @@
 package datatypes
 
+import SVGBuilder
 import kotlin.math.sqrt
 
-data class Vec2(val x: Double, val y: Double, val unit: String? = null) {
+data class Vec2(val x: Double, val y: Double, val unit: String? = null): DataType {
 
     init {
         if (unit == "") throw IllegalArgumentException("Unitless vectors should have null unit")
@@ -21,5 +22,12 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) {
 
     fun norm(): Double {
         return sqrt(normSquared())
+    }
+
+    override fun put(builder: SVGBuilder) {
+        builder.append(x)
+        builder.withComma(unit ?: "")
+        builder.append(y)
+        builder.append(unit ?: "")
     }
 }

@@ -2,6 +2,14 @@ typealias ElementOperation = SVGElement.() -> Unit
 
 open class SVGElement(val tag: String, var root: SVGRoot? = null) {
 
+    class NameSVGElement(private val parent: SVGElement, private val tag: String) {
+        operator fun invoke(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null): SVGElement {
+            val element = SVGElement(tag)(*attributes, operation = operation)
+            parent.addChild(element)
+            return element
+        }
+    }
+
     val a: NameSVGElement get() = NameSVGElement(this, "a")
     val animate: NameSVGElement get() = NameSVGElement(this, "animate")
     val animateMotion: NameSVGElement get() = NameSVGElement(this, "animateMotion")
@@ -44,7 +52,7 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     val mask: NameSVGElement get() = NameSVGElement(this, "mask")
     val metadata: NameSVGElement get() = NameSVGElement(this, "metadata")
     val mpath: NameSVGElement get() = NameSVGElement(this, "mpath")
-    val path: NameSVGElement get() = NameSVGElement(this, "path")
+    val path: PathElement.PathSVGElement get() = PathElement.PathSVGElement(this)
     val pattern: NameSVGElement get() = NameSVGElement(this, "pattern")
     val polygon: NameSVGElement get() = NameSVGElement(this, "polygon")
     val polyline: NameSVGElement get() = NameSVGElement(this, "polyline")
@@ -94,6 +102,11 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
         element.root = root
     }
 
+    fun addFirstChild(element: SVGElement) {
+        children.add(0, element)
+        element.root = root
+    }
+
     fun removeChild(element: SVGElement) {
         children.remove(element)
     }
@@ -106,27 +119,33 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
         return "url('#$id')"
     }
 
-    private fun indent(str: StringBuilder, indent: String, indentLevel: Int) {
-        str.append(indent.repeat(indentLevel))
+    fun buildInitial(svg: SVGBuilder) {
+        svg.newline()
+        svg.append("<$tag")
+        for (i in attributes) {
+            svg.append(" ${i.first}=\"")
+            svg.append(i.second)
+            svg.append("\"")
+        }
     }
 
-    fun build(str: StringBuilder, indent: String = "  ", indentLevel: Int = 0) {
-        str.append('\n')
-        indent(str, indent, indentLevel)
-        str.append("<$tag")
-        for (i in attributes) {
-            str.append(" ${i.first}=\"${i.second}\"")
-        }
+    fun buildFinal(svg: SVGBuilder) {
         if (children.isEmpty()) {
-            str.append(" />")
+            svg.append(" />")
         } else {
-            str.append(">")
+            svg.append(">")
+            svg.indent()
             for (i in children) {
-                i.build(str, indent, indentLevel + 1)
+                i.build(svg)
             }
-            str.append('\n')
-            indent(str, indent, indentLevel)
-            str.append("</$tag>")
+            svg.unindent()
+            svg.newline()
+            svg.append("</$tag>")
         }
+    }
+
+    open fun build(svg: SVGBuilder) {
+        buildInitial(svg)
+        buildFinal(svg)
     }
 }

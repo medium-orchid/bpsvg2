@@ -24,13 +24,15 @@ class SVGRoot(vararg attributes: Pair<String, Any>, operation: ElementOperation?
     }
 
     override fun toString(): String {
-        val str = StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-        val defsElement = SVGElement("defs", this)
-        for (i in defs) {
-            defsElement.addChild(i)
+        val svg = SVGBuilder()
+        if (defs.isNotEmpty()) {
+            val defsElement = SVGElement("defs", this)
+            for (i in defs) {
+                defsElement.addChild(i)
+            }
+            addFirstChild(defsElement)
         }
-        addChild(defsElement)
-        build(str)
-        return str.toString()
+        build(svg)
+        return svg.toString()
     }
 }
