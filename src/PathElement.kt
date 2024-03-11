@@ -4,7 +4,7 @@ typealias PathOperation = PathElement.() -> Unit
 
 class PathElement(root: SVGRoot? = null): SVGElement("path", root) {
 
-    class PathSVGElement(private val parent: SVGElement) {
+    class Name(private val parent: SVGElement) {
         operator fun invoke(vararg attributes: Pair<String, Any>, operation: PathOperation? = null): PathElement {
             val element = PathElement() (*attributes, operation = operation)
             parent.addChild(element)

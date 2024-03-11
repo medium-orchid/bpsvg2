@@ -5,6 +5,12 @@ import kotlin.math.sqrt
 
 data class Vec2(val x: Double, val y: Double, val unit: String? = null): DataType {
 
+    constructor(x: Int, y: Int, unit: String? = null): this(x.toDouble(), y.toDouble(), unit)
+
+    companion object {
+        val zero = Vec2(0,0)
+    }
+
     init {
         if (unit == "") throw IllegalArgumentException("Unitless vectors should have null unit")
     }

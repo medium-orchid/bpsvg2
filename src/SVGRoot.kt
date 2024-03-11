@@ -1,3 +1,5 @@
+import java.io.File
+
 class SVGRoot(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null) : SVGElement("svg") {
 
     private val defs = arrayListOf<SVGElement>()
@@ -34,5 +36,9 @@ class SVGRoot(vararg attributes: Pair<String, Any>, operation: ElementOperation?
         }
         build(svg)
         return svg.toString()
+    }
+
+    fun to(file: String) {
+        File(file).writeText(this.toString())
     }
 }

@@ -4,7 +4,7 @@ import datatypes.*
 import SVGRoot
 
 fun main() {
-    print(SVGRoot("viewBox" to "0,0,20,20") {
+    SVGRoot("viewBox" to "0,0,20,20") {
         val origin = Vec2(6.0, 10.0)
         val endPoint = Vec2(14.0, 10.0)
         val rx = 6.0
@@ -26,5 +26,5 @@ fun main() {
             moveTo(origin)
             arcTo(rx, ry, rotation, largeArc = false, clockwise = false, endPoint)
         }
-    })
+    }.to("out/circle_test.svg")
 }

@@ -52,7 +52,7 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     val mask: NameSVGElement get() = NameSVGElement(this, "mask")
     val metadata: NameSVGElement get() = NameSVGElement(this, "metadata")
     val mpath: NameSVGElement get() = NameSVGElement(this, "mpath")
-    val path: PathElement.PathSVGElement get() = PathElement.PathSVGElement(this)
+    val path: PathElement.Name get() = PathElement.Name(this)
     val pattern: NameSVGElement get() = NameSVGElement(this, "pattern")
     val polygon: NameSVGElement get() = NameSVGElement(this, "polygon")
     val polyline: NameSVGElement get() = NameSVGElement(this, "polyline")
@@ -61,7 +61,8 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     val script: NameSVGElement get() = NameSVGElement(this, "script")
     val set: NameSVGElement get() = NameSVGElement(this, "set")
     val stop: NameSVGElement get() = NameSVGElement(this, "stop")
-    val style: NameSVGElement get() = NameSVGElement(this, "style")
+    val style: StyleElement.Name get() = StyleElement.Name(this)
+    val svg: NameSVGElement get() = NameSVGElement(this, "svg")
     val switch: NameSVGElement get() = NameSVGElement(this, "switch")
     val symbol: NameSVGElement get() = NameSVGElement(this, "symbol")
     val text: NameSVGElement get() = NameSVGElement(this, "text")
@@ -73,6 +74,14 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
 
     private val attributes = arrayListOf<Pair<String, String>>()
     private val children = arrayListOf<SVGElement>()
+
+    fun attributes(): Iterator<Pair<String, String>> {
+        return attributes.iterator()
+    }
+
+    fun children(): Iterator<SVGElement> {
+        return children.iterator()
+    }
 
     operator fun invoke(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null): SVGElement {
         for (i in attributes) {
@@ -93,6 +102,14 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
         root?.define(name, element)
     }
 
+    fun addByTag(tag: String, vararg attributes: Pair<String, Any>) {
+        val element = SVGElement(tag)
+        for (i in attributes) {
+            element.addAttribute(i)
+        }
+        addChild(element)
+    }
+
     fun addAttribute(attribute: Pair<String, Any>) {
         attributes.add(attribute.first to attribute.second.toString())
     }
@@ -105,6 +122,10 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     fun addFirstChild(element: SVGElement) {
         children.add(0, element)
         element.root = root
+    }
+
+    fun string(content: String) {
+        addChild(CDataElement(content))
     }
 
     fun removeChild(element: SVGElement) {
@@ -120,12 +141,9 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     }
 
     fun buildInitial(svg: SVGBuilder) {
-        svg.newline()
-        svg.append("<$tag")
+        svg.newline().append("<$tag")
         for (i in attributes) {
-            svg.append(" ${i.first}=\"")
-            svg.append(i.second)
-            svg.append("\"")
+            svg.append(" ${i.first}=\"").append(i.second).append("\"")
         }
     }
 
@@ -139,8 +157,7 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
                 i.build(svg)
             }
             svg.unindent()
-            svg.newline()
-            svg.append("</$tag>")
+            svg.newline().append("</$tag>")
         }
     }
 
