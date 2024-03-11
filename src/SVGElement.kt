@@ -1,3 +1,5 @@
+import datatypes.Vec2
+
 typealias ElementOperation = SVGElement.() -> Unit
 
 open class SVGElement(val tag: String, var root: SVGRoot? = null) {
@@ -72,10 +74,10 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     val use: NameSVGElement get() = NameSVGElement(this, "use")
     val view: NameSVGElement get() = NameSVGElement(this, "view")
 
-    private val attributes = arrayListOf<Pair<String, String>>()
+    private val attributes = arrayListOf<Pair<String, Any>>()
     private val children = arrayListOf<SVGElement>()
 
-    fun attributes(): Iterator<Pair<String, String>> {
+    fun attributes(): Iterator<Pair<String, Any>> {
         return attributes.iterator()
     }
 
@@ -111,7 +113,17 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     }
 
     fun addAttribute(attribute: Pair<String, Any>) {
-        attributes.add(attribute.first to attribute.second.toString())
+        val f = attribute.first
+        val s = attribute.second
+        if (f.startsWith("!")) {
+            val suffix = f.substring(1)
+            if (s is Vec2) {
+                attributes.add("${suffix}x" to s.x.toString())
+                attributes.add("${suffix}y" to s.y.toString())
+            }
+        } else {
+            attributes.add(f to s)
+        }
     }
 
     fun addChild(element: SVGElement) {

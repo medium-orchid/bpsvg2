@@ -1,4 +1,4 @@
-import datatypes.DataType
+import datatypes.*
 import java.text.DecimalFormat
 
 class SVGBuilder {
@@ -35,9 +35,13 @@ class SVGBuilder {
     }
 
     fun append(value: Any): SVGBuilder {
+        val dt = value as? DataType
+        if (dt != null) {
+            value.put(this)
+            return this
+        }
         when (value) {
             is Double -> putFormatted(value)
-            is DataType -> value.put(this)
             else -> builder.append(value)
         }
         return this

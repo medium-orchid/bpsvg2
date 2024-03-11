@@ -6,7 +6,7 @@ import SVGRoot
 fun main() {
     SVGRoot(
         "width" to 600.px, "height" to 600.px,
-        "viewbox" to Rect(Vec2(-300, -300),600, 600)
+        "viewBox" to Rect(Vec2(-300, -300),600, 600)
     ) {
         style {
             svg("background-color" to "beige")
@@ -26,6 +26,9 @@ fun main() {
             select("#fade-stop-2",
                 "stop-color" to "white",
             )
+            select(".segment-fill",
+                "fill" to get("segment-fill-fill")
+            )
         }
         define("fade", radialGradient(
             "!c" to Vec2.zero, "r" to 200,
@@ -34,5 +37,5 @@ fun main() {
             stop("id" to "fade-stop-1", "offset" to 33.percent)
             stop("id" to "fade-stop-2", "offset" to 95.percent)
         })
-    }
+    }.to("out/petals.svg")
 }
