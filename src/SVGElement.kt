@@ -1,8 +1,9 @@
+import datatypes.Mat2D
 import datatypes.Vec2
 
 typealias ElementOperation = SVGElement.() -> Unit
 
-open class SVGElement(val tag: String, var root: SVGRoot? = null) {
+open class SVGElement(val tag: String, var root: SVG? = null) {
 
     class NameSVGElement(private val parent: SVGElement, private val tag: String) {
         operator fun invoke(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null): SVGElement {
@@ -115,7 +116,8 @@ open class SVGElement(val tag: String, var root: SVGRoot? = null) {
     fun addAttribute(attribute: Pair<String, Any>) {
         val f = attribute.first
         val s = attribute.second
-        if (f.startsWith("!")) {
+        if (s is Mat2D && s == Mat2D.id) return
+        if (f.startsWith("*")) {
             val suffix = f.substring(1)
             if (s is Vec2) {
                 attributes.add("${suffix}x" to s.x.toString())

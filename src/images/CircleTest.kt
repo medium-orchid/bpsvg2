@@ -1,9 +1,9 @@
 package images
 
-import SVGRoot
+import SVG
 
 fun main() {
-    SVGRoot("viewBox" to "0,0,10,10") {
+    SVG("viewBox" to "0,0,10,10") {
         val circleID = "myCircle"
         val gradientID = "myGradient"
         define(

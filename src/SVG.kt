@@ -1,6 +1,6 @@
 import java.io.File
 
-class SVGRoot(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null) : SVGElement("svg") {
+class SVG(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null) : SVGElement("svg") {
 
     private val defs = arrayListOf<SVGElement>()
     private val defined = hashSetOf<String>()

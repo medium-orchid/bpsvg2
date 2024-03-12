@@ -2,7 +2,7 @@ import datatypes.*
 
 typealias PathOperation = PathElement.() -> Unit
 
-class PathElement(root: SVGRoot? = null): SVGElement("path", root) {
+class PathElement(root: SVG? = null): SVGElement("path", root) {
 
     class Name(private val parent: SVGElement) {
         operator fun invoke(vararg attributes: Pair<String, Any>, operation: PathOperation? = null): PathElement {
@@ -40,36 +40,20 @@ class PathElement(root: SVGRoot? = null): SVGElement("path", root) {
         d.add("l" to v.asList())
     }
 
-    fun horizontalTo(vararg x: Double) {
+    fun horizontalTo(vararg x: Any) {
         d.add("H" to x.asList())
     }
 
-    fun horizontalTo(vararg x: Length) {
-        d.add("H" to x.asList())
-    }
-
-    fun horizontalBy(vararg x: Double) {
+    fun horizontalBy(vararg x: Any) {
         d.add("h" to x.asList())
     }
 
-    fun horizontalBy(vararg x: Length) {
-        d.add("h" to x.asList())
+    fun verticalTo(vararg y: Any) {
+        d.add("V" to y.asList())
     }
 
-    fun verticalTo(vararg y: Double) {
-        d.add("H" to y.asList())
-    }
-
-    fun verticalTo(vararg y: Length) {
-        d.add("H" to y.asList())
-    }
-
-    fun verticalBy(vararg y: Double) {
-        d.add("h" to y.asList())
-    }
-
-    fun verticalBy(vararg y: Length) {
-        d.add("h" to y.asList())
+    fun verticalBy(vararg y: Any) {
+        d.add("v" to y.asList())
     }
 
     fun cubicTo(startingControl: Vec2, endingControl: Vec2, endPoint: Vec2) {
@@ -104,19 +88,11 @@ class PathElement(root: SVGRoot? = null): SVGElement("path", root) {
         d.add("t" to listOf(control, endShift))
     }
 
-    fun arcTo(rx: Double, ry: Double, angle: Double, largeArc: Boolean, clockwise: Boolean, endPoint: Vec2) {
+    fun arcTo(rx: Any, ry: Any, angle: Any, largeArc: Boolean, clockwise: Boolean, endPoint: Vec2) {
         d.add("A" to listOf(rx, ry, angle, largeArc.flag(), clockwise.flag(), endPoint))
     }
 
-    fun arcTo(rx: Length, ry: Length, angle: Double, largeArc: Boolean, clockwise: Boolean, endPoint: Vec2) {
-        d.add("A" to listOf(rx, ry, angle, largeArc.flag(), clockwise.flag(), endPoint))
-    }
-
-    fun arcBy(rx: Double, ry: Double, angle: Double, largeArc: Boolean, clockwise: Boolean, endShift: Vec2) {
-        d.add("a" to listOf(rx, ry, angle, largeArc.flag(), clockwise.flag(), endShift))
-    }
-
-    fun arcBy(rx: Length, ry: Length, angle: Double, largeArc: Boolean, clockwise: Boolean, endShift: Vec2) {
+    fun arcBy(rx: Any, ry: Any, angle: Any, largeArc: Boolean, clockwise: Boolean, endShift: Vec2) {
         d.add("a" to listOf(rx, ry, angle, largeArc.flag(), clockwise.flag(), endShift))
     }
 

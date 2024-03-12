@@ -1,6 +1,6 @@
 typealias StyleOperation = StyleElement.() -> Unit
 
-class StyleElement(root: SVGRoot? = null): SVGElement("style", root) {
+class StyleElement(root: SVG? = null): SVGElement("style", root) {
 
     class Name(private val parent: SVGElement) {
         operator fun invoke(vararg attributes: Pair<String, Any>, operation: StyleOperation? = null): StyleElement {

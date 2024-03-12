@@ -1,10 +1,10 @@
 package images
 
 import datatypes.*
-import SVGRoot
+import SVG
 
 fun main() {
-    SVGRoot("viewBox" to "0,0,20,20") {
+    SVG("viewBox" to "0,0,20,20") {
         val origin = Vec2(6.0, 10.0)
         val endPoint = Vec2(14.0, 10.0)
         val rx = 6.0
