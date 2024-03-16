@@ -15,4 +15,9 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length): DataT
         builder.append(',')
         height.put(builder)
     }
+
+    fun percent(vec: Vec2): Vec2 {
+        if (vec.unit != "%") throw IllegalArgumentException("Vector $vec is not a percent vector")
+        return topLeft + Vec2(width * vec.x / 100.0, height * vec.y / 100.0)
+    }
 }

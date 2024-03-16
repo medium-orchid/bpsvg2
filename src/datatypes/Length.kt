@@ -12,4 +12,26 @@ data class Length(val l: Double, val unit: String? = null): DataType {
         builder.append(l)
         builder.append(unit ?: "")
     }
+
+    private fun unitGuard(x: Length) {
+        if (unit != x.unit) throw IllegalArgumentException("$this and $x do not have the same unit")
+    }
+
+    operator fun plus(other: Length): Length {
+        unitGuard(other)
+        return Length(l + other.l, unit)
+    }
+
+    operator fun minus(other: Length): Length {
+        unitGuard(other)
+        return Length(l - other.l, unit)
+    }
+
+    operator fun times(other: Double): Length {
+        return Length(other * l, unit)
+    }
+
+    operator fun div(other: Double): Length {
+        return Length(other / l, unit)
+    }
 }

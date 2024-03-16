@@ -78,6 +78,10 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
     private val attributes = arrayListOf<Pair<String, Any>>()
     private val children = arrayListOf<SVGElement>()
 
+    fun get(name: String): String {
+        return "var(--$name)"
+    }
+
     fun attributes(): Iterator<Pair<String, Any>> {
         return attributes.iterator()
     }
@@ -116,7 +120,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
     fun addAttribute(attribute: Pair<String, Any>) {
         val f = attribute.first
         val s = attribute.second
-        if (s is Mat2D && s == Mat2D.id) return
+        if (s is Mat2D && s.approximatelyEquals(Mat2D.id)) return
         if (f.startsWith("*")) {
             val suffix = f.substring(1)
             if (s is Vec2) {

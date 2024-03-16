@@ -9,6 +9,14 @@ operator fun Double.times(other: Mat2D): Mat2D {
     )
 }
 
+operator fun Double.times(other: Length): Length {
+    return other * this
+}
+
+operator fun Double.times(other: Vec2): Vec2 {
+    return other * this
+}
+
 infix fun Double.u(unit: String): Length {
     return Length(this, unit)
 }

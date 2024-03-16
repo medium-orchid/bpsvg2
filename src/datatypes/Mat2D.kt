@@ -47,6 +47,11 @@ data class Mat2D(val a: Double, val b: Double,
         }
     }
 
+    fun approximatelyEquals(other: Mat2D): Boolean {
+        return approx(a, other.a) && approx(b, other.b) && approx(c, other.c)
+                && approx(d, other.d) && approx(x, other.x) && approx(y, other.y)
+    }
+
     private fun vectorGuard(other: Vec2) {
         if (this.hasOffset() && unit != other.unit) {
             throw IllegalArgumentException("Matrix has incompatible offset units" +
@@ -93,8 +98,9 @@ data class Mat2D(val a: Double, val b: Double,
     }
 
     fun isOrthogonal(): Boolean {
-        return approx(a*a + c*c, 1.0)
-                && approx(b*b + d*d, 1.0)
+        val k = det()
+        return approx(a*a + c*c, k)
+                && approx(b*b + d*d, k)
                 && approx(a*b + c*d, 0.0)
     }
 
@@ -102,7 +108,7 @@ data class Mat2D(val a: Double, val b: Double,
         if (isOrthogonal()) {
             val k = det()
             val r = atan2(b, a)
-            val rd = 180 * r / PI
+            val rd = ((180 * r / PI) + 360) % 360
             var hasOut = false
             if (!approx(x*x + y*y, 0.0)) {
                 builder.append("translate(")
@@ -114,7 +120,7 @@ data class Mat2D(val a: Double, val b: Double,
             if (!approx(k, 1.0)) {
                 if (hasOut) builder.append(" ")
                 builder.append("scale(")
-                builder.append(k)
+                builder.append(sqrt(k))
                 builder.append(")")
                 hasOut = true
             }

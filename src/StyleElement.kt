@@ -24,10 +24,6 @@ class StyleElement(root: SVG? = null): SVGElement("style", root) {
         return "--$name"
     }
 
-    fun get(name: String): String {
-        return "var(--$name)"
-    }
-
     fun select(tag: String, vararg attributes: Pair<String, Any>) {
         addByTag(tag, *attributes)
     }

@@ -7,6 +7,10 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null): DataTyp
 
     constructor(x: Int, y: Int, unit: String? = null): this(x.toDouble(), y.toDouble(), unit)
 
+    constructor(x: Length, y: Length): this(x.l, y.l, x.unit) {
+        if (x.unit != y.unit) throw IllegalArgumentException("$x and $y do not have matching units")
+    }
+
     companion object {
         val zero = Vec2(0,0)
     }
@@ -35,5 +39,9 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null): DataTyp
         builder.withComma(unit ?: "")
         builder.append(y)
         builder.append(unit ?: "")
+    }
+
+    operator fun times(other: Double): Vec2 {
+        return Vec2(x * other, y * other, unit)
     }
 }
