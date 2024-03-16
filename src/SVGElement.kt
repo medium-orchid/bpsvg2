@@ -117,16 +117,26 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         addChild(element)
     }
 
-    fun addAttribute(attribute: Pair<String, Any>) {
+    fun addAttribute(attribute: Pair<String, Any>, first: Boolean = false) {
         val f = attribute.first
         val s = attribute.second
         if (s is Mat2D && s.approximatelyEquals(Mat2D.id)) return
         if (f.startsWith("*")) {
             val suffix = f.substring(1)
             if (s is Vec2) {
-                attributes.add("${suffix}x" to s.x.toString())
-                attributes.add("${suffix}y" to s.y.toString())
+                addRawAttribute("${suffix}x" to s.x, first)
+                addRawAttribute("${suffix}y" to s.y, first)
             }
+        } else {
+            addRawAttribute(f to s, first)
+        }
+    }
+
+    private fun addRawAttribute(attribute: Pair<String, Any>, first: Boolean) {
+        val f = attribute.first
+        val s = attribute.second
+        if (first) {
+            attributes.add(0, f to s)
         } else {
             attributes.add(f to s)
         }

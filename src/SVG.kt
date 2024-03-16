@@ -18,7 +18,7 @@ class SVG(vararg attributes: Pair<String, Any>, operation: ElementOperation? = n
 
     override fun define(name: String, element: SVGElement) {
         if (!defined.contains(name)) {
-            element.addAttribute("id" to name)
+            element.addAttribute("id" to name, true)
             removeChild(element)
             defined.add(name)
             defs.add(element)

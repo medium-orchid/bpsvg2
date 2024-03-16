@@ -32,6 +32,6 @@ data class Length(val l: Double, val unit: String? = null): DataType {
     }
 
     operator fun div(other: Double): Length {
-        return Length(other / l, unit)
+        return Length(l / other, unit)
     }
 }

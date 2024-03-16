@@ -1,21 +1,23 @@
 package images
 
 import SVG
+import datatypes.*
 
 fun main() {
-    SVG("viewBox" to "0,0,10,10") {
+    val viewBox = Rect(10, 10)
+    SVG("viewBox" to viewBox) {
         val circleID = "myCircle"
         val gradientID = "myGradient"
         define(
             circleID,
-            circle("cx" to 0, "cy" to 0, "r" to 5)
+            circle("*c" to Vec2.zero, "r" to 5)
         )
         define(gradientID,
-            linearGradient("gradientTransform" to "rotate(90)") {
-                stop("offset" to "20%", "stop-color" to "gold")
-                stop("offset" to "90%", "stop-color" to "red")
+            linearGradient("gradientTransform" to Mat2D.rotate(90)) {
+                stop("offset" to 20.percent, "stop-color" to "gold")
+                stop("offset" to 90.percent, "stop-color" to "red")
             }
         )
-        use(href(circleID), "x" to 5, "y" to 5, "fill" to url("myGradient"))
+        use(href(circleID), "*" to viewBox.point(Vec2.center), "fill" to url("myGradient"))
     }.to("out/circle_test.svg")
 }

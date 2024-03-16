@@ -6,7 +6,7 @@ import SVG
 fun main() {
     SVG(
         "width" to 600.px, "height" to 600.px,
-        "viewBox" to Rect(Vec2(-300, -300), 600, 600)
+        "viewBox" to Rect.byCenter(Vec2.zero, 600, 600)
     ) {
         style {
             svg("background-color" to "beige")
