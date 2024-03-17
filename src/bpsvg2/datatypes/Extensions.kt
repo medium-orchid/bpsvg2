@@ -1,4 +1,4 @@
-package datatypes
+package bpsvg2.datatypes
 
 operator fun Double.times(other: Mat2D): Mat2D {
     return Mat2D(

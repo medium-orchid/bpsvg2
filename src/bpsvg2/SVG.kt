@@ -1,3 +1,5 @@
+package bpsvg2
+
 import java.io.File
 
 class SVG(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null) : SVGElement("svg") {

@@ -1,4 +1,7 @@
-import datatypes.*
+package bpsvg2
+
+import bpsvg2.datatypes.Vec2
+import bpsvg2.datatypes.flag
 
 typealias PathOperation = PathElement.() -> Unit
 

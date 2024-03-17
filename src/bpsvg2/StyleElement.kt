@@ -1,3 +1,5 @@
+package bpsvg2
+
 typealias StyleOperation = StyleElement.() -> Unit
 
 class StyleElement(root: SVG? = null): SVGElement("style", root) {

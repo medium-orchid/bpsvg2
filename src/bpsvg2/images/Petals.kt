@@ -1,7 +1,7 @@
-package images
+package bpsvg2.images
 
-import datatypes.*
-import SVG
+import bpsvg2.SVG
+import bpsvg2.datatypes.*
 
 fun main() {
     SVG(

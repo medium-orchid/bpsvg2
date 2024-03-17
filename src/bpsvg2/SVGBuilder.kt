@@ -1,4 +1,6 @@
-import datatypes.*
+package bpsvg2
+
+import bpsvg2.datatypes.DataType
 import java.text.DecimalFormat
 
 class SVGBuilder {

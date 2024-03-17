@@ -1,6 +1,6 @@
-package datatypes
+package bpsvg2.datatypes
 
-import SVGBuilder
+import bpsvg2.SVGBuilder
 
 data class Length(val l: Double, val unit: String? = null): DataType {
 

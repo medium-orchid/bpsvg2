@@ -1,3 +1,5 @@
+package bpsvg2
+
 class CDataElement(val content: String, root: SVG? = null): SVGElement("cdata", root) {
     class Name(private val parent: SVGElement) {
         operator fun invoke(content: String): CDataElement {

@@ -1,6 +1,6 @@
-package datatypes
+package bpsvg2.datatypes
 
-import SVGBuilder
+import bpsvg2.SVGBuilder
 
 data class Rect(val topLeft: Vec2, val width: Length, val height: Length): DataType {
 

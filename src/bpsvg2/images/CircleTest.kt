@@ -1,7 +1,10 @@
-package images
+package bpsvg2.images
 
-import SVG
-import datatypes.*
+import bpsvg2.SVG
+import bpsvg2.datatypes.Mat2D
+import bpsvg2.datatypes.Rect
+import bpsvg2.datatypes.Vec2
+import bpsvg2.datatypes.percent
 
 fun main() {
     val viewBox = Rect(10, 10)

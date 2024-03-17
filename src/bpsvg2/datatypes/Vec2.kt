@@ -1,6 +1,6 @@
-package datatypes
+package bpsvg2.datatypes
 
-import SVGBuilder
+import bpsvg2.SVGBuilder
 import kotlin.math.sqrt
 
 data class Vec2(val x: Double, val y: Double, val unit: String? = null): DataType {

@@ -1,5 +1,7 @@
-import datatypes.Mat2D
-import datatypes.Vec2
+package bpsvg2
+
+import bpsvg2.datatypes.Mat2D
+import bpsvg2.datatypes.Vec2
 
 typealias ElementOperation = SVGElement.() -> Unit
 

@@ -1,6 +1,6 @@
-package datatypes
+package bpsvg2.datatypes
 
-import SVGBuilder
+import bpsvg2.SVGBuilder
 import kotlin.math.*
 
 data class Mat2D(val a: Double, val b: Double,
