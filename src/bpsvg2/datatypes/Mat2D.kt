@@ -49,6 +49,13 @@ data class Mat2D(val a: Double, val b: Double,
             return Mat2D(c, s, -s, c, 0.0, 0.0)
         }
 
+        fun reflect(degrees: Double): Mat2D {
+            val r = PI * degrees / 90
+            val c = cos(r)
+            val s = sin(r)
+            return Mat2D(c, s, s, -c, 0.0, 0.0)
+        }
+
         fun rotate(degrees: Int): Mat2D {
             return rotate(degrees.toDouble())
         }
@@ -104,6 +111,10 @@ data class Mat2D(val a: Double, val b: Double,
         return a * d - b * c
     }
 
+    fun scale(k: Double): Mat2D {
+        return Mat2D(a * k, b * k, c * k, d * k, x * k, y * k)
+    }
+
     fun isOrthogonal(): Boolean {
         val k = det()
         return approx(a*a + c*c, k)
@@ -150,14 +161,12 @@ data class Mat2D(val a: Double, val b: Double,
     }
 
     fun inverse(): Mat2D {
-        try {
+        val det = try {
             det()
         } catch (e: Exception) {
             throw IllegalArgumentException("matrix is not invertible")
         }
-        // In a cozy coincidence, lots of things cancel out
-        // such that we have the nice inversion formula
-        return Mat2D(d, -b, -c, a, c * y - d * x, a * y - b * x)
+        return Mat2D(d, -b, -c, a, c * y - d * x, b * x - a * y).scale(1 / det)
     }
 
     fun pow(n: Int): Mat2D {
