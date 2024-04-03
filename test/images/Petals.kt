@@ -1,4 +1,4 @@
-package bpsvg2.images
+package images
 
 import bpsvg2.SVG
 import bpsvg2.datatypes.*

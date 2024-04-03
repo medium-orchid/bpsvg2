@@ -1,4 +1,4 @@
-package bpsvg2.images
+package images
 
 import bpsvg2.SVG
 import bpsvg2.datatypes.Rect
@@ -27,5 +27,5 @@ fun main() {
             moveTo(origin)
             arcTo(rx, ry, rotation, largeArc = false, clockwise = false, endPoint)
         }
-    }.to("out/circle_test.svg")
+    }.to("out/arc_test.svg")
 }
