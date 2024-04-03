@@ -3,6 +3,13 @@ package bpsvg2.datatypes
 import bpsvg2.SVGBuilder
 import kotlin.math.*
 
+/**
+ * A matrix
+ * ( a c x )
+ * ( b d y )
+ * ( 0 0 1 )
+ * representing a 2D transformation
+ */
 data class Mat2D(val a: Double, val b: Double,
                  val c: Double, val d: Double,
                  val x: Double, val y: Double,
@@ -140,5 +147,41 @@ data class Mat2D(val a: Double, val b: Double,
             builder.append(y)
             builder.append(")")
         }
+    }
+
+    fun inverse(): Mat2D {
+        try {
+            det()
+        } catch (e: Exception) {
+            throw IllegalArgumentException("matrix is not invertible")
+        }
+        // In a cozy coincidence, lots of things cancel out
+        // such that we have the nice inversion formula
+        return Mat2D(d, -b, -c, a, c * y - d * x, a * y - b * x)
+    }
+
+    fun pow(n: Int): Mat2D {
+        if (a == 0.0 && b == 0.0 && c == 0.0 && d == 0.0) {
+            return Mat2D(0.0, 0.0, 0.0, 0.0, n * x, n * y)
+        }
+        if (n == 0) {
+            return id
+        } else if (n < 0) {
+            return inverse().pow(-n)
+        }
+        var remaining = n
+        var exp = 0
+        var out = id
+        var current = this
+        while (remaining > 0) {
+            val powOf2 = 1 shl exp
+            if (remaining and powOf2 != 0) {
+                out *= current
+                remaining -= powOf2
+            }
+            exp++
+            current *= current
+        }
+        return out
     }
 }
