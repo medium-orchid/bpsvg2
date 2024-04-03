@@ -14,6 +14,9 @@ fun main() {
             m * m * m
         ))
     }
+    assert(Mat2D.id.approximatelyEquals(
+        Mat2D.rotate(360 * 8.0 / 9.0).pow(9)
+    ))
 }
 
 fun randomMatrix(): Mat2D {
