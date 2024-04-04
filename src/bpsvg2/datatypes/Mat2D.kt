@@ -26,8 +26,16 @@ data class Mat2D(val a: Double, val b: Double,
 
         val id = scale(1.0)
 
-        fun offset(vec2: Vec2): Mat2D {
-            return Mat2D(1.0, 0.0, 0.0, 1.0, vec2.x, vec2.y, vec2.unit)
+        fun offset(x: Double, y: Double, unit: String? = null): Mat2D {
+            return Mat2D(1.0, 0.0, 0.0, 1.0, x, y, unit)
+        }
+
+        fun offset(by: Vec2): Mat2D {
+            return offset(by.x, by.y, by.unit)
+        }
+
+        fun offset(x: Int, y: Int, unit: String? = null): Mat2D {
+            return offset(x.toDouble(), y.toDouble(), unit)
         }
 
         private fun approx(a: Double, b: Double): Boolean {
@@ -58,6 +66,10 @@ data class Mat2D(val a: Double, val b: Double,
 
         fun rotate(degrees: Int): Mat2D {
             return rotate(degrees.toDouble())
+        }
+
+        fun reflect(degrees: Int): Mat2D {
+            return reflect(degrees.toDouble())
         }
     }
 
@@ -170,13 +182,19 @@ data class Mat2D(val a: Double, val b: Double,
     }
 
     fun pow(n: Int): Mat2D {
-        if (a == 0.0 && b == 0.0 && c == 0.0 && d == 0.0) {
-            return Mat2D(0.0, 0.0, 0.0, 0.0, n * x, n * y)
-        }
         if (n == 0) {
             return id
         } else if (n < 0) {
             return inverse().pow(-n)
+        } else if (n == 1) {
+            return this
+        }
+        if (b == 0.0 && c == 0.0) {
+            if (a == 0.0 && d == 0.0) {
+                return Mat2D(0.0, 0.0, 0.0, 0.0, n * x, n * y)
+            } else if (x == 0.0 && y == 0.0) {
+                return Mat2D(a.pow(n), 0.0, 0.0, d.pow(n), 0.0, 0.0)
+            }
         }
         var remaining = n
         var exp = 0
