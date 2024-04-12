@@ -134,6 +134,10 @@ data class Mat2D(val a: Double, val b: Double,
                 && approx(a*b + c*d, 0.0)
     }
 
+    override fun toString(): String {
+        return "Mat2D($a $c $x)($b $d $y)"
+    }
+
     override fun put(builder: SVGBuilder) {
         if (isOrthogonal()) {
             val k = det()

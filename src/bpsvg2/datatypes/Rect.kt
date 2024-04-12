@@ -44,6 +44,10 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length): DataT
         height.put(builder)
     }
 
+    override fun toString(): String {
+        return "Rect(${topLeft.x}, ${topLeft.y})($width, $height)"
+    }
+
     fun point(vec: Vec2): Vec2 {
         if (vec.unit != "%") throw IllegalArgumentException("Vector $vec is not a percent vector")
         print("$this and $vec")

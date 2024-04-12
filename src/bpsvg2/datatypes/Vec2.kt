@@ -62,4 +62,12 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null): DataTyp
     operator fun div(other: Double): Vec2 {
         return Vec2(x / other, y / other, unit)
     }
+
+    operator fun div(other: Int): Vec2 {
+        return this / other.toDouble()
+    }
+
+    override fun toString(): String {
+        return "Vec2($x, $y)$unit"
+    }
 }
