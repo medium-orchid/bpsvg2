@@ -1,9 +1,8 @@
 package bpsvg2.datatypes
 
-import bpsvg2.SVGBuilder
 import kotlin.math.sqrt
 
-data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? = null) : DataType {
+data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? = null) {
 
     constructor(x: Int, y: Int, z: Int, unit: String? = null) : this(x.toDouble(), y.toDouble(), z.toDouble(), unit)
 
@@ -47,15 +46,6 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
 
     fun norm(): Double {
         return sqrt(normSquared())
-    }
-
-    override fun put(builder: SVGBuilder) {
-        builder.append(x)
-        builder.withComma(unit ?: "")
-        builder.append(y)
-        builder.withComma(unit ?: "")
-        builder.append(z)
-        builder.append(unit ?: "")
     }
 
     operator fun times(other: Double): Vec3 {
