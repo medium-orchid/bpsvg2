@@ -13,8 +13,24 @@ operator fun Double.times(other: Length): Length {
     return other * this
 }
 
+operator fun Int.times(other: Length): Length {
+    return other * this.toDouble()
+}
+
 operator fun Double.times(other: Vec2): Vec2 {
     return other * this
+}
+
+operator fun Int.times(other: Vec2): Vec2 {
+    return other * this.toDouble()
+}
+
+operator fun Double.times(other: Vec3): Vec3 {
+    return other * this
+}
+
+operator fun Int.times(other: Vec3): Vec3 {
+    return other * this.toDouble()
 }
 
 infix fun Double.u(unit: String): Length {
