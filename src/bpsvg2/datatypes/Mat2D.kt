@@ -166,13 +166,8 @@ data class Mat2D(val a: Double, val b: Double,
             }
         } else {
             builder.append("matrix(")
-            builder.withComma(a)
-            builder.withComma(b)
-            builder.withComma(c)
-            builder.withComma(d)
-            builder.withComma(x)
-            builder.append(y)
-            builder.append(")")
+                .join(a, b, c, d, x, y)
+                .append(")")
         }
     }
 

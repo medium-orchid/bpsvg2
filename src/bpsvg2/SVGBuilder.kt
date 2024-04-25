@@ -55,6 +55,15 @@ class SVGBuilder {
         return this
     }
 
+    fun join(vararg values: Any): SVGBuilder {
+        for (i in 0 ..< values.lastIndex) {
+            append(i)
+            builder.append(',')
+        }
+        append(values.last())
+        return this
+    }
+
     fun withSpaceBefore(value: Any): SVGBuilder {
         builder.append(' ')
         append(value)
