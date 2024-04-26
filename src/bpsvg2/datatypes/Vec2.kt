@@ -48,6 +48,10 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
         return sqrt(normSquared())
     }
 
+    fun normalized(): Vec2 {
+        return this / norm()
+    }
+
     override fun put(builder: SVGBuilder) {
         builder.append(x)
         builder.withComma(unit ?: "")

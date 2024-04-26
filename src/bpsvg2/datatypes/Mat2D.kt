@@ -50,26 +50,17 @@ data class Mat2D(val a: Double, val b: Double,
             }
         }
 
-        fun rotate(degrees: Double): Mat2D {
-            val r = PI * degrees / 180
-            val c = cos(r)
-            val s = sin(r)
+        fun rotate(angle: Angle): Mat2D {
+            val c = angle.cos()
+            val s = angle.sin()
             return Mat2D(c, s, -s, c, 0.0, 0.0)
         }
 
-        fun reflect(degrees: Double): Mat2D {
-            val r = PI * degrees / 90
-            val c = cos(r)
-            val s = sin(r)
+        fun reflect(angle: Angle): Mat2D {
+            val r = 2 * angle
+            val c = r.cos()
+            val s = r.sin()
             return Mat2D(c, s, s, -c, 0.0, 0.0)
-        }
-
-        fun rotate(degrees: Int): Mat2D {
-            return rotate(degrees.toDouble())
-        }
-
-        fun reflect(degrees: Int): Mat2D {
-            return reflect(degrees.toDouble())
         }
     }
 

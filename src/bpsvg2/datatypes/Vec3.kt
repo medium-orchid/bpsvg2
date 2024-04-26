@@ -49,6 +49,10 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         return sqrt(normSquared())
     }
 
+    fun normalized(): Vec3 {
+        return this / norm()
+    }
+
     operator fun times(other: Double): Vec3 {
         return Vec3(x * other, y * other, z * other, unit)
     }

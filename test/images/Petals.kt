@@ -89,12 +89,12 @@ fun main() {
         })
         define("quadrant", g {
             for (i in 0..<5) {
-                use(href("segment"), "transform" to Mat2D.rotate(18 * i))
+                use(href("segment"), "transform" to Mat2D.rotate(18 * i.deg))
             }
         })
         define("petals", g {
             for (i in 0..<4) {
-                use(href("quadrant"), "transform" to Mat2D.rotate(90 * i)) {
+                use(href("quadrant"), "transform" to Mat2D.rotate(90 * i.deg)) {
                 }
             }
         })
@@ -112,7 +112,7 @@ fun main() {
             )
             use("id" to "outer-petals", href("petals"))
             use("id" to "inner-petals", href("petals"),
-                "transform" to Mat2D.rotate(9) * Mat2D.scale(1.0/3))
+                "transform" to Mat2D.rotate(9.deg) * Mat2D.scale(1.0/3))
         }
     }.to("out/petals.svg")
 }

@@ -20,6 +20,10 @@ class SVGBuilder {
         return this
     }
 
+    fun getFormattedLength(x: Double): Int {
+        return formatter.format(x).length
+    }
+
     fun newline(): SVGBuilder {
         if (newLines) builder.append("\n")
         builder.append(indent.repeat(indentLevel))

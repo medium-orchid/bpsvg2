@@ -1,10 +1,7 @@
 package images
 
 import bpsvg2.SVG
-import bpsvg2.datatypes.Mat2D
-import bpsvg2.datatypes.Rect
-import bpsvg2.datatypes.Vec2
-import bpsvg2.datatypes.percent
+import bpsvg2.datatypes.*
 
 fun main() {
     val viewBox = Rect(10, 10)
@@ -16,7 +13,7 @@ fun main() {
             circle("*c" to Vec2.zero, "r" to 5)
         )
         define(gradientID,
-            linearGradient("gradientTransform" to Mat2D.rotate(90)) {
+            linearGradient("gradientTransform" to Mat2D.rotate(90.deg)) {
                 stop("offset" to 20.percent, "stop-color" to "gold")
                 stop("offset" to 90.percent, "stop-color" to "red")
             }
