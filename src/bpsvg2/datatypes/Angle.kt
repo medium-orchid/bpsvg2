@@ -44,20 +44,28 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): Data
     }
 
     override fun put(builder: SVGBuilder) {
-        val r = toValue(AngleUnits.RAD)
-        val d = toValue(AngleUnits.DEG)
-        val t = toValue(AngleUnits.TURNS)
-        val g = toValue(AngleUnits.GRAD)
-        val lr = builder.getFormattedLength(r)
-        val ld = builder.getFormattedLength(d)
-        val lt = builder.getFormattedLength(t)
-        val lg = builder.getFormattedLength(g)
-        val l = arrayOf(lr, ld, lt, lg).min()
-        when (l) {
-            lt -> builder.append(t).append(AngleUnits.TURNS.str)
-            ld -> builder.append(d).append(AngleUnits.DEG.str)
-            lg -> builder.append(g).append(AngleUnits.GRAD.str)
-            lr -> builder.append(r).append(AngleUnits.RAD.str)
+        builder.append(toValue(AngleUnits.DEG))
+    }
+
+    override fun put(builder: SVGBuilder, cssMode: Boolean) {
+        if (cssMode) {
+            val r = toValue(AngleUnits.RAD)
+            val d = toValue(AngleUnits.DEG)
+            val t = toValue(AngleUnits.TURNS)
+            val g = toValue(AngleUnits.GRAD)
+            val lr = builder.getFormattedLength(r)
+            val ld = builder.getFormattedLength(d)
+            val lt = builder.getFormattedLength(t)
+            val lg = builder.getFormattedLength(g)
+            val l = arrayOf(lr, ld, lt, lg).min()
+            when (l) {
+                lt -> builder.append(t).append(AngleUnits.TURNS.str)
+                ld -> builder.append(d).append(AngleUnits.DEG.str)
+                lg -> builder.append(g).append(AngleUnits.GRAD.str)
+                lr -> builder.append(r).append(AngleUnits.RAD.str)
+            }
+        } else {
+            put(builder)
         }
     }
 }

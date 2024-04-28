@@ -11,6 +11,7 @@ class SVGBuilder {
         set(value) {
             formatter = DecimalFormat(value)
         }
+    var cssMode = false
     private var formatter = DecimalFormat(decimalPattern)
     private val builder = StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
     private var indentLevel = 0
@@ -43,7 +44,7 @@ class SVGBuilder {
     fun append(value: Any): SVGBuilder {
         val dt = value as? DataType
         if (dt != null) {
-            value.put(this)
+            value.put(this, cssMode)
             return this
         }
         when (value) {
