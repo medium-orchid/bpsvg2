@@ -21,6 +21,10 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         if (unit == "") throw IllegalArgumentException("Unitless vectors should have null unit")
     }
 
+    fun approximatelyEquals(other: Vec3): Boolean {
+        return unit == other.unit && approx(x, other.x) && approx(y, other.y) && approx(z, other.z)
+    }
+
     fun u(unit: String? = null): Vec3 {
         return Vec3(x, y, z, unit)
     }

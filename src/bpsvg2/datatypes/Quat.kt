@@ -5,6 +5,8 @@ import kotlin.math.*
 
 data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): DataType {
 
+    constructor(v: Vec3): this(0.0, v.x, v.y, v.z)
+
     companion object {
         val zero = Quat(0.0, 0.0, 0.0, 0.0)
         val unitR = Quat(1.0, 0.0, 0.0, 0.0)
@@ -20,6 +22,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
         }
     }
 
+    fun approximatelyEquals(other: Quat): Boolean {
+        return approx(r, other.r) && approx(i, other.i) && approx(j, other.j) && approx(k, other.k)
+    }
+
     operator fun times(other: Quat): Quat {
         return Quat(
             r * other.r - i * other.i - j * other.j - k * other.k,
@@ -27,6 +33,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
             r * other.j - i * other.k + j * other.r + k * other.i,
             r * other.k + i * other.j - j * other.i + k * other.r,
         )
+    }
+
+    operator fun times(other: Vec3): Vec3 {
+        return (this * Quat(other) * reciprocal()).vectorPart().u(other.unit)
     }
 
     operator fun times(other: Double): Quat {
@@ -65,6 +75,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
 
     fun normalized(): Quat {
         return this / norm()
+    }
+
+    fun reciprocal(): Quat {
+        return conjugate() / normSquared()
     }
 
     fun polar(): Pair<Double, Quat> {
@@ -107,11 +121,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
     }
 
     fun toMat3D(): Mat3D {
-        val s = 2 * normSquared().pow(-2)
         return Mat3D(
-            1 - s * (j*j - k*k), s * (i*j - k*r), s * (i*k + j*r),
-            s * (i*j + k*r), 1 - s * (i*i + k*k), s * (j*k - i*r),
-            s * (i*k - j*r), s * (j*k + i*r), 1 - s * (i*i + j*j),
+            r*r + i*i - j*j - k*k, 2*(i*j - r*k), 2*(i*k + r*j),
+            2*(i*j + r*k), r*r - i*i + j*j - k*k, 2*(j*k - r*i),
+            2*(i*k - r*j), 2*(j*k + r*i), r*r - i*i - j*j + k*k
         )
     }
 
@@ -151,5 +164,9 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
         } else {
             builder.append("rotate3d(").join(w, t).append(")")
         }
+    }
+
+    override fun toString(): String {
+        return "$r + {$i}i + {$j}j {$k}k"
     }
 }

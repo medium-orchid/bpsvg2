@@ -31,7 +31,6 @@ data class Mat3D(
     )
 
     companion object {
-        private const val EPS: Double = 1E-6
 
         fun scale(k: Double): Mat3D {
             return Mat3D(
@@ -43,10 +42,6 @@ data class Mat3D(
         }
 
         val id = scale(1.0)
-
-        fun approx(a: Double, b: Double): Boolean {
-            return abs(a - b) < EPS
-        }
     }
 
     fun approximatelyEquals(other: Mat3D): Boolean {

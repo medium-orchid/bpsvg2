@@ -1,3 +1,5 @@
+package math
+
 import bpsvg2.datatypes.*
 import kotlin.random.Random
 
@@ -20,16 +22,4 @@ fun main() {
     assert(Mat2D.id.approximatelyEquals(
         Mat2D.rotate((360 * 8.0 / 9.0).deg).pow(9)
     ))
-}
-
-fun randomMatrix(): Mat2D {
-    return Mat2D(entry(), entry(), entry(), entry(), entry(), entry())
-}
-
-fun entry(): Double {
-    return Random.nextDouble(-2.0, 2.0)
-}
-
-fun assert(value: Boolean) {
-    if (!value) throw Exception()
 }

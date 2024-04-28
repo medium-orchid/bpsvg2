@@ -20,6 +20,10 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
         if (unit == "") throw IllegalArgumentException("Unitless vectors should have null unit")
     }
 
+    fun approximatelyEquals(other: Vec2): Boolean {
+        return unit == other.unit && approx(x, other.x) && approx(y, other.y)
+    }
+
     fun u(unit: String? = null): Vec2 {
         return Vec2(x, y, unit)
     }

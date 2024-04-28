@@ -1,5 +1,11 @@
 package bpsvg2.datatypes
 
+import kotlin.math.abs
+
+fun approx(a: Double, b: Double): Boolean {
+    return abs(a - b) < EPS
+}
+
 const val EPS: Double = 1E-6
 
 operator fun Double.times(other: Mat2D): Mat2D {
