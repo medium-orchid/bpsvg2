@@ -18,8 +18,6 @@ data class Mat2D(val a: Double, val b: Double,
 
     companion object {
 
-        private const val EPS: Double = 1E-6
-
         fun scale(k: Double): Mat2D {
             return Mat2D(k, 0.0, 0.0, k, 0.0, 0.0, null)
         }
@@ -132,8 +130,7 @@ data class Mat2D(val a: Double, val b: Double,
     override fun put(builder: SVGBuilder) {
         if (isOrthogonal()) {
             val k = det()
-            val r = atan2(b, a)
-            val rd = ((180 * r / PI) + 360) % 360
+            val r = Angle.atan2(b, a)
             var hasOut = false
             if (!approx(x*x + y*y, 0.0)) {
                 builder.append("translate(")
@@ -149,10 +146,10 @@ data class Mat2D(val a: Double, val b: Double,
                 builder.append(")")
                 hasOut = true
             }
-            if (!approx(rd, 0.0)) {
+            if (!approx(r.toValue(AngleUnits.RAD), 0.0)) {
                 if (hasOut) builder.append(" ")
                 builder.append("rotate(")
-                builder.append(rd)
+                builder.append(r)
                 builder.append(")")
             }
         } else {

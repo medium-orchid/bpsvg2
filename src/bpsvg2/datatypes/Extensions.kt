@@ -1,6 +1,6 @@
 package bpsvg2.datatypes
 
-import kotlin.math.*
+const val EPS: Double = 1E-6
 
 operator fun Double.times(other: Mat2D): Mat2D {
     return Mat2D(

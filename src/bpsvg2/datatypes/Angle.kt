@@ -11,6 +11,10 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): Data
         }
     }
 
+    fun mod(): Angle {
+        return Angle(value.mod(unit.turn), unit)
+    }
+
     fun toValue(conversion: AngleUnits): Double {
         return value * conversion.turn / unit.turn
     }

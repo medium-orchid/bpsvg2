@@ -1,4 +1,4 @@
-import bpsvg2.datatypes.Mat2D
+import bpsvg2.datatypes.*
 import kotlin.random.Random
 
 fun main() {
@@ -14,11 +14,11 @@ fun main() {
             m * m * m
         ))
         assert(Mat2D.id.approximatelyEquals(
-            Mat2D.reflect(Random.nextDouble(0.0, 360.0)).pow(2)
+            Mat2D.reflect(Random.nextDouble(0.0, 360.0).deg).pow(2)
         ))
     }
     assert(Mat2D.id.approximatelyEquals(
-        Mat2D.rotate(360 * 8.0 / 9.0).pow(9)
+        Mat2D.rotate((360 * 8.0 / 9.0).deg).pow(9)
     ))
 }
 
