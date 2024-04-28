@@ -35,12 +35,28 @@ operator fun Int.times(other: Vec3): Vec3 {
     return other * this.toDouble()
 }
 
+operator fun Double.times(other: Quat): Quat {
+    return other * this
+}
+
+operator fun Int.times(other: Quat): Quat {
+    return other * this.toDouble()
+}
+
 operator fun Double.times(other: Angle): Angle {
     return other * this
 }
 
 operator fun Int.times(other: Angle): Angle {
     return other * this.toDouble()
+}
+
+operator fun Double.plus(other: Quat): Quat {
+    return other + this
+}
+
+operator fun Int.plus(other: Quat): Quat {
+    return other + this.toDouble()
 }
 
 infix fun Double.u(unit: String): Length {

@@ -71,6 +71,14 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
         return this / other.toDouble()
     }
 
+    fun dot(other: Vec2): Double {
+        return x * other.x + y * other.y
+    }
+
+    fun cross(other: Vec2): Double {
+        return x * other.y - y * other.x
+    }
+
     override fun toString(): String {
         return "Vec2($x, $y)$unit"
     }
