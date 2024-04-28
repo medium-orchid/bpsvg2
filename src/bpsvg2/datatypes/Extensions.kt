@@ -73,13 +73,13 @@ val Double.rem: Length get() = Length(this, "rem")
 
 val Double.px: Length get() = Length(this, "px")
 
-val Double.rad: Angle get() = Angle(this, Angle.Units.RAD)
+val Double.rad: Angle get() = Angle(this, AngleUnits.RAD)
 
-val Double.deg: Angle get() = Angle(this, Angle.Units.DEG)
+val Double.deg: Angle get() = Angle(this, AngleUnits.DEG)
 
-val Double.turns: Angle get() = Angle(this, Angle.Units.TURNS)
+val Double.turns: Angle get() = Angle(this, AngleUnits.TURNS)
 
-val Double.grad: Angle get() = Angle(this, Angle.Units.GRAD)
+val Double.grad: Angle get() = Angle(this, AngleUnits.GRAD)
 
 val Int.length: Length get() = Length(this.toDouble())
 
@@ -91,13 +91,13 @@ val Int.rem: Length get() = Length(this.toDouble(), "rem")
 
 val Int.px: Length get() = Length(this.toDouble(), "px")
 
-val Int.rad: Angle get() = Angle(this.toDouble(), Angle.Units.RAD)
+val Int.rad: Angle get() = Angle(this.toDouble(), AngleUnits.RAD)
 
-val Int.deg: Angle get() = Angle(this.toDouble(), Angle.Units.DEG)
+val Int.deg: Angle get() = Angle(this.toDouble(), AngleUnits.DEG)
 
-val Int.turns: Angle get() = Angle(this.toDouble(), Angle.Units.TURNS)
+val Int.turns: Angle get() = Angle(this.toDouble(), AngleUnits.TURNS)
 
-val Int.grad: Angle get() = Angle(this.toDouble(), Angle.Units.GRAD)
+val Int.grad: Angle get() = Angle(this.toDouble(), AngleUnits.GRAD)
 
 fun Boolean.flag(): Int {
     return if (this) {
