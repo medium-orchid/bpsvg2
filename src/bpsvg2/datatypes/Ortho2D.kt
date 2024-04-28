@@ -2,7 +2,7 @@ package bpsvg2.datatypes
 
 import bpsvg2.SVGBuilder
 
-data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero): DataType {
+data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
 
     companion object {
         val id = Ortho2D(1.0, Angle.id)
@@ -33,7 +33,7 @@ data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.
         var id = true
         if (approx(scale, 0.0)) {
             builder.append("scale(0)")
-        } else if (!approx(scale, 1.0)){
+        } else if (!approx(scale, 1.0)) {
             builder.append("scale(").append(scale).append(")")
             id = false
         }

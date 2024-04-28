@@ -3,9 +3,9 @@ package bpsvg2.datatypes
 import bpsvg2.SVGBuilder
 import kotlin.math.*
 
-data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): DataType {
+data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : DataType {
 
-    constructor(v: Vec3): this(0.0, v.x, v.y, v.z)
+    constructor(v: Vec3) : this(0.0, v.x, v.y, v.z)
 
     companion object {
         val zero = Quat(0.0, 0.0, 0.0, 0.0)
@@ -70,7 +70,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
     }
 
     fun normSquared(): Double {
-        return r*r + i*i + j*j + k*k
+        return r * r + i * i + j * j + k * k
     }
 
     fun norm(): Double {
@@ -126,9 +126,9 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
 
     fun toMat3D(): Mat3D {
         return Mat3D(
-            r*r + i*i - j*j - k*k, 2*(i*j - r*k), 2*(i*k + r*j),
-            2*(i*j + r*k), r*r - i*i + j*j - k*k, 2*(j*k - r*i),
-            2*(i*k - r*j), 2*(j*k + r*i), r*r - i*i - j*j + k*k
+            r * r + i * i - j * j - k * k, 2 * (i * j - r * k), 2 * (i * k + r * j),
+            2 * (i * j + r * k), r * r - i * i + j * j - k * k, 2 * (j * k - r * i),
+            2 * (i * k - r * j), 2 * (j * k + r * i), r * r - i * i - j * j + k * k
         )
     }
 

@@ -10,11 +10,12 @@ import kotlin.math.*
  * ( 0 0 1 )
  * representing a 2D transformation
  */
-data class Mat2D(val a: Double, val b: Double,
-                 val c: Double, val d: Double,
-                 val x: Double, val y: Double,
-                 val unit: String? = null
-    ): DataType {
+data class Mat2D(
+    val a: Double, val b: Double,
+    val c: Double, val d: Double,
+    val x: Double, val y: Double,
+    val unit: String? = null
+) : DataType {
 
     companion object {
 
@@ -69,15 +70,19 @@ data class Mat2D(val a: Double, val b: Double,
 
     private fun vectorGuard(other: Vec2) {
         if (this.hasOffset() && unit != other.unit) {
-            throw IllegalArgumentException("Matrix has incompatible offset units" +
-                    " (${offsetUnits(this.unit)} and ${offsetUnits(other.unit)})")
+            throw IllegalArgumentException(
+                "Matrix has incompatible offset units" +
+                        " (${offsetUnits(this.unit)} and ${offsetUnits(other.unit)})"
+            )
         }
     }
 
     private fun matrixGuard(other: Mat2D) {
         if (this.hasOffset() && other.hasOffset() && this.unit != other.unit) {
-            throw IllegalArgumentException("Matrices have incompatible offset units" +
-                    " (${offsetUnits(this.unit)} and ${offsetUnits(other.unit)})")
+            throw IllegalArgumentException(
+                "Matrices have incompatible offset units" +
+                        " (${offsetUnits(this.unit)} and ${offsetUnits(other.unit)})"
+            )
         }
     }
 
@@ -118,9 +123,9 @@ data class Mat2D(val a: Double, val b: Double,
 
     fun isOrthogonal(): Boolean {
         val k = det()
-        return approx(a*a + c*c, k)
-                && approx(b*b + d*d, k)
-                && approx(a*b + c*d, 0.0)
+        return approx(a * a + c * c, k)
+                && approx(b * b + d * d, k)
+                && approx(a * b + c * d, 0.0)
     }
 
     fun toOrtho(): Ortho2D {
@@ -129,7 +134,7 @@ data class Mat2D(val a: Double, val b: Double,
             val r = Angle.atan2(b, a)
             return Ortho2D(k, r, Vec2(x, y))
         } else {
-            throw  IllegalArgumentException("Matrix is not orthogonal")
+            throw IllegalArgumentException("Matrix is not orthogonal")
         }
     }
 

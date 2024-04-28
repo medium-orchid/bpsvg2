@@ -2,7 +2,7 @@ package bpsvg2.datatypes
 
 import bpsvg2.SVGBuilder
 
-data class Length(val l: Double, val unit: String? = null): DataType {
+data class Length(val l: Double, val unit: String? = null) : DataType {
 
     init {
         if (unit == "") throw IllegalArgumentException("Unitless lengths should have null unit")

@@ -4,7 +4,7 @@ import bpsvg2.SVGBuilder
 import kotlin.math.*
 import kotlin.random.Random
 
-data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): DataType {
+data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : DataType {
 
     companion object {
         val id = Angle(0.0)

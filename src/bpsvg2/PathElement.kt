@@ -5,11 +5,11 @@ import bpsvg2.datatypes.flag
 
 typealias PathOperation = PathElement.() -> Unit
 
-class PathElement(root: SVG? = null): SVGElement("path", root) {
+class PathElement(root: SVG? = null) : SVGElement("path", root) {
 
     class Name(private val parent: SVGElement) {
         operator fun invoke(vararg attributes: Pair<String, Any>, operation: PathOperation? = null): PathElement {
-            val element = PathElement() (*attributes, operation = operation)
+            val element = PathElement()(*attributes, operation = operation)
             parent.addChild(element)
             return element
         }

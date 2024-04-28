@@ -2,17 +2,17 @@ package bpsvg2.datatypes
 
 import bpsvg2.SVGBuilder
 
-data class Rect(val topLeft: Vec2, val width: Length, val height: Length): DataType {
+data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : DataType {
 
-    constructor(width: Length, height: Length): this(Vec2.zero.u(width.unit), width, height)
+    constructor(width: Length, height: Length) : this(Vec2.zero.u(width.unit), width, height)
 
-    constructor(topLeft: Vec2, width: Double, height: Double): this(topLeft, width.length, height.length)
+    constructor(topLeft: Vec2, width: Double, height: Double) : this(topLeft, width.length, height.length)
 
-    constructor(width: Double, height: Double): this(Vec2.zero, width, height)
+    constructor(width: Double, height: Double) : this(Vec2.zero, width, height)
 
-    constructor(topLeft: Vec2, width: Int, height: Int): this(topLeft, width.length, height.length)
+    constructor(topLeft: Vec2, width: Int, height: Int) : this(topLeft, width.length, height.length)
 
-    constructor(width: Int, height: Int): this(Vec2.zero, width, height)
+    constructor(width: Int, height: Int) : this(Vec2.zero, width, height)
 
     init {
         if (topLeft.unit != width.unit || width.unit != height.unit)
@@ -53,7 +53,8 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length): DataT
         return topLeft + Vec2(width * vec.x / 100.0, height * vec.y / 100.0)
     }
 
-    val centered: Pair<String, Vec2> get() {
-        return "*" to point(Vec2.center)
-    }
+    val centered: Pair<String, Vec2>
+        get() {
+            return "*" to point(Vec2.center)
+        }
 }

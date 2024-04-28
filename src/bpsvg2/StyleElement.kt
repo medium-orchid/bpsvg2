@@ -2,11 +2,11 @@ package bpsvg2
 
 typealias StyleOperation = StyleElement.() -> Unit
 
-class StyleElement(root: SVG? = null): SVGElement("style", root) {
+class StyleElement(root: SVG? = null) : SVGElement("style", root) {
 
     class Name(private val parent: SVGElement) {
         operator fun invoke(vararg attributes: Pair<String, Any>, operation: StyleOperation? = null): StyleElement {
-            val element = StyleElement() (*attributes, operation = operation)
+            val element = StyleElement()(*attributes, operation = operation)
             parent.addChild(element)
             return element
         }
