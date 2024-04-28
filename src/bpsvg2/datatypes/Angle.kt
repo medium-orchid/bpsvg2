@@ -6,9 +6,19 @@ import kotlin.math.*
 data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): DataType {
 
     companion object {
+        val id = Angle(0.0)
+
         fun atan2(y: Double, x: Double): Angle {
             return Angle(kotlin.math.atan2(y, x))
         }
+    }
+
+    fun approximatelyEquals(other: Angle): Boolean {
+        return approx(sin(), other.sin()) && approx(cos(), other.cos())
+    }
+
+    operator fun plus(other: Angle): Angle {
+        return Angle(value + other.toValue(unit), unit)
     }
 
     fun mod(): Angle {
@@ -21,6 +31,14 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): Data
 
     fun to(conversion: AngleUnits): Angle {
         return Angle(toValue(conversion), conversion)
+    }
+
+    fun toMat2D(): Mat2D {
+        return Mat2D.rotate(this)
+    }
+
+    fun toOrtho(): Ortho2D {
+        return Ortho2D(1.0, this, Vec2.zero)
     }
 
     fun sin(): Double {

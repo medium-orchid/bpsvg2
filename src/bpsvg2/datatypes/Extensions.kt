@@ -65,6 +65,22 @@ operator fun Int.plus(other: Quat): Quat {
     return other + this.toDouble()
 }
 
+operator fun Double.times(other: Ortho2D): Ortho2D {
+    return other * this
+}
+
+operator fun Int.times(other: Ortho2D): Ortho2D {
+    return other * this.toDouble()
+}
+
+operator fun Double.times(other: Ortho3D): Ortho3D {
+    return other * this
+}
+
+operator fun Int.times(other: Ortho3D): Ortho3D {
+    return other * this.toDouble()
+}
+
 infix fun Double.u(unit: String): Length {
     return Length(this, unit)
 }
@@ -87,6 +103,10 @@ val Double.turns: Angle get() = Angle(this, AngleUnits.TURNS)
 
 val Double.grad: Angle get() = Angle(this, AngleUnits.GRAD)
 
+val Double.ortho2D: Ortho2D get() = Ortho2D(this, Angle.id, Vec2.zero)
+
+val Double.ortho3D: Ortho3D get() = Ortho3D(this, Quat.unitR, Vec3.zero)
+
 val Int.length: Length get() = Length(this.toDouble())
 
 val Int.percent: Length get() = Length(this.toDouble(), "%")
@@ -104,6 +124,10 @@ val Int.deg: Angle get() = Angle(this.toDouble(), AngleUnits.DEG)
 val Int.turns: Angle get() = Angle(this.toDouble(), AngleUnits.TURNS)
 
 val Int.grad: Angle get() = Angle(this.toDouble(), AngleUnits.GRAD)
+
+val Int.ortho2D: Ortho2D get() = Ortho2D(this.toDouble(), Angle.id, Vec2.zero)
+
+val Int.ortho3D: Ortho3D get() = Ortho3D(this.toDouble(), Quat.unitR, Vec3.zero)
 
 fun Boolean.flag(): Int {
     return if (this) {

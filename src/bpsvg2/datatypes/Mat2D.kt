@@ -123,40 +123,22 @@ data class Mat2D(val a: Double, val b: Double,
                 && approx(a*b + c*d, 0.0)
     }
 
+    fun toOrtho(): Ortho2D {
+        if (isOrthogonal()) {
+            val k = det()
+            val r = Angle.atan2(b, a)
+            return Ortho2D(k, r, Vec2(x, y))
+        } else {
+            throw  IllegalArgumentException("Matrix is not orthogonal")
+        }
+    }
+
     override fun toString(): String {
         return "Mat2D($a $c $x)($b $d $y)"
     }
 
     override fun put(builder: SVGBuilder) {
-        if (isOrthogonal()) {
-            val k = det()
-            val r = Angle.atan2(b, a)
-            var hasOut = false
-            if (!approx(x*x + y*y, 0.0)) {
-                builder.append("translate(")
-                builder.withComma(x)
-                builder.append(y)
-                builder.append(")")
-                hasOut = true
-            }
-            if (!approx(k, 1.0)) {
-                if (hasOut) builder.append(" ")
-                builder.append("scale(")
-                builder.append(sqrt(k))
-                builder.append(")")
-                hasOut = true
-            }
-            if (!approx(r.toValue(AngleUnits.RAD), 0.0)) {
-                if (hasOut) builder.append(" ")
-                builder.append("rotate(")
-                builder.append(r)
-                builder.append(")")
-            }
-        } else {
-            builder.append("matrix(")
-                .join(a, b, c, d, x, y)
-                .append(")")
-        }
+        builder.append("matrix(").join(a, b, c, d, x, y).append(")")
     }
 
     fun inverse(): Mat2D {
