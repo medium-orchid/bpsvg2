@@ -35,7 +35,7 @@ class StyleElement(root: SVG? = null): SVGElement("style", root) {
         if (!children().hasNext()) {
             svg.append(" />")
         } else {
-            svg.cssMode = true
+            svg.enterCSS()
             svg.append(">")
             svg.indent()
             svg.newline().beginCData()
@@ -52,7 +52,7 @@ class StyleElement(root: SVG? = null): SVGElement("style", root) {
             svg.unindent()
             svg.newline().endCData()
             svg.unindent()
-            svg.cssMode = false
+            svg.exitCSS()
             svg.newline().append("</$tag>")
         }
     }

@@ -1,7 +1,6 @@
 package bpsvg2
 
-import bpsvg2.datatypes.Mat2D
-import bpsvg2.datatypes.Vec2
+import bpsvg2.datatypes.*
 
 typealias ElementOperation = SVGElement.() -> Unit
 
@@ -119,10 +118,18 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         addChild(element)
     }
 
-    fun addAttribute(attribute: Pair<String, Any>, first: Boolean = false) {
+    fun addAttribute(attribute: Pair<String, Any>, first: Boolean = false, forceAdd: Boolean = false) {
         val f = attribute.first
         val s = attribute.second
-        if (s is Mat2D && s.approximatelyEquals(Mat2D.id)) return
+        if (!forceAdd) {
+            when (s) {
+                is Mat2D -> if (s.approximatelyEquals(Mat2D.id)) return
+                is Mat3D -> if (s.approximatelyEquals(Mat3D.id)) return
+                is Quat -> if (s.approximatelyEquals(Quat.id)) return
+                is Ortho2D -> if (s.approximatelyEquals(Ortho2D.id)) return
+                is Ortho3D -> if (s.approximatelyEquals(Ortho3D.id)) return
+            }
+        }
         if (f.startsWith("*")) {
             val suffix = f.substring(1)
             if (s is Vec2) {
@@ -173,7 +180,9 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
     fun buildInitial(svg: SVGBuilder) {
         svg.newline().append("<$tag")
         for (i in attributes) {
+            if (i.first == "style") svg.enterCSS()
             svg.append(" ${i.first}=\"").append(i.second).append("\"")
+            if (i.first == "style") svg.exitCSS()
         }
     }
 

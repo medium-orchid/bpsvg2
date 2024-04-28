@@ -67,11 +67,7 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): Data
     }
 
     override fun put(builder: SVGBuilder) {
-        builder.append(toValue(AngleUnits.DEG))
-    }
-
-    override fun put(builder: SVGBuilder, cssMode: Boolean) {
-        if (cssMode) {
+        if (builder.cssMode) {
             val r = toValue(AngleUnits.RAD)
             val d = toValue(AngleUnits.DEG)
             val t = toValue(AngleUnits.TURNS)
@@ -88,7 +84,7 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): Data
                 lr -> builder.append(r).append(AngleUnits.RAD.str)
             }
         } else {
-            put(builder)
+            builder.append(toValue(AngleUnits.DEG))
         }
     }
 }

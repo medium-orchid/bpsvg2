@@ -4,6 +4,16 @@ import bpsvg2.SVGBuilder
 
 data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero): DataType {
 
+    companion object {
+        val id = Ortho2D(1.0, Angle.id)
+    }
+
+    fun approximatelyEquals(other: Ortho2D): Boolean {
+        return approx(scale, other.scale)
+                && angle.approximatelyEquals(other.angle)
+                && offset.approximatelyEquals(other.offset)
+    }
+
     operator fun times(other: Ortho2D): Ortho2D {
         // k't'(kt + x) + x'
         // k't'kt + k't'x + x'

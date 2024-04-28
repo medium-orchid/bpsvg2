@@ -20,6 +20,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
             val w = v.normalized()
             return Quat(r.cos(), s * w.x, s * w.y, s * w.z)
         }
+
+        fun random(): Quat {
+            return Quat(randomNormal(), randomNormal(), randomNormal(), randomNormal()).normalized()
+        }
     }
 
     fun approximatelyEquals(other: Quat): Boolean {

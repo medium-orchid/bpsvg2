@@ -24,7 +24,7 @@ fun main() {
         style {
             for (i in 0..<n) {
                 select(".circle$i",
-                    "transform" to Vec3.randomUnit().axisAngle(Angle.random())
+                    "transform" to Quat.random()
                 )
             }
         }

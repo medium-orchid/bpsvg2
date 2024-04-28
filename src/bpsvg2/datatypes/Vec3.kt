@@ -97,7 +97,6 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
     }
 
     override fun put(builder: SVGBuilder) {
-        print(this)
         builder.append(x)
         builder.withComma(unit ?: "")
         builder.append(y)

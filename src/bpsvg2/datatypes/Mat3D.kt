@@ -95,6 +95,7 @@ print("return Mat3D(\n" + ",\n".join([term(i, j) for i in range(4) for j in rang
     }
 
     override fun put(builder: SVGBuilder) {
+        builder.cssOnly("Mat3D")
         builder.append("matrix3d(")
             .join(a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3, a4, b4, c4, d4)
             .append(")")

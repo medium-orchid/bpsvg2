@@ -11,10 +11,16 @@ class SVGBuilder {
         set(value) {
             formatter = DecimalFormat(value)
         }
-    var cssMode = false
+    private var cssLevel = 0
     private var formatter = DecimalFormat(decimalPattern)
     private val builder = StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
     private var indentLevel = 0
+
+    val cssMode: Boolean get() = cssLevel > 0
+
+    fun cssOnly(name: String) {
+        if (!cssMode) throw IllegalStateException("Cannot put $name outside of CSS")
+    }
 
     private fun putFormatted(x: Double): SVGBuilder {
         builder.append(formatter.format(x))
@@ -41,10 +47,18 @@ class SVGBuilder {
         return this
     }
 
+    fun enterCSS() {
+        cssLevel++
+    }
+
+    fun exitCSS() {
+        cssLevel--
+    }
+
     fun append(value: Any): SVGBuilder {
         val dt = value as? DataType
         if (dt != null) {
-            value.put(this, cssMode)
+            value.put(this)
             return this
         }
         when (value) {
