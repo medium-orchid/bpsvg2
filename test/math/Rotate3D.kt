@@ -1,6 +1,7 @@
 package math
 
 import bpsvg2.datatypes.*
+import kotlin.math.*
 
 fun main() {
     // Rodrigues' formula equivalence
@@ -17,5 +18,19 @@ fun main() {
         val q = randomUnitQuaternion()
         val v = randomUnitVec3()
         assert((q * v).approximatelyEquals(q.toMat3D() * v))
+    }
+    // Polar form
+    for (i in 0..<100) {
+        val q = randomUnitQuaternion()
+        val (t, n) = q.polar()
+        val p = cos(t) + n * sin(t)
+        assert(q.approximatelyEquals(p))
+        val e = (t * n).exp()
+        assert(q.approximatelyEquals(e))
+    }
+    // Powers
+    for (i in 0..<100) {
+        val q = randomUnitQuaternion()
+        assert((q*q*q).approximatelyEquals(q.pow(3)))
     }
 }

@@ -83,12 +83,12 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
 
     fun polar(): Pair<Double, Quat> {
         // q = ||q|| (cos φ + n sin φ)
-        // q / ||q|| = cos φ + n sin φ
-        // => cos φ = real(q / ||q||)
-        // => n sin φ = vec(q / ||q||)
-        //   => n_p sin φ = (q / ||q||)_p
-        //     => sin φ = (q / ||q||)_p / n_p
-        val t = normalized()
+        // q^ = cos φ + n sin φ
+        // => cos φ = real(q^)
+        // => n sin φ = vec(q^)
+        //   => n_p sin φ = q^_p
+        //     => sin φ = q^_p / n_p
+        val t = normalized() // = q^
         val u = imag()
         val uNorm = u.norm()
         if (uNorm == 0.0) {
@@ -96,8 +96,8 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
         }
         val n = u / uNorm
         val c = t.r
-        for (i in 0..<4) {
-            if (this[i] != 0.0) {
+        for (i in 1..<4) {
+            if (n[i] != 0.0) {
                 val s = t[i] / n[i]
                 return atan2(s, c) to n
             }
@@ -112,8 +112,8 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
     }
 
     fun ln(): Quat {
-        val v = imag()
-        return ln(norm()) + imag().normalized() * acos(r / v.norm())
+        val n = norm()
+        return ln(n) + imag().normalized() * acos(r / n)
     }
 
     fun geodesicDistance(other: Quat): Double {
@@ -141,7 +141,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
     }
 
     fun dot(other: Quat): Double {
-        return i * other.i + j * other.j + k * other.k
+        return r * other.r + i * other.i + j * other.j + k * other.k
     }
 
     fun cross(other: Quat): Quat {
@@ -153,6 +153,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
         if (r == 0.0) return zero
         val (phi, n) = polar()
         return r.pow(x) * (cos(x * phi) + n * sin(x * phi))
+    }
+
+    fun pow(n: Int): Quat {
+        return pow(n.toDouble())
     }
 
     override fun put(builder: SVGBuilder) {
