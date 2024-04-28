@@ -13,6 +13,10 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         return Ortho3D(scale * other, quat, scale * offset)
     }
 
+    operator fun plus(other: Vec3): Ortho3D {
+        return Ortho3D(scale, quat, offset + other)
+    }
+
     override fun put(builder: SVGBuilder) {
         var id = true
         if (approx(scale, 0.0)) {
@@ -21,7 +25,7 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
             builder.append("scale(").append(scale).append(")")
             id = false
         }
-        if (!quat.approximatelyEquals(Quat.unitR)) {
+        if (!quat.approximatelyEquals(Quat.id)) {
             if (!id) builder.append(" ")
             builder.append(quat)
             id = false

@@ -15,6 +15,13 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
 
     companion object {
         val zero = Vec3(0, 0, 0)
+        val X = Vec3(1, 0, 0)
+        val Y = Vec3(0, 1, 0)
+        val Z = Vec3(0, 0, 1)
+
+        fun randomUnit(): Vec3 {
+            return Vec3(randomNormal(), randomNormal(), randomNormal()).normalized()
+        }
     }
 
     init {
@@ -78,10 +85,19 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
     }
 
     override fun toString(): String {
-        return "Vec3($x, $y, $z)$unit"
+        return "Vec3($x, $y, $z)${unit ?: ""}"
+    }
+
+    fun toOrtho(): Ortho3D {
+        return Ortho3D(1.0, Quat.id, this)
+    }
+
+    fun axisAngle(angle: Angle): Ortho3D {
+        return Ortho3D(1.0, Quat.fromAxisAngle(this, angle), zero)
     }
 
     override fun put(builder: SVGBuilder) {
+        print(this)
         builder.append(x)
         builder.withComma(unit ?: "")
         builder.append(y)

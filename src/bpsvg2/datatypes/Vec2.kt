@@ -84,6 +84,10 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
     }
 
     override fun toString(): String {
-        return "Vec2($x, $y)$unit"
+        return "Vec2($x, $y)${unit ?: ""}"
+    }
+
+    fun toOrtho(): Ortho2D {
+        return Ortho2D(1.0, Angle.id, this)
     }
 }

@@ -2,6 +2,7 @@ package bpsvg2.datatypes
 
 import bpsvg2.SVGBuilder
 import kotlin.math.*
+import kotlin.random.Random
 
 data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): DataType {
 
@@ -10,6 +11,10 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD): Data
 
         fun atan2(y: Double, x: Double): Angle {
             return Angle(kotlin.math.atan2(y, x))
+        }
+
+        fun random(): Angle {
+            return Angle(Random.nextDouble(), AngleUnits.TURNS)
         }
     }
 

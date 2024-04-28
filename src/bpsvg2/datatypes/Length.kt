@@ -8,6 +8,10 @@ data class Length(val l: Double, val unit: String? = null): DataType {
         if (unit == "") throw IllegalArgumentException("Unitless lengths should have null unit")
     }
 
+    operator fun unaryMinus(): Length {
+        return Length(-l, unit)
+    }
+
     override fun put(builder: SVGBuilder) {
         builder.append(l)
         builder.append(unit ?: "")
@@ -36,6 +40,6 @@ data class Length(val l: Double, val unit: String? = null): DataType {
     }
 
     override fun toString(): String {
-        return "$l$unit"
+        return "$l${unit ?: ""}"
     }
 }

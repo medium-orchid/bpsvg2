@@ -9,10 +9,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double): Dat
 
     companion object {
         val zero = Quat(0.0, 0.0, 0.0, 0.0)
-        val unitR = Quat(1.0, 0.0, 0.0, 0.0)
-        val unitI = Quat(0.0, 1.0, 0.0, 0.0)
-        val unitJ = Quat(0.0, 0.0, 1.0, 0.0)
-        val unitK = Quat(0.0, 0.0, 0.0, 1.0)
+        val id = Quat(1.0, 0.0, 0.0, 0.0)
+        val I = Quat(0.0, 1.0, 0.0, 0.0)
+        val J = Quat(0.0, 0.0, 1.0, 0.0)
+        val K = Quat(0.0, 0.0, 0.0, 1.0)
 
         fun fromAxisAngle(v: Vec3, angle: Angle): Quat {
             val r = angle / 2

@@ -62,8 +62,8 @@ class SVGBuilder {
 
     fun join(vararg values: Any): SVGBuilder {
         for (i in 0 ..< values.lastIndex) {
-            append(i)
-            builder.append(',')
+            append(values[i])
+            builder.append(", ")
         }
         append(values.last())
         return this

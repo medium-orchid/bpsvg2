@@ -1,12 +1,17 @@
 package bpsvg2.datatypes
 
-import kotlin.math.abs
+import kotlin.math.*
+import kotlin.random.Random
 
 fun approx(a: Double, b: Double): Boolean {
     return abs(a - b) < EPS
 }
 
 const val EPS: Double = 1E-6
+
+fun randomNormal(): Double {
+    return sqrt(-2 * ln(Random.nextDouble())) * cos(2 * PI * Random.nextDouble())
+}
 
 operator fun Double.times(other: Mat2D): Mat2D {
     return Mat2D(
@@ -105,7 +110,7 @@ val Double.grad: Angle get() = Angle(this, AngleUnits.GRAD)
 
 val Double.ortho2D: Ortho2D get() = Ortho2D(this, Angle.id, Vec2.zero)
 
-val Double.ortho3D: Ortho3D get() = Ortho3D(this, Quat.unitR, Vec3.zero)
+val Double.ortho3D: Ortho3D get() = Ortho3D(this, Quat.id, Vec3.zero)
 
 val Int.length: Length get() = Length(this.toDouble())
 
@@ -127,7 +132,7 @@ val Int.grad: Angle get() = Angle(this.toDouble(), AngleUnits.GRAD)
 
 val Int.ortho2D: Ortho2D get() = Ortho2D(this.toDouble(), Angle.id, Vec2.zero)
 
-val Int.ortho3D: Ortho3D get() = Ortho3D(this.toDouble(), Quat.unitR, Vec3.zero)
+val Int.ortho3D: Ortho3D get() = Ortho3D(this.toDouble(), Quat.id, Vec3.zero)
 
 fun Boolean.flag(): Int {
     return if (this) {
