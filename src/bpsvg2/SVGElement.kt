@@ -78,9 +78,15 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
     val use: NameSVGElement get() = NameSVGElement(this, "use")
     val view: NameSVGElement get() = NameSVGElement(this, "view")
 
-    fun attributeStyle(operation: StyleOperation): Attribute {
+    fun attributeStyle(vararg attributes: Attribute, operation: StyleOperation? = null): Attribute {
         val styleElement = StyleElement()
-        styleElement.operation()
+        if (operation != null) styleElement.operation()
+        if (attributes.isNotEmpty()) {
+            val select: StyleOperation = {
+                select(StyleElement.NO_CLASS, *attributes)
+            }
+            styleElement.select()
+        }
         val outputBuilder = OutputBuilder("", " ")
         styleElement.build(outputBuilder)
         val out = outputBuilder.toString()
@@ -92,6 +98,10 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
 
     fun get(name: String): String {
         return "var(--$name)"
+    }
+
+    fun set(name: String): String {
+        return "--$name"
     }
 
     fun attributes(): Iterator<Attribute> {

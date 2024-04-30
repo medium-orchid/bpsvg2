@@ -23,15 +23,8 @@ fun main() {
                 stop("offset" to 80.percent, "stop-color" to color2)
             }
         )
-        style {
-            for (i in 0..<n) {
-                select(".circle$i",
-                    "transform" to Quat.random()
-                )
-            }
-        }
         for (i in 0..<n) {
-            use(href(circleID), "class" to "circle$i")
+            use(href(circleID), attributeStyle("transform" to Quat.random()))
         }
     }.to("out/circle_smash.svg")
 }

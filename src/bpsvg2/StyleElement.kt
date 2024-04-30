@@ -4,6 +4,10 @@ typealias StyleOperation = StyleElement.() -> Unit
 
 class StyleElement(root: SVG? = null) : SVGElement("style", root) {
 
+    companion object {
+        const val NO_CLASS = "``"
+    }
+
     class Name(private val parent: SVGElement) {
         operator fun invoke(vararg attributes: Attribute, operation: StyleOperation? = null): StyleElement {
             val element = StyleElement()(*attributes, operation = operation)
@@ -20,10 +24,6 @@ class StyleElement(root: SVG? = null) : SVGElement("style", root) {
             this.operation()
         }
         return this
-    }
-
-    fun set(name: String): String {
-        return "--$name"
     }
 
     fun select(tag: String, vararg attributes: Attribute) {
@@ -43,13 +43,17 @@ class StyleElement(root: SVG? = null) : SVGElement("style", root) {
                 svg.indent()
             }
             for (i in children()) {
-                svg.newline().append("${i.tag} {")
-                svg.indent()
+                if (i.tag != NO_CLASS) {
+                    svg.newline().append("${i.tag} {")
+                    svg.indent()
+                }
                 for (j in i.attributes()) {
                     svg.newline().append("${j.first}: ").append(j.second).append(';')
                 }
-                svg.unindent()
-                svg.newline().append("}")
+                if (i.tag != NO_CLASS) {
+                    svg.unindent()
+                    svg.newline().append("}")
+                }
             }
             if (root != null) {
                 svg.exitCSS()
