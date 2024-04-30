@@ -1,6 +1,7 @@
-package bpsvg2.datatypes
+package bpsvg2.datatypes.math3d
 
-import bpsvg2.SVGBuilder
+import bpsvg2.OutputBuilder
+import bpsvg2.datatypes.*
 import kotlin.math.*
 
 data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : DataType {
@@ -163,7 +164,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         return pow(n.toDouble())
     }
 
-    override fun put(builder: SVGBuilder) {
+    override fun put(builder: OutputBuilder) {
         val w = vectorPart()
         val n = w.norm()
         val t = 2 * Angle.atan2(n, r)

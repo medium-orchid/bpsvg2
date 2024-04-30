@@ -1,6 +1,6 @@
 package bpsvg2
 
-import bpsvg2.datatypes.Vec2
+import bpsvg2.datatypes.math2d.Vec2
 import bpsvg2.datatypes.flag
 
 typealias PathOperation = PathElement.() -> Unit
@@ -8,14 +8,14 @@ typealias PathOperation = PathElement.() -> Unit
 class PathElement(root: SVG? = null) : SVGElement("path", root) {
 
     class Name(private val parent: SVGElement) {
-        operator fun invoke(vararg attributes: Pair<String, Any>, operation: PathOperation? = null): PathElement {
+        operator fun invoke(vararg attributes: Attribute, operation: PathOperation? = null): PathElement {
             val element = PathElement()(*attributes, operation = operation)
             parent.addChild(element)
             return element
         }
     }
 
-    operator fun invoke(vararg attributes: Pair<String, Any>, operation: PathOperation? = null): PathElement {
+    operator fun invoke(vararg attributes: Attribute, operation: PathOperation? = null): PathElement {
         for (i in attributes) {
             addAttribute(i)
         }
@@ -103,7 +103,7 @@ class PathElement(root: SVG? = null) : SVGElement("path", root) {
         d.add("z" to listOf())
     }
 
-    override fun build(svg: SVGBuilder) {
+    override fun build(svg: OutputBuilder) {
         buildInitial(svg)
         svg.append(" d=\"")
         if (svg.indentPath) svg.indent()

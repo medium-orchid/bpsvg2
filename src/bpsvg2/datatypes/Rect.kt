@@ -1,6 +1,7 @@
 package bpsvg2.datatypes
 
-import bpsvg2.SVGBuilder
+import bpsvg2.OutputBuilder
+import bpsvg2.datatypes.math2d.Vec2
 
 data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : DataType {
 
@@ -36,7 +37,7 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : Data
         }
     }
 
-    override fun put(builder: SVGBuilder) {
+    override fun put(builder: OutputBuilder) {
         topLeft.put(builder)
         builder.append(',')
         width.put(builder)

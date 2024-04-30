@@ -1,6 +1,7 @@
 package bpsvg2.datatypes
 
-import bpsvg2.SVGBuilder
+import bpsvg2.OutputBuilder
+import bpsvg2.datatypes.math2d.*
 import kotlin.math.*
 import kotlin.random.Random
 
@@ -66,7 +67,7 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
         return Angle(value / other.toDouble(), unit)
     }
 
-    override fun put(builder: SVGBuilder) {
+    override fun put(builder: OutputBuilder) {
         if (builder.cssMode) {
             val r = toValue(AngleUnits.RAD)
             val d = toValue(AngleUnits.DEG)

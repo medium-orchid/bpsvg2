@@ -1,6 +1,6 @@
 package bpsvg2.datatypes
 
-import bpsvg2.SVGBuilder
+import bpsvg2.OutputBuilder
 
 data class Length(val l: Double, val unit: String? = null) : DataType {
 
@@ -12,7 +12,7 @@ data class Length(val l: Double, val unit: String? = null) : DataType {
         return Length(-l, unit)
     }
 
-    override fun put(builder: SVGBuilder) {
+    override fun put(builder: OutputBuilder) {
         builder.append(l)
         builder.append(unit ?: "")
     }

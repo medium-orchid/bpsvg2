@@ -13,15 +13,6 @@ fun randomNormal(): Double {
     return sqrt(-2 * ln(Random.nextDouble())) * cos(2 * PI * Random.nextDouble())
 }
 
-operator fun Double.times(other: Mat2D): Mat2D {
-    return Mat2D(
-        this * other.a, this * other.b,
-        this * other.c, this * other.d,
-        this * other.x, this * other.y,
-        other.unit,
-    )
-}
-
 operator fun Double.times(other: Length): Length {
     return other * this
 }
@@ -30,59 +21,11 @@ operator fun Int.times(other: Length): Length {
     return other * this.toDouble()
 }
 
-operator fun Double.times(other: Vec2): Vec2 {
-    return other * this
-}
-
-operator fun Int.times(other: Vec2): Vec2 {
-    return other * this.toDouble()
-}
-
-operator fun Double.times(other: Vec3): Vec3 {
-    return other * this
-}
-
-operator fun Int.times(other: Vec3): Vec3 {
-    return other * this.toDouble()
-}
-
-operator fun Double.times(other: Quat): Quat {
-    return other * this
-}
-
-operator fun Int.times(other: Quat): Quat {
-    return other * this.toDouble()
-}
-
 operator fun Double.times(other: Angle): Angle {
     return other * this
 }
 
 operator fun Int.times(other: Angle): Angle {
-    return other * this.toDouble()
-}
-
-operator fun Double.plus(other: Quat): Quat {
-    return other + this
-}
-
-operator fun Int.plus(other: Quat): Quat {
-    return other + this.toDouble()
-}
-
-operator fun Double.times(other: Ortho2D): Ortho2D {
-    return other * this
-}
-
-operator fun Int.times(other: Ortho2D): Ortho2D {
-    return other * this.toDouble()
-}
-
-operator fun Double.times(other: Ortho3D): Ortho3D {
-    return other * this
-}
-
-operator fun Int.times(other: Ortho3D): Ortho3D {
     return other * this.toDouble()
 }
 
@@ -108,10 +51,6 @@ val Double.turns: Angle get() = Angle(this, AngleUnits.TURNS)
 
 val Double.grad: Angle get() = Angle(this, AngleUnits.GRAD)
 
-val Double.ortho2D: Ortho2D get() = Ortho2D(this, Angle.id, Vec2.zero)
-
-val Double.ortho3D: Ortho3D get() = Ortho3D(this, Quat.id, Vec3.zero)
-
 val Int.length: Length get() = Length(this.toDouble())
 
 val Int.percent: Length get() = Length(this.toDouble(), "%")
@@ -129,10 +68,6 @@ val Int.deg: Angle get() = Angle(this.toDouble(), AngleUnits.DEG)
 val Int.turns: Angle get() = Angle(this.toDouble(), AngleUnits.TURNS)
 
 val Int.grad: Angle get() = Angle(this.toDouble(), AngleUnits.GRAD)
-
-val Int.ortho2D: Ortho2D get() = Ortho2D(this.toDouble(), Angle.id, Vec2.zero)
-
-val Int.ortho3D: Ortho3D get() = Ortho3D(this.toDouble(), Quat.id, Vec3.zero)
 
 fun Boolean.flag(): Int {
     return if (this) {

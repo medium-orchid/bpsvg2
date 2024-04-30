@@ -2,6 +2,7 @@ package images
 
 import bpsvg2.SVG
 import bpsvg2.datatypes.*
+import bpsvg2.datatypes.math2d.*
 
 fun main() {
     SVG(
@@ -112,7 +113,8 @@ fun main() {
             )
             use("id" to "outer-petals", href("petals"))
             use("id" to "inner-petals", href("petals"),
-                "transform" to Ortho2D(1.0/3, 9.deg))
+                "transform" to Ortho2D(1.0/3, 9.deg)
+            )
         }
     }.to("out/petals.svg")
 }

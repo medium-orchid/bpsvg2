@@ -1,6 +1,6 @@
 package math
 
-import bpsvg2.datatypes.*
+import bpsvg2.datatypes.math3d.*
 import kotlin.math.*
 
 fun main() {

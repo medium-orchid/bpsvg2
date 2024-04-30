@@ -1,8 +1,14 @@
 package bpsvg2
 
-import bpsvg2.datatypes.*
+import bpsvg2.datatypes.math2d.Mat2D
+import bpsvg2.datatypes.math2d.Ortho2D
+import bpsvg2.datatypes.math2d.Vec2
+import bpsvg2.datatypes.math3d.Mat3D
+import bpsvg2.datatypes.math3d.Ortho3D
+import bpsvg2.datatypes.math3d.Quat
 
 typealias ElementOperation = SVGElement.() -> Unit
+typealias Attribute = Pair<String, Any>
 
 open class SVGElement(val tag: String, var root: SVG? = null) {
 
@@ -76,14 +82,23 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
     val use: NameSVGElement get() = NameSVGElement(this, "use")
     val view: NameSVGElement get() = NameSVGElement(this, "view")
 
-    private val attributes = arrayListOf<Pair<String, Any>>()
+    fun attributeStyle(operation: StyleOperation): Attribute {
+        val styleElement = StyleElement()
+        styleElement.operation()
+        val outputBuilder = OutputBuilder("", " ")
+        styleElement.build(outputBuilder)
+        val out = outputBuilder.toString()
+        return "style" to out.substring(1, out.length)
+    }
+
+    private val attributes = arrayListOf<Attribute>()
     private val children = arrayListOf<SVGElement>()
 
     fun get(name: String): String {
         return "var(--$name)"
     }
 
-    fun attributes(): Iterator<Pair<String, Any>> {
+    fun attributes(): Iterator<Attribute> {
         return attributes.iterator()
     }
 
@@ -91,7 +106,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         return children.iterator()
     }
 
-    operator fun invoke(vararg attributes: Pair<String, Any>, operation: ElementOperation? = null): SVGElement {
+    operator fun invoke(vararg attributes: Attribute, operation: ElementOperation? = null): SVGElement {
         for (i in attributes) {
             addAttribute(i)
         }
@@ -110,7 +125,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         root?.define(name, element)
     }
 
-    fun addByTag(tag: String, vararg attributes: Pair<String, Any>) {
+    fun addByTag(tag: String, vararg attributes: Attribute) {
         val element = SVGElement(tag)
         for (i in attributes) {
             element.addAttribute(i)
@@ -118,7 +133,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         addChild(element)
     }
 
-    fun addAttribute(attribute: Pair<String, Any>, first: Boolean = false, forceAdd: Boolean = false) {
+    fun addAttribute(attribute: Attribute, first: Boolean = false, forceAdd: Boolean = false) {
         val f = attribute.first
         val s = attribute.second
         if (!forceAdd) {
@@ -141,7 +156,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         }
     }
 
-    private fun addRawAttribute(attribute: Pair<String, Any>, first: Boolean) {
+    private fun addRawAttribute(attribute: Attribute, first: Boolean) {
         val f = attribute.first
         val s = attribute.second
         if (first) {
@@ -177,7 +192,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         return "url('#$id')"
     }
 
-    fun buildInitial(svg: SVGBuilder) {
+    fun buildInitial(svg: OutputBuilder) {
         svg.newline().append("<$tag")
         for (i in attributes) {
             if (i.first == "style") svg.enterCSS()
@@ -186,7 +201,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         }
     }
 
-    fun buildFinal(svg: SVGBuilder) {
+    fun buildFinal(svg: OutputBuilder) {
         if (children.isEmpty()) {
             svg.append(" />")
         } else {
@@ -200,7 +215,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         }
     }
 
-    open fun build(svg: SVGBuilder) {
+    open fun build(svg: OutputBuilder) {
         buildInitial(svg)
         buildFinal(svg)
     }

@@ -1,6 +1,6 @@
 package bpsvg2
 
-class CDataElement(val content: String, root: SVG? = null) : SVGElement("cdata", root) {
+class CDataElement(private val content: String, root: SVG? = null) : SVGElement("cdata", root) {
     class Name(private val parent: SVGElement) {
         operator fun invoke(content: String): CDataElement {
             val element = CDataElement(content)
@@ -9,7 +9,7 @@ class CDataElement(val content: String, root: SVG? = null) : SVGElement("cdata",
         }
     }
 
-    override fun build(svg: SVGBuilder) {
+    override fun build(svg: OutputBuilder) {
         svg.newline().beginCData()
         svg.indent()
         svg.newline().append(content)

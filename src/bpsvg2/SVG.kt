@@ -28,7 +28,8 @@ class SVG(vararg attributes: Pair<String, Any>, operation: ElementOperation? = n
     }
 
     override fun toString(): String {
-        val svg = SVGBuilder()
+        val svg = OutputBuilder()
+        svg.svgOpener()
         if (defs.isNotEmpty()) {
             val defsElement = SVGElement("defs", this)
             for (i in defs) {

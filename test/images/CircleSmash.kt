@@ -2,6 +2,8 @@ package images
 
 import bpsvg2.SVG
 import bpsvg2.datatypes.*
+import bpsvg2.datatypes.math2d.*
+import bpsvg2.datatypes.math3d.*
 
 fun main() {
     val viewBox = Rect.byCenter(Vec2.zero, 10, 10)

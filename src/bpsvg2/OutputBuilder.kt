@@ -3,26 +3,27 @@ package bpsvg2
 import bpsvg2.datatypes.DataType
 import java.text.DecimalFormat
 
-class SVGBuilder {
-    var indent = "  "
-    var indentPath = false
-    var newLines = true
+class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val indentPath: Boolean = false) {
     var decimalPattern: String = "0.##########"
         set(value) {
             formatter = DecimalFormat(value)
         }
     private var cssLevel = 0
     private var formatter = DecimalFormat(decimalPattern)
-    private val builder = StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+    private val builder = StringBuilder()
     private var indentLevel = 0
 
     val cssMode: Boolean get() = cssLevel > 0
+
+    fun svgOpener() {
+        builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+    }
 
     fun cssOnly(name: String) {
         if (!cssMode) throw IllegalStateException("Cannot put $name outside of CSS")
     }
 
-    private fun putFormatted(x: Double): SVGBuilder {
+    private fun putFormatted(x: Double): OutputBuilder {
         builder.append(formatter.format(x))
         return this
     }
@@ -31,18 +32,18 @@ class SVGBuilder {
         return formatter.format(x).length
     }
 
-    fun newline(): SVGBuilder {
-        if (newLines) builder.append("\n")
+    fun newline(): OutputBuilder {
+        builder.append(newLine)
         builder.append(indent.repeat(indentLevel))
         return this
     }
 
-    fun indent(): SVGBuilder {
+    fun indent(): OutputBuilder {
         indentLevel += 1
         return this
     }
 
-    fun unindent(): SVGBuilder {
+    fun unindent(): OutputBuilder {
         indentLevel -= 1
         return this
     }
@@ -55,7 +56,7 @@ class SVGBuilder {
         cssLevel--
     }
 
-    fun append(value: Any): SVGBuilder {
+    fun append(value: Any): OutputBuilder {
         val dt = value as? DataType
         if (dt != null) {
             value.put(this)
@@ -68,13 +69,13 @@ class SVGBuilder {
         return this
     }
 
-    fun withComma(value: Any): SVGBuilder {
+    fun withComma(value: Any): OutputBuilder {
         append(value)
         builder.append(',')
         return this
     }
 
-    fun join(vararg values: Any): SVGBuilder {
+    fun join(vararg values: Any): OutputBuilder {
         for (i in 0..<values.lastIndex) {
             append(values[i])
             builder.append(", ")
@@ -83,18 +84,18 @@ class SVGBuilder {
         return this
     }
 
-    fun withSpaceBefore(value: Any): SVGBuilder {
+    fun withSpaceBefore(value: Any): OutputBuilder {
         builder.append(' ')
         append(value)
         return this
     }
 
-    fun beginCData(): SVGBuilder {
+    fun beginCData(): OutputBuilder {
         builder.append("<![CDATA[")
         return this
     }
 
-    fun endCData(): SVGBuilder {
+    fun endCData(): OutputBuilder {
         builder.append("]]>")
         return this
     }

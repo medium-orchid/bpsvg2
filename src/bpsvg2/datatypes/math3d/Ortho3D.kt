@@ -1,6 +1,7 @@
-package bpsvg2.datatypes
+package bpsvg2.datatypes.math3d
 
-import bpsvg2.SVGBuilder
+import bpsvg2.OutputBuilder
+import bpsvg2.datatypes.*
 
 data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.zero) : DataType {
 
@@ -27,7 +28,7 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         return Ortho3D(scale, quat, offset + other)
     }
 
-    override fun put(builder: SVGBuilder) {
+    override fun put(builder: OutputBuilder) {
         builder.cssOnly("Ortho3D")
         var id = true
         if (approx(scale, 0.0)) {

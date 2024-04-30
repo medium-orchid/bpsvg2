@@ -1,6 +1,7 @@
-package bpsvg2.datatypes
+package bpsvg2.datatypes.math2d
 
-import bpsvg2.SVGBuilder
+import bpsvg2.OutputBuilder
+import bpsvg2.datatypes.*
 
 data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
 
@@ -29,7 +30,7 @@ data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.
         return Ortho2D(scale, angle, offset + other)
     }
 
-    override fun put(builder: SVGBuilder) {
+    override fun put(builder: OutputBuilder) {
         var id = true
         if (approx(scale, 0.0)) {
             builder.append("scale(0)")

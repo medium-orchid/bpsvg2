@@ -5,14 +5,14 @@ typealias StyleOperation = StyleElement.() -> Unit
 class StyleElement(root: SVG? = null) : SVGElement("style", root) {
 
     class Name(private val parent: SVGElement) {
-        operator fun invoke(vararg attributes: Pair<String, Any>, operation: StyleOperation? = null): StyleElement {
+        operator fun invoke(vararg attributes: Attribute, operation: StyleOperation? = null): StyleElement {
             val element = StyleElement()(*attributes, operation = operation)
             parent.addChild(element)
             return element
         }
     }
 
-    operator fun invoke(vararg attributes: Pair<String, Any>, operation: StyleOperation? = null): StyleElement {
+    operator fun invoke(vararg attributes: Attribute, operation: StyleOperation? = null): StyleElement {
         for (i in attributes) {
             addAttribute(i)
         }
@@ -26,20 +26,22 @@ class StyleElement(root: SVG? = null) : SVGElement("style", root) {
         return "--$name"
     }
 
-    fun select(tag: String, vararg attributes: Pair<String, Any>) {
+    fun select(tag: String, vararg attributes: Attribute) {
         addByTag(tag, *attributes)
     }
 
-    override fun build(svg: SVGBuilder) {
-        buildInitial(svg)
-        if (!children().hasNext()) {
+    override fun build(svg: OutputBuilder) {
+        if (root != null) buildInitial(svg)
+        if (!children().hasNext() && root != null) {
             svg.append(" />")
         } else {
             svg.enterCSS()
-            svg.append(">")
-            svg.indent()
-            svg.newline().beginCData()
-            svg.indent()
+            if (root != null) {
+                svg.append(">")
+                svg.indent()
+                svg.newline().beginCData()
+                svg.indent()
+            }
             for (i in children()) {
                 svg.newline().append("${i.tag} {")
                 svg.indent()
@@ -49,11 +51,13 @@ class StyleElement(root: SVG? = null) : SVGElement("style", root) {
                 svg.unindent()
                 svg.newline().append("}")
             }
-            svg.unindent()
-            svg.newline().endCData()
-            svg.unindent()
-            svg.exitCSS()
-            svg.newline().append("</$tag>")
+            if (root != null) {
+                svg.exitCSS()
+                svg.unindent()
+                svg.newline().endCData()
+                svg.unindent()
+                svg.newline().append("</$tag>")
+            }
         }
     }
 }

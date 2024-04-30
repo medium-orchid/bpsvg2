@@ -1,7 +1,7 @@
 package bpsvg2.datatypes
 
-import bpsvg2.SVGBuilder
+import bpsvg2.OutputBuilder
 
 interface DataType {
-    fun put(builder: SVGBuilder)
+    fun put(builder: OutputBuilder)
 }
