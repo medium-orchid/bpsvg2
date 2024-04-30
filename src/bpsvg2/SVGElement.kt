@@ -1,11 +1,7 @@
 package bpsvg2
 
-import bpsvg2.datatypes.math2d.Mat2D
-import bpsvg2.datatypes.math2d.Ortho2D
-import bpsvg2.datatypes.math2d.Vec2
-import bpsvg2.datatypes.math3d.Mat3D
-import bpsvg2.datatypes.math3d.Ortho3D
-import bpsvg2.datatypes.math3d.Quat
+import bpsvg2.datatypes.math2d.*
+import bpsvg2.datatypes.math3d.*
 
 typealias ElementOperation = SVGElement.() -> Unit
 typealias Attribute = Pair<String, Any>
