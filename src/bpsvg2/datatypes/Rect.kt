@@ -35,6 +35,18 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : Data
             val diagonal = Vec2(width, height) / 2.0
             return Rect(center - diagonal, width, height)
         }
+
+        fun zeroCentered(width: Length, height: Length): Rect {
+            return byCenter(Vec2.zero, width, height)
+        }
+
+        fun zeroCentered(width: Double, height: Double): Rect {
+            return byCenter(Vec2.zero, width, height)
+        }
+
+        fun zeroCentered(width: Int, height: Int): Rect {
+            return byCenter(Vec2.zero, width, height)
+        }
     }
 
     override fun put(builder: OutputBuilder) {

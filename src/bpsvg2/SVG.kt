@@ -8,6 +8,7 @@ class SVG(vararg attributes: Pair<String, Any>, operation: ElementOperation? = n
     private val defined = hashSetOf<String>()
 
     init {
+        root = this
         for (i in attributes) {
             addAttribute(i)
         }
@@ -15,7 +16,6 @@ class SVG(vararg attributes: Pair<String, Any>, operation: ElementOperation? = n
         if (operation != null) {
             this.operation()
         }
-        root = this
     }
 
     override fun define(name: String, element: SVGElement) {
@@ -32,10 +32,10 @@ class SVG(vararg attributes: Pair<String, Any>, operation: ElementOperation? = n
         svg.svgOpener()
         if (defs.isNotEmpty()) {
             val defsElement = SVGElement("defs", this)
+            addFirstChild(defsElement)
             for (i in defs) {
                 defsElement.addChild(i)
             }
-            addFirstChild(defsElement)
         }
         build(svg)
         return svg.toString()

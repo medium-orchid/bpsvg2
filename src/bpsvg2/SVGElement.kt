@@ -1,5 +1,6 @@
 package bpsvg2
 
+import bpsvg2.datatypes.*
 import bpsvg2.datatypes.math2d.*
 import bpsvg2.datatypes.math3d.*
 
@@ -78,7 +79,7 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
     val use: NameSVGElement get() = NameSVGElement(this, "use")
     val view: NameSVGElement get() = NameSVGElement(this, "view")
 
-    fun attributeStyle(vararg attributes: Attribute, operation: StyleOperation? = null): Attribute {
+    fun styleAttribute(vararg attributes: Attribute, operation: StyleOperation? = null): Attribute {
         val styleElement = StyleElement()
         if (operation != null) styleElement.operation()
         if (attributes.isNotEmpty()) {
@@ -153,9 +154,17 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
         }
         if (f.startsWith("*")) {
             val suffix = f.substring(1)
-            if (s is Vec2) {
-                addRawAttribute("${suffix}x" to s.x, first)
-                addRawAttribute("${suffix}y" to s.y, first)
+            when (s) {
+                is Vec2 -> {
+                    addAttribute("${suffix}x" to s.x, first, forceAdd)
+                    addAttribute("${suffix}y" to s.y, first, forceAdd)
+                }
+                is Rect -> {
+                    addAttribute("${suffix}x" to s.topLeft.x, first, forceAdd)
+                    addAttribute("${suffix}y" to s.topLeft.y, first, forceAdd)
+                    addAttribute("${suffix}width" to s.width, first, forceAdd)
+                    addAttribute("${suffix}height" to s.height, first, forceAdd)
+                }
             }
         } else {
             addRawAttribute(f to s, first)

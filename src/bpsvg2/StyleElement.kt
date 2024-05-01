@@ -2,7 +2,7 @@ package bpsvg2
 
 typealias StyleOperation = StyleElement.() -> Unit
 
-class StyleElement(root: SVG? = null) : SVGElement("style", root) {
+class StyleElement(tag: String = "style", root: SVG? = null) : SVGElement(tag, root) {
 
     companion object {
         const val NO_CLASS = "``"
@@ -30,6 +30,29 @@ class StyleElement(root: SVG? = null) : SVGElement("style", root) {
         addByTag(tag, *attributes)
     }
 
+    fun keyframes(identifier: String, operation: StyleOperation): StyleElement {
+        val element = StyleElement("@keyframes $identifier")(operation = operation)
+        addChild(element)
+        return element
+    }
+
+    private fun buildSVG(svg: OutputBuilder, e: SVGElement) {
+        if (e.tag != NO_CLASS) {
+            svg.newline().append("${e.tag} {")
+            svg.indent()
+        }
+        for (j in e.attributes()) {
+            svg.newline().append("${j.first}: ").append(j.second).append(';')
+        }
+        for (f in e.children()) {
+            buildSVG(svg, f)
+        }
+        if (e.tag != NO_CLASS) {
+            svg.unindent()
+            svg.newline().append("}")
+        }
+    }
+
     override fun build(svg: OutputBuilder) {
         if (root != null) buildInitial(svg)
         if (!children().hasNext() && root != null) {
@@ -43,17 +66,7 @@ class StyleElement(root: SVG? = null) : SVGElement("style", root) {
                 svg.indent()
             }
             for (i in children()) {
-                if (i.tag != NO_CLASS) {
-                    svg.newline().append("${i.tag} {")
-                    svg.indent()
-                }
-                for (j in i.attributes()) {
-                    svg.newline().append("${j.first}: ").append(j.second).append(';')
-                }
-                if (i.tag != NO_CLASS) {
-                    svg.unindent()
-                    svg.newline().append("}")
-                }
+                buildSVG(svg, i)
             }
             if (root != null) {
                 svg.exitCSS()

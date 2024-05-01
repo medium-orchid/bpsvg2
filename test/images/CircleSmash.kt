@@ -6,7 +6,7 @@ import bpsvg2.datatypes.math2d.*
 import bpsvg2.datatypes.math3d.*
 
 fun main() {
-    val viewBox = Rect.byCenter(Vec2.zero, 10, 10)
+    val viewBox = Rect.zeroCentered(10, 10)
     val color1 = "#00bfff40"
     val color2 = "#ff149340"
     val n = 10
@@ -24,7 +24,7 @@ fun main() {
             }
         )
         for (i in 0..<n) {
-            use(href(circleID), attributeStyle("transform" to Quat.random()))
+            use(href(circleID), styleAttribute("transform" to Quat.random()))
         }
     }.to("out/circle_smash.svg")
 }
