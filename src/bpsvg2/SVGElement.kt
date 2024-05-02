@@ -156,12 +156,14 @@ open class SVGElement(val tag: String, var root: SVG? = null) {
             val suffix = f.substring(1)
             when (s) {
                 is Vec2 -> {
-                    addAttribute("${suffix}x" to s.x, first, forceAdd)
-                    addAttribute("${suffix}y" to s.y, first, forceAdd)
+                    val u = s.unit ?: ""
+                    addAttribute("${suffix}x" to "${s.x}$u", first, forceAdd)
+                    addAttribute("${suffix}y" to "${s.y}$u", first, forceAdd)
                 }
                 is Rect -> {
-                    addAttribute("${suffix}x" to s.topLeft.x, first, forceAdd)
-                    addAttribute("${suffix}y" to s.topLeft.y, first, forceAdd)
+                    val u = s.topLeft.unit ?: ""
+                    addAttribute("${suffix}x" to "${s.topLeft.x}$u", first, forceAdd)
+                    addAttribute("${suffix}y" to "${s.topLeft.y}$u", first, forceAdd)
                     addAttribute("${suffix}width" to s.width, first, forceAdd)
                     addAttribute("${suffix}height" to s.height, first, forceAdd)
                 }

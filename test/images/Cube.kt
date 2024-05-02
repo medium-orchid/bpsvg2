@@ -13,18 +13,18 @@ fun main() {
     val view = 200.0.px
     val side = view / 2
     val viewBox = Rect.zeroCentered(view, view)
-    SVG("viewBox" to viewBox) {
+    SVG("*" to viewBox) {
         define("face",
             rect(
                 "*" to Rect.zeroCentered(side, side),
             )
         )
         g("class" to "spin") {
-            val offset = Ortho3D(1.0, Quat.randomUnit(), side * Vec3.Z)
+            val offset = Ortho3D(1.0, Quat.randomUnit(), (side / 2) * Vec3.Z)
             use(
                 href("face"),
                 "fill" to color(0),
-                styleAttribute("transform" to offset)
+                //styleAttribute("transform" to offset)
             )
             use(
                 href("face"),
