@@ -19,6 +19,25 @@ fun main() {
         val v = randomUnitVec3()
         assert((q * v).approximatelyEquals(q.toMat3D() * v))
     }
+    // Mat3D multiplication
+    for (i in 0..<100) {
+        val m = randomMatrix3()
+        val n = randomMatrix3()
+        val v = Vec3.randomUnit()
+        assert(
+            ((n * m) * v)
+                .approximatelyEquals(
+                    n * (m * v)
+                )
+        )
+        val p = randomMatrix3()
+        assert(
+            ((n * m) * p)
+                .approximatelyEquals(
+                    n * (m * p)
+                )
+        )
+    }
     // Polar form
     for (i in 0..<100) {
         val q = randomUnitQuaternion()

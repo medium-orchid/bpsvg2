@@ -24,11 +24,18 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         return Ortho3D(scale * other, quat, scale * offset)
     }
 
+    operator fun times(other: Vec3): Vec3 {
+        return scale * (quat * (offset + other))
+    }
+
     operator fun plus(other: Vec3): Ortho3D {
         return Ortho3D(scale, quat, offset + other)
     }
 
     override fun put(builder: OutputBuilder) {
+        /*val out = scale * quat.toMat3D() * offset.toMat3D()
+        println(out)
+        (out).put(builder)*/
         builder.cssOnly("Ortho3D")
         var id = true
         if (approx(scale, 0.0)) {

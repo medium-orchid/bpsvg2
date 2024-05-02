@@ -1,5 +1,7 @@
 package bpsvg2.datatypes.math3d
 
+import bpsvg2.datatypes.Length
+
 operator fun Double.times(other: Vec3): Vec3 {
     return other * this
 }
@@ -30,6 +32,18 @@ operator fun Double.times(other: Ortho3D): Ortho3D {
 
 operator fun Int.times(other: Ortho3D): Ortho3D {
     return other * this.toDouble()
+}
+
+operator fun Double.times(other: Mat3D): Mat3D {
+    return other * this
+}
+
+operator fun Int.times(other: Mat3D): Mat3D {
+    return other * this.toDouble()
+}
+
+operator fun Length.times(other: Vec3): Vec3 {
+    return other * this
 }
 
 val Double.ortho3D: Ortho3D get() = Ortho3D(this, Quat.id, Vec3.zero)

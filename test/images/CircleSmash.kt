@@ -24,7 +24,7 @@ fun main() {
             }
         )
         for (i in 0..<n) {
-            use(href(circleID), styleAttribute("transform" to Quat.random()))
+            use(href(circleID), styleAttribute("transform" to Quat.randomUnit()))
         }
     }.to("out/circle_smash.svg")
 }

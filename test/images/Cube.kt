@@ -10,60 +10,46 @@ fun color(index: Int): String {
 
 fun main() {
     val duration = "5s"
-    val view = 10.0
-    val side = 5.0
+    val view = 200.0.px
+    val side = view / 2
     val viewBox = Rect.zeroCentered(view, view)
     SVG("viewBox" to viewBox) {
         define("face",
             rect(
                 "*" to Rect.zeroCentered(side, side),
-                styleAttribute("transform" to ((side / 2) * Vec3.Z).toOrtho())
             )
         )
-        style {
-            val axis = Vec3.randomUnit()
-            select(".spin",
-                "animation-duration" to duration,
-                "animation-name" to "spin",
-                "animation-iteration-count" to "infinite"
-            )
-            keyframes("spin") {
-                for (i in 0..4) {
-                    select("${25 * i}%",
-                        "transform" to axis.axisAngle((90 * i).deg)
-                    )
-                }
-            }
-        }
         g("class" to "spin") {
+            val offset = Ortho3D(1.0, Quat.randomUnit(), side * Vec3.Z)
             use(
                 href("face"),
                 "fill" to color(0),
+                styleAttribute("transform" to offset)
             )
             use(
                 href("face"),
                 "fill" to color(1),
-                styleAttribute("transform" to Vec3.X.axisAngle(90.deg))
+                styleAttribute("transform" to Vec3.X.axisAngle(0.25.turns) * offset)
             )
             use(
                 href("face"),
                 "fill" to color(2),
-                styleAttribute("transform" to Vec3.X.axisAngle(180.deg))
+                styleAttribute("transform" to Vec3.X.axisAngle(0.5.turns) * offset)
             )
             use(
                 href("face"),
                 "fill" to color(3),
-                styleAttribute("transform" to Vec3.X.axisAngle((-90).deg))
+                styleAttribute("transform" to Vec3.X.axisAngle(0.75.turns) * offset)
             )
             use(
                 href("face"),
                 "fill" to color(4),
-                styleAttribute("transform" to Vec3.Y.axisAngle(90.deg))
+                styleAttribute("transform" to Vec3.Y.axisAngle(0.25.turns) * offset)
             )
             use(
                 href("face"),
                 "fill" to color(5),
-                styleAttribute("transform" to Vec3.Y.axisAngle(90.deg))
+                styleAttribute("transform" to Vec3.Y.axisAngle(0.75.turns) * offset)
             )
         }
     }.to("out/cube.svg")

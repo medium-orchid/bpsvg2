@@ -2,6 +2,7 @@ package bpsvg2.datatypes.math2d
 
 import bpsvg2.OutputBuilder
 import bpsvg2.datatypes.*
+import bpsvg2.datatypes.math3d.Vec3
 import kotlin.math.sqrt
 
 data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataType {
@@ -30,6 +31,10 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
     }
 
     private fun guard(other: Vec2) {
+        if ((this.approximatelyEquals(zero) && this.unit == null)
+            || (other.approximatelyEquals(zero) && other.unit == null)) {
+            return
+        }
         if (this.unit != other.unit) {
             throw IllegalArgumentException("$this and $other have different units and are not compatible")
         }
@@ -37,12 +42,12 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
 
     operator fun plus(other: Vec2): Vec2 {
         guard(other)
-        return Vec2(this.x + other.x, this.y + other.y, unit)
+        return Vec2(this.x + other.x, this.y + other.y, unit ?: other.unit)
     }
 
     operator fun minus(other: Vec2): Vec2 {
         guard(other)
-        return Vec2(this.x - other.x, this.y - other.y, unit)
+        return Vec2(this.x - other.x, this.y - other.y, unit ?: other.unit)
     }
 
     fun normSquared(): Double {

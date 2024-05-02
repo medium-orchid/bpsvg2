@@ -39,6 +39,10 @@ data class Length(val l: Double, val unit: String? = null) : DataType {
         return Length(l / other, unit)
     }
 
+    operator fun div(other: Int): Length {
+        return Length(l / other, unit)
+    }
+
     override fun toString(): String {
         return "$l${unit ?: ""}"
     }

@@ -22,7 +22,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
             return Quat(r.cos(), s * w.x, s * w.y, s * w.z)
         }
 
-        fun random(): Quat {
+        fun randomUnit(): Quat {
             return Quat(randomNormal(), randomNormal(), randomNormal(), randomNormal()).normalized()
         }
     }
@@ -46,6 +46,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
 
     operator fun times(other: Double): Quat {
         return Quat(other * r, other * i, other * j, other * k)
+    }
+
+    operator fun times(other: Ortho3D): Ortho3D {
+        return Ortho3D(other.scale, this * other.quat, other.offset)
     }
 
     operator fun plus(other: Quat): Quat {
@@ -127,9 +131,9 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
 
     fun toMat3D(): Mat3D {
         return Mat3D(
-            r * r + i * i - j * j - k * k, 2 * (i * j - r * k), 2 * (i * k + r * j),
-            2 * (i * j + r * k), r * r - i * i + j * j - k * k, 2 * (j * k - r * i),
-            2 * (i * k - r * j), 2 * (j * k + r * i), r * r - i * i - j * j + k * k
+            r * r + i * i - j * j - k * k, 2 * (i * j + r * k), 2 * (i * k - r * j),
+            2 * (i * j - r * k), r * r - i * i + j * j - k * k, 2 * (j * k + r * i),
+            2 * (i * k + r * j), 2 * (j * k - r * i), r * r - i * i - j * j + k * k
         )
     }
 
@@ -162,6 +166,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
 
     fun pow(n: Int): Quat {
         return pow(n.toDouble())
+    }
+
+    fun toOrtho(): Ortho3D {
+        return Ortho3D(1.0, this)
     }
 
     override fun put(builder: OutputBuilder) {

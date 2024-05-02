@@ -38,6 +38,10 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
     }
 
     private fun guard(other: Vec3) {
+        if ((this.approximatelyEquals(zero) && this.unit == null)
+            || (other.approximatelyEquals(zero) && other.unit == null)) {
+            return
+        }
         if (this.unit != other.unit) {
             throw IllegalArgumentException("$this and $other have different units and are not compatible")
         }
@@ -45,12 +49,12 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
 
     operator fun plus(other: Vec3): Vec3 {
         guard(other)
-        return Vec3(this.x + other.x, this.y + other.y, this.z + other.z, unit)
+        return Vec3(this.x + other.x, this.y + other.y, this.z + other.z, unit ?: other.unit)
     }
 
     operator fun minus(other: Vec3): Vec3 {
         guard(other)
-        return Vec3(this.x - other.x, this.y - other.y, this.z - other.z, unit)
+        return Vec3(this.x - other.x, this.y - other.y, this.z - other.z, unit ?: other.unit)
     }
 
     fun normSquared(): Double {
@@ -67,6 +71,11 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
 
     operator fun times(other: Double): Vec3 {
         return Vec3(x * other, y * other, z * other, unit)
+    }
+
+    operator fun times(other: Length): Vec3 {
+        if (this.unit != null && other.unit != null) throw IllegalArgumentException("Both length and vector have units")
+        return Vec3(x * other.l, y * other.l, z * other.l, unit ?: other.unit)
     }
 
     operator fun div(other: Double): Vec3 {
@@ -93,16 +102,21 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         return Ortho3D(1.0, Quat.id, this)
     }
 
+    fun toMat3D(): Mat3D {
+        return Mat3D(
+            1.0, 0.0, 0.0, x,
+            0.0, 1.0, 0.0, y,
+            0.0, 0.0, 1.0, z,
+            0.0, 0.0, 0.0, 1.0
+        )
+    }
+
     fun axisAngle(angle: Angle): Ortho3D {
         return Ortho3D(1.0, Quat.fromAxisAngle(this, angle), zero)
     }
 
     override fun put(builder: OutputBuilder) {
-        builder.append(x)
-        builder.withComma(unit ?: "")
-        builder.append(y)
-        builder.withComma(unit ?: "")
-        builder.append(z)
-        builder.append(unit ?: "")
+        val u = unit ?: ""
+        builder.join("$x$u", "$y$u", "$z$u")
     }
 }
