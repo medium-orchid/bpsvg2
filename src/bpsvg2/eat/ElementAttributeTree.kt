@@ -1,19 +1,18 @@
 package bpsvg2.eat
 
 import bpsvg2.Attribute
-import bpsvg2.OutputBuilder
 import bpsvg2.datatypes.DataType
 
-class ElementAttributeTree(val mode: EATMode, val name: String? = null): DataType {
+class ElementAttributeTree(val mode: OutputMode, val name: String? = null): DataType {
     val attributes = arrayListOf<Attribute>()
     val children = arrayListOf<ElementAttributeTree>()
 
-    override fun put(builder: OutputBuilder) {
+    override fun put(builder: OutputBuilder, mode: OutputMode) {
         when (mode) {
-            EATMode.XML -> putXML(builder)
-            EATMode.CSS -> putCSS(builder)
-            EATMode.Path -> putPath(builder)
-            EATMode.Text -> if (name != null) builder.append(name)
+            OutputMode.XML -> putXML(builder)
+            OutputMode.CSS -> putCSS(builder)
+            OutputMode.Path -> putPath(builder)
+            OutputMode.Text -> if (name != null) builder.append(name)
         }
     }
 
@@ -21,7 +20,7 @@ class ElementAttributeTree(val mode: EATMode, val name: String? = null): DataTyp
         if (name != null) {
             builder.newline().append("<$name")
             for (i in attributes) {
-                builder.append(" ${i.first}=\"").append(i.second).append("\"")
+                builder.append(" ${i.first}=\"").append(i.second, mode).append("\"")
             }
             if (children.isNotEmpty()) {
                 builder.append(">")
@@ -29,11 +28,11 @@ class ElementAttributeTree(val mode: EATMode, val name: String? = null): DataTyp
             }
         }
         for (child in children) {
-            val cData = builder.cDataStrict && child.mode != EATMode.XML
+            val cData = builder.cDataStrict && child.mode != OutputMode.XML
             if (cData) {
                 builder.newline().append("<![CDATA[").indent()
             }
-            child.put(builder)
+            child.put(builder, mode)
             if (cData) {
                 builder.unindent().newline().append("]]>")
             }
@@ -59,10 +58,10 @@ class ElementAttributeTree(val mode: EATMode, val name: String? = null): DataTyp
             }
         }
         for (i in attributes) {
-            builder.newline().append("${i.first}: ").append(i.second).append(";")
+            builder.newline().append("${i.first}: ").append(i.second, mode).append(";")
         }
         for (child in children) {
-            child.put(builder)
+            child.put(builder, mode)
         }
         if (name != null && !empty) {
             builder.unindent().newline().append("}")
@@ -72,13 +71,13 @@ class ElementAttributeTree(val mode: EATMode, val name: String? = null): DataTyp
     fun putPath(builder: OutputBuilder) {
         builder.newline().append("<path")
         for (i in attributes) {
-            builder.append(" ${i.first}=\"").append(i.second).append("\"")
+            builder.append(" ${i.first}=\"").append(i.second, mode).append("\"")
         }
         builder.append(" d=\"").indent()
         for (child in children) {
             builder.newline().append(child.name ?: "")
             for (i in child.attributes) {
-                builder.append(" ${i.second}")
+                builder.append(" ").append(i.second, mode)
             }
         }
         builder.unindent().newline().append("\" />")

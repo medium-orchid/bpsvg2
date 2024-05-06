@@ -1,4 +1,4 @@
-package bpsvg2
+package bpsvg2.eat
 
 import bpsvg2.datatypes.DataType
 import java.text.DecimalFormat
@@ -9,20 +9,9 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
             formatter = DecimalFormat(value)
         }
     var cDataStrict = true
-    private var cssLevel = 0
     private var formatter = DecimalFormat(decimalPattern)
     private val builder = StringBuilder()
     private var indentLevel = 0
-
-    val cssMode: Boolean get() = cssLevel > 0
-
-    fun svgOpener() {
-        builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-    }
-
-    fun cssOnly(name: String) {
-        if (!cssMode) throw IllegalStateException("Cannot put $name outside of CSS")
-    }
 
     private fun putFormatted(x: Double): OutputBuilder {
         builder.append(formatter.format(x))
@@ -49,18 +38,10 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
         return this
     }
 
-    fun enterCSS() {
-        cssLevel++
-    }
-
-    fun exitCSS() {
-        cssLevel--
-    }
-
-    fun append(value: Any): OutputBuilder {
+    fun append(value: Any, mode: OutputMode = OutputMode.Text): OutputBuilder {
         val dt = value as? DataType
         if (dt != null) {
-            value.put(this)
+            value.put(this, mode)
             return this
         }
         when (value) {
@@ -88,16 +69,6 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
     fun withSpaceBefore(value: Any): OutputBuilder {
         builder.append(' ')
         append(value)
-        return this
-    }
-
-    fun beginCData(): OutputBuilder {
-        builder.append("<![CDATA[")
-        return this
-    }
-
-    fun endCData(): OutputBuilder {
-        builder.append("]]>")
         return this
     }
 

@@ -1,7 +1,8 @@
 package bpsvg2.datatypes.math3d
 
-import bpsvg2.OutputBuilder
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.datatypes.*
+import bpsvg2.eat.OutputMode
 import kotlin.math.*
 
 data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : DataType {
@@ -172,7 +173,10 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         return Ortho3D(1.0, this)
     }
 
-    override fun put(builder: OutputBuilder) {
+    override fun put(builder: OutputBuilder, mode: OutputMode) {
+        if (mode != OutputMode.CSS) {
+            throw IllegalStateException(OutputMode.CSS.expectedModeError(mode))
+        }
         val w = vectorPart()
         val n = w.norm()
         val t = 2 * Angle.atan2(n, r)

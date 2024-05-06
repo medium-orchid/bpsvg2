@@ -1,7 +1,8 @@
 package bpsvg2.datatypes
 
-import bpsvg2.OutputBuilder
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.datatypes.math2d.*
+import bpsvg2.eat.OutputMode
 import kotlin.math.*
 import kotlin.random.Random
 
@@ -67,8 +68,8 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
         return Angle(value / other.toDouble(), unit)
     }
 
-    override fun put(builder: OutputBuilder) {
-        if (builder.cssMode) {
+    override fun put(builder: OutputBuilder, mode: OutputMode) {
+        if (mode == OutputMode.CSS) {
             val r = toValue(AngleUnits.RAD)
             val d = toValue(AngleUnits.DEG)
             val t = toValue(AngleUnits.TURNS)

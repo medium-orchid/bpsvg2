@@ -1,7 +1,8 @@
 package bpsvg2.datatypes.math3d
 
-import bpsvg2.OutputBuilder
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.datatypes.*
+import bpsvg2.eat.OutputMode
 
 data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.zero) : DataType {
 
@@ -32,11 +33,13 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         return Ortho3D(scale, quat, offset + other)
     }
 
-    override fun put(builder: OutputBuilder) {
+    override fun put(builder: OutputBuilder, mode: OutputMode) {
         /*val out = scale * quat.toMat3D() * offset.toMat3D()
         println(out)
         (out).put(builder)*/
-        builder.cssOnly("Ortho3D")
+        if (mode != OutputMode.CSS) {
+            throw IllegalStateException(OutputMode.CSS.expectedModeError(mode))
+        }
         var id = true
         if (approx(scale, 0.0)) {
             builder.append("scale(0)")

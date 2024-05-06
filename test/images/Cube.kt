@@ -1,6 +1,5 @@
 package images
 
-import bpsvg2.SVG
 import bpsvg2.datatypes.*
 import bpsvg2.datatypes.math3d.*
 

@@ -1,6 +1,6 @@
 package bpsvg2.datatypes.math2d
 
-import bpsvg2.OutputBuilder
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.datatypes.*
 import kotlin.math.*
 

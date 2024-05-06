@@ -1,8 +1,7 @@
 package bpsvg2.datatypes.math2d
 
-import bpsvg2.OutputBuilder
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.datatypes.*
-import bpsvg2.datatypes.math3d.Vec3
 import kotlin.math.sqrt
 
 data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataType {

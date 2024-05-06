@@ -1,7 +1,8 @@
 package bpsvg2.datatypes.math3d
 
-import bpsvg2.OutputBuilder
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.datatypes.*
+import bpsvg2.eat.OutputMode
 import kotlin.math.sqrt
 
 data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? = null) : DataType {
@@ -115,7 +116,7 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         return Ortho3D(1.0, Quat.fromAxisAngle(this, angle), zero)
     }
 
-    override fun put(builder: OutputBuilder) {
+    override fun put(builder: OutputBuilder, mode: OutputMode) {
         val u = unit ?: ""
         builder.join("$x$u", "$y$u", "$z$u")
     }

@@ -1,6 +1,6 @@
 package bpsvg2.datatypes.math2d
 
-import bpsvg2.OutputBuilder
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.datatypes.*
 
 data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
