@@ -8,6 +8,7 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
         set(value) {
             formatter = DecimalFormat(value)
         }
+    var cDataStrict = true
     private var cssLevel = 0
     private var formatter = DecimalFormat(decimalPattern)
     private val builder = StringBuilder()
