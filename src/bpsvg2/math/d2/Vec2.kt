@@ -1,7 +1,9 @@
-package bpsvg2.datatypes.math2d
+package bpsvg2.math.d2
 
+import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
-import bpsvg2.datatypes.*
+import bpsvg2.math.*
+import bpsvg2.eat.OutputMode
 import kotlin.math.sqrt
 
 data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataType {
@@ -61,7 +63,7 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
         return this / norm()
     }
 
-    override fun put(builder: OutputBuilder) {
+    override fun put(builder: OutputBuilder, mode: OutputMode) {
         builder.append(x)
         builder.withComma(unit ?: "")
         builder.append(y)

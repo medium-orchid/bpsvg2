@@ -1,7 +1,8 @@
-package bpsvg2.datatypes.math3d
+package bpsvg2.math.d3
 
+import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
-import bpsvg2.datatypes.*
+import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
 
 data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.zero) : DataType {

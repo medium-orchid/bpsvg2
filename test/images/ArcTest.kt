@@ -1,7 +1,7 @@
 package images
 
-import bpsvg2.datatypes.Rect
-import bpsvg2.datatypes.math2d.Vec2
+import bpsvg2.math.Rect
+import bpsvg2.math.d2.Vec2
 
 fun main() {
     SVG("viewBox" to Rect(20, 20)) {

@@ -1,6 +1,4 @@
-package bpsvg2.datatypes.math2d
-
-import bpsvg2.datatypes.Angle
+package bpsvg2.math.d2
 
 operator fun Double.times(other: Mat2D): Mat2D {
     return Mat2D(

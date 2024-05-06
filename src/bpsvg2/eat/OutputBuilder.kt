@@ -1,6 +1,6 @@
 package bpsvg2.eat
 
-import bpsvg2.datatypes.DataType
+import bpsvg2.DataType
 import java.text.DecimalFormat
 
 class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val indentPath: Boolean = false) {

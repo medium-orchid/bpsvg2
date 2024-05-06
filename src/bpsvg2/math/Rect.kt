@@ -1,7 +1,8 @@
-package bpsvg2.datatypes
+package bpsvg2.math
 
+import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
-import bpsvg2.datatypes.math2d.Vec2
+import bpsvg2.math.d2.Vec2
 import bpsvg2.eat.OutputMode
 
 data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : DataType {
@@ -51,7 +52,7 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : Data
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
-        topLeft.put(builder)
+        topLeft.put(builder, mode)
         builder.append(',')
         width.put(builder, mode)
         builder.append(',')

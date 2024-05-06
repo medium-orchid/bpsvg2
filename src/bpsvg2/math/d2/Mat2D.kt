@@ -1,7 +1,9 @@
-package bpsvg2.datatypes.math2d
+package bpsvg2.math.d2
 
+import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
-import bpsvg2.datatypes.*
+import bpsvg2.math.*
+import bpsvg2.eat.OutputMode
 import kotlin.math.*
 
 /**
@@ -143,7 +145,7 @@ data class Mat2D(
         return "Mat2D($a $c $x)($b $d $y)"
     }
 
-    override fun put(builder: OutputBuilder) {
+    override fun put(builder: OutputBuilder, mode: OutputMode) {
         builder.append("matrix(").join(a, b, c, d, x, y).append(")")
     }
 

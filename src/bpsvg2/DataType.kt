@@ -1,4 +1,4 @@
-package bpsvg2.datatypes
+package bpsvg2
 
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode

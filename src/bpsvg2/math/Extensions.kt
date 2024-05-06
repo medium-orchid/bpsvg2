@@ -1,5 +1,7 @@
-package bpsvg2.datatypes
+package bpsvg2.math
 
+import bpsvg2.math.d2.Angle
+import bpsvg2.math.d2.AngleUnits
 import kotlin.math.*
 import kotlin.random.Random
 

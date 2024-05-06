@@ -1,8 +1,9 @@
-package bpsvg2.datatypes
+package bpsvg2.math.d2
 
+import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
-import bpsvg2.datatypes.math2d.*
 import bpsvg2.eat.OutputMode
+import bpsvg2.math.approx
 import kotlin.math.*
 import kotlin.random.Random
 

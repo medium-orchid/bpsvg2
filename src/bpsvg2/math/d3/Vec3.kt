@@ -1,8 +1,10 @@
-package bpsvg2.datatypes.math3d
+package bpsvg2.math.d3
 
+import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
-import bpsvg2.datatypes.*
+import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
+import bpsvg2.math.d2.Angle
 import kotlin.math.sqrt
 
 data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? = null) : DataType {

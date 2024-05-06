@@ -1,6 +1,6 @@
-package bpsvg2.datatypes.math3d
+package bpsvg2.math.d3
 
-import bpsvg2.datatypes.Length
+import bpsvg2.math.Length
 
 operator fun Double.times(other: Vec3): Vec3 {
     return other * this

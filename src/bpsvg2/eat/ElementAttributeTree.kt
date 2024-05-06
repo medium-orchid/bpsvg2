@@ -1,9 +1,15 @@
 package bpsvg2.eat
 
-import bpsvg2.Attribute
-import bpsvg2.datatypes.DataType
+import bpsvg2.*
+import bpsvg2.math.*
+import bpsvg2.math.d2.*
+import bpsvg2.math.d3.*
 
-class ElementAttributeTree(val mode: OutputMode, val name: String? = null): DataType {
+class ElementAttributeTree(
+    val mode: OutputMode,
+    val name: String? = null,
+    val parent: ElementAttributeTree? = null
+): DataType {
     val attributes = arrayListOf<Attribute>()
     val children = arrayListOf<ElementAttributeTree>()
 
@@ -13,6 +19,49 @@ class ElementAttributeTree(val mode: OutputMode, val name: String? = null): Data
             OutputMode.CSS -> putCSS(builder)
             OutputMode.Path -> putPath(builder)
             OutputMode.Text -> if (name != null) builder.append(name)
+        }
+    }
+
+    fun addAttribute(attribute: Attribute, first: Boolean = false, forceAdd: Boolean = false) {
+        val f = attribute.first
+        val s = attribute.second
+        if (!forceAdd) {
+            when (s) {
+                is Mat2D -> if (s.approximatelyEquals(Mat2D.id)) return
+                is Mat3D -> if (s.approximatelyEquals(Mat3D.id)) return
+                is Quat -> if (s.approximatelyEquals(Quat.id)) return
+                is Ortho2D -> if (s.approximatelyEquals(Ortho2D.id)) return
+                is Ortho3D -> if (s.approximatelyEquals(Ortho3D.id)) return
+            }
+        }
+        if (f.startsWith("*")) {
+            val suffix = f.substring(1)
+            when (s) {
+                is Vec2 -> {
+                    val u = s.unit ?: ""
+                    addAttribute("${suffix}x" to "${s.x}$u", first, forceAdd)
+                    addAttribute("${suffix}y" to "${s.y}$u", first, forceAdd)
+                }
+                is Rect -> {
+                    val u = s.topLeft.unit ?: ""
+                    addAttribute("${suffix}x" to "${s.topLeft.x}$u", first, forceAdd)
+                    addAttribute("${suffix}y" to "${s.topLeft.y}$u", first, forceAdd)
+                    addAttribute("${suffix}width" to s.width, first, forceAdd)
+                    addAttribute("${suffix}height" to s.height, first, forceAdd)
+                }
+            }
+        } else {
+            addRawAttribute(f to s, first)
+        }
+    }
+
+    private fun addRawAttribute(attribute: Attribute, first: Boolean) {
+        val f = attribute.first
+        val s = attribute.second
+        if (first) {
+            attributes.add(0, f to s)
+        } else {
+            attributes.add(f to s)
         }
     }
 
@@ -81,5 +130,25 @@ class ElementAttributeTree(val mode: OutputMode, val name: String? = null): Data
             }
         }
         builder.unindent().newline().append("\" />")
+    }
+
+    fun valueOf(attribute: String): Any? {
+        for (i in attributes) {
+            if (i.first == attribute) return i.second
+        }
+        return null
+    }
+
+    fun childByID(id: String, deep: Boolean = true): ElementAttributeTree? {
+        for (i in children) {
+            if (i.valueOf("id") == id) return i
+        }
+        if (deep) {
+            for (i in children) {
+                val j = i.childByID(id, true)
+                if (j != null) return j
+            }
+        }
+        return null
     }
 }

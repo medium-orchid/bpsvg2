@@ -1,7 +1,7 @@
 package images
 
-import bpsvg2.datatypes.*
-import bpsvg2.datatypes.math3d.*
+import bpsvg2.math.*
+import bpsvg2.math.d3.*
 
 fun color(index: Int): String {
     return "hsla(${60 * index}, 81%, 64%, 0.5)"

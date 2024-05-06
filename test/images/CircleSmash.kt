@@ -1,8 +1,8 @@
 package images
 
-import bpsvg2.datatypes.*
-import bpsvg2.datatypes.math2d.*
-import bpsvg2.datatypes.math3d.*
+import bpsvg2.math.*
+import bpsvg2.math.d2.*
+import bpsvg2.math.d3.*
 
 fun main() {
     val viewBox = Rect.zeroCentered(10, 10)

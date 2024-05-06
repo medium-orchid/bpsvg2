@@ -1,5 +1,6 @@
-package bpsvg2.datatypes
+package bpsvg2.math
 
+import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
 
