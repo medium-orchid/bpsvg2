@@ -6,8 +6,9 @@ import bpsvg2.eat.OutputMode
 import bpsvg2.math.Rect
 import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
+import java.io.File
 
-open class CommonElement(internal val backingTree: ElementAttributeTree): DataType {
+open class CommonElement(private val backingTree: ElementAttributeTree): DataType {
 
     fun addAttributes(vararg attributes: Attribute) {
         for (i in attributes) {
@@ -68,5 +69,11 @@ open class CommonElement(internal val backingTree: ElementAttributeTree): DataTy
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
         backingTree.put(builder, mode)
+    }
+
+    fun saveTo(file: String, builder: OutputBuilder? = null) {
+        val out = builder ?: OutputBuilder()
+        put(out, backingTree.mode)
+        File(file).writeText(out.toString())
     }
 }

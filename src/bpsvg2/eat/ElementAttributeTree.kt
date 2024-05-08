@@ -7,8 +7,7 @@ import bpsvg2.math.d3.*
 
 class ElementAttributeTree(
     val mode: OutputMode,
-    val name: String? = null,
-    val parent: ElementAttributeTree? = null
+    val name: String? = null
 ): DataType {
     val attributes = arrayListOf<Attribute>()
     val children = arrayListOf<ElementAttributeTree>()
@@ -45,7 +44,11 @@ class ElementAttributeTree(
         }
         if (name != null) {
             if (children.isEmpty()) {
-                builder.append(" />").newline()
+                if (name[0] == '?') {
+                    builder.append("?>")
+                } else {
+                    builder.append(" />")
+                }
             } else {
                 builder.unindent()
                 builder.newline().append("</$name>")

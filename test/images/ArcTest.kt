@@ -4,7 +4,7 @@ import bpsvg2.math.Rect
 import bpsvg2.math.d2.Vec2
 
 fun main() {
-    SVG("viewBox" to Rect(20, 20)) {
+    /*SVG("viewBox" to Rect(20, 20)) {
         val origin = Vec2(6.0, 10.0)
         val endPoint = Vec2(14.0, 10.0)
         val rx = 6.0
@@ -26,5 +26,5 @@ fun main() {
             moveTo(origin)
             arcTo(rx, ry, rotation, largeArc = false, clockwise = false, endPoint)
         }
-    }.to("out/arc_test.svg")
+    }.to("out/arc_test.svg")*/
 }

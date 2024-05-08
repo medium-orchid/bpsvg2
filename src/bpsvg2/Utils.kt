@@ -18,3 +18,7 @@ fun get(name: String): String {
 fun set(name: String): String {
     return "--$name"
 }
+
+fun id(name: String): Attribute {
+    return "id" to name
+}

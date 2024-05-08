@@ -23,7 +23,7 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
     }
 
     fun newline(): OutputBuilder {
-        builder.append(newLine)
+        if (builder.isNotEmpty()) builder.append(newLine)
         builder.append(indent.repeat(indentLevel))
         return this
     }

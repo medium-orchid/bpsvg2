@@ -4,7 +4,7 @@ import bpsvg2.math.*
 import bpsvg2.math.d2.*
 
 fun main() {
-    SVG(
+    /*SVG(
         "width" to 600.px, "height" to 600.px,
         "viewBox" to Rect.byCenter(Vec2.zero, 600, 600)
     ) {
@@ -115,5 +115,5 @@ fun main() {
                 "transform" to Ortho2D(1.0/3, 9.deg)
             )
         }
-    }.to("out/petals.svg")
+    }.to("out/petals.svg")*/
 }

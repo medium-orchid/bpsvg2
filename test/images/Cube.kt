@@ -8,7 +8,7 @@ fun color(index: Int): String {
 }
 
 fun main() {
-    val duration = "5s"
+    /*val duration = "5s"
     val view = 200.0.px
     val side = view / 2
     val viewBox = Rect.zeroCentered(view, view)
@@ -51,5 +51,5 @@ fun main() {
                 styleAttribute("transform" to Vec3.Y.axisAngle(0.75.turns) * offset)
             )
         }
-    }.to("out/cube.svg")
+    }.to("out/cube.svg")*/
 }
