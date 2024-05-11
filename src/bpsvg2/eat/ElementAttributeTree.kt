@@ -7,13 +7,14 @@ import bpsvg2.math.d3.*
 
 class ElementAttributeTree(
     val mode: OutputMode,
-    val name: String? = null
+    val name: String? = null,
+    val root: Boolean = false
 ): DataType {
     val attributes = arrayListOf<Attribute>()
     val children = arrayListOf<ElementAttributeTree>()
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
-        when (mode) {
+        when (this.mode) {
             OutputMode.XML -> putXML(builder)
             OutputMode.CSS -> putCSS(builder)
             OutputMode.Path -> putPath(builder)
@@ -66,9 +67,12 @@ class ElementAttributeTree(
                 builder.append(";")
             }
         }
+        val nested = root && builder.isNotEmpty()
+        if (nested) builder.indent()
         for (i in attributes) {
             builder.newline().append("${i.first}: ").append(i.second, mode).append(";")
         }
+        if (nested) builder.unindent().newline()
         for (child in children) {
             child.put(builder, child.mode)
         }
@@ -114,6 +118,9 @@ class ElementAttributeTree(
 
     fun print(level: Int = 0) {
         println("->".repeat(level) + " [${mode.name}] $name")
+        if (attributes.isNotEmpty()) {
+            println("->".repeat(level) + "   (" + attributes.joinToString { i -> "${i.first}:${i.second}" } + ")")
+        }
         for (i in children) {
             i.print(level + 1)
         }

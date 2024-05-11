@@ -13,6 +13,10 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
     private val builder = StringBuilder()
     private var indentLevel = 0
 
+    fun isNotEmpty(): Boolean {
+        return builder.isNotEmpty()
+    }
+
     private fun putFormatted(x: Double): OutputBuilder {
         builder.append(formatter.format(x))
         return this
@@ -34,11 +38,7 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
     }
 
     fun unindent(): OutputBuilder {
-        if (indentLevel == 0) {
-            println("Current contents:")
-            println(builder)
-            throw IllegalStateException("Cannot unindent any further")
-        }
+        if (indentLevel == 0) throw IllegalStateException("Cannot unindent any further")
         indentLevel -= 1
         return this
     }
@@ -62,12 +62,12 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
         return this
     }
 
-    fun join(vararg values: Any): OutputBuilder {
+    fun join(mode: OutputMode, vararg values: Any): OutputBuilder {
         for (i in 0..<values.lastIndex) {
-            append(values[i])
+            append(values[i], mode)
             builder.append(", ")
         }
-        append(values.last())
+        append(values.last(), mode)
         return this
     }
 

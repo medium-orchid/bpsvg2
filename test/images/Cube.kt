@@ -1,6 +1,8 @@
 package images
 
+import bpsvg2.*
 import bpsvg2.math.*
+import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
 
 fun color(index: Int): String {
@@ -8,16 +10,17 @@ fun color(index: Int): String {
 }
 
 fun main() {
-    /*val duration = "5s"
+    val duration = "5s"
     val view = 200.0.px
     val side = view / 2
     val viewBox = Rect.zeroCentered(view, view)
-    SVG("*" to viewBox) {
-        define("face",
+    SVGElement.root("*" to viewBox) {
+        defs {
             rect(
+                id("face"),
                 "*" to Rect.zeroCentered(side, side),
             )
-        )
+        }
         g("class" to "spin") {
             val offset = Ortho3D(1.0, Quat.randomUnit(), (side / 2) * Vec3.Z)
             use(
@@ -51,5 +54,5 @@ fun main() {
                 styleAttribute("transform" to Vec3.Y.axisAngle(0.75.turns) * offset)
             )
         }
-    }.to("out/cube.svg")*/
+    }.saveTo("out/cube.svg")
 }

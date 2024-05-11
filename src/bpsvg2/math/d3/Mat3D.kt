@@ -110,7 +110,7 @@ print("return Mat3D(\n" + ",\n".join([term(i, j) for j in range(4) for i in rang
             throw IllegalStateException(OutputMode.CSS.expectedModeError(mode))
         }
         builder.append("matrix3d(")
-            .join(a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3, a4, b4, c4, d4)
+            .join(mode, a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3, a4, b4, c4, d4)
             .append(")")
     }
 

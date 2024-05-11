@@ -4,7 +4,7 @@ import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
-import bpsvg2.math.d2.Angle
+import bpsvg2.math.d2.*
 import kotlin.math.*
 
 data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : DataType {
@@ -185,11 +185,11 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         if (n == 0.0) {
             builder.append("rotate3d(0)")
         } else {
-            builder.append("rotate3d(").join(w, t).append(")")
+            builder.append("rotate3d(").join(mode, w, t).append(")")
         }
     }
 
     override fun toString(): String {
-        return "$r + {$i}i + {$j}j {$k}k"
+        return "$r + ${i}i + ${j}j ${k}k"
     }
 }

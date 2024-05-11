@@ -1,8 +1,9 @@
 package bpsvg2
 
+import bpsvg2.eat.ElementAttributeTree
 import bpsvg2.eat.OutputMode
 
-class SVGElement(tag: String? = null) : CommonElement(OutputMode.XML, tag) {
+class SVGElement(tag: String? = null, root: Boolean = false) : CommonElement(OutputMode.XML, tag, root) {
 
     val a: SVGElement get() = makeChild(this, "a")
     val animate: SVGElement get() = makeChild(this, "animate")
@@ -89,6 +90,12 @@ class SVGElement(tag: String? = null) : CommonElement(OutputMode.XML, tag) {
             root.addChild(body)
             return root
         }
+    }
+
+    fun styleAttribute(vararg attributes: Attribute): Attribute {
+        val second = ElementAttributeTree(OutputMode.CSS, null, true)
+        second.attributes.addAll(attributes)
+        return "style" to second
     }
 
     operator fun invoke(vararg attributes: Attribute, operation: SVGOperation? = null) : SVGElement {

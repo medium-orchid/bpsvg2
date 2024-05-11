@@ -104,20 +104,20 @@ fun main() {
                 }
             }
         }
-        text("id" to "heading", "*" to Vec2(-280, -270)) {
+        text(id("heading"), "*" to Vec2(-280, -270)) {
             string("SVG demonstration")
         }
-        text("id" to "caption", "*" to Vec2(-280, -250)) {
+        text(id("caption"), "*" to Vec2(-280, -250)) {
             string("Move your mouse pointer over the flower.")
         }
-        g("id" to "flower") {
-            circle("id" to "overlay",
+        g(id("flower")) {
+            circle(id("overlay"),
                 "*c" to Vec2.zero, "r" to 200,
                 "stroke" to "none",
                 "fill" to url("fade"),
             )
-            use("id" to "outer-petals", href("petals"))
-            use("id" to "inner-petals", href("petals"),
+            use(id("outer-petals"), href("petals"))
+            use(id("inner-petals"), href("petals"),
                 "transform" to Ortho2D(1.0/3, 9.deg)
             )
         }

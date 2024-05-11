@@ -16,7 +16,6 @@ class PathElement(tag: String? = null): CommonElement(OutputMode.Path, tag) {
 
     private fun addAsSecondaryAttribute(vararg arguments: Any) {
         for (i in arguments) {
-            println(i)
             addAttribute("``" to i)
         }
     }

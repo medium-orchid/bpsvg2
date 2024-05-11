@@ -1,7 +1,6 @@
 package math
 
-import bpsvg2.math.*
-import bpsvg2.math.d2.Mat2D
+import bpsvg2.math.d2.*
 import kotlin.random.Random
 
 fun main() {

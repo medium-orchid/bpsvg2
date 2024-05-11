@@ -1,15 +1,16 @@
 package images
 
+import bpsvg2.*
 import bpsvg2.math.Rect
-import bpsvg2.math.d2.Vec2
+import bpsvg2.math.d2.*
 
 fun main() {
-    /*SVG("viewBox" to Rect(20, 20)) {
+    SVGElement.root("viewBox" to Rect(20, 20)) {
         val origin = Vec2(6.0, 10.0)
         val endPoint = Vec2(14.0, 10.0)
         val rx = 6.0
         val ry = 4.0
-        val rotation = 10.0
+        val rotation = 10.deg
         path("fill" to "none", "stroke" to "red") {
             moveTo(origin)
             arcTo(rx, ry, rotation, largeArc = true, clockwise = false, endPoint)
@@ -26,5 +27,5 @@ fun main() {
             moveTo(origin)
             arcTo(rx, ry, rotation, largeArc = false, clockwise = false, endPoint)
         }
-    }.to("out/arc_test.svg")*/
+    }.saveTo("out/arc_test.svg")
 }

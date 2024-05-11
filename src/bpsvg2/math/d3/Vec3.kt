@@ -120,6 +120,6 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
         val u = unit ?: ""
-        builder.join("$x$u", "$y$u", "$z$u")
+        builder.join(mode, "$x$u", "$y$u", "$z$u")
     }
 }

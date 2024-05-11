@@ -146,7 +146,7 @@ data class Mat2D(
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
-        builder.append("matrix(").join(a, b, c, d, x, y).append(")")
+        builder.append("matrix(").join(mode, a, b, c, d, x, y).append(")")
     }
 
     fun inverse(): Mat2D {

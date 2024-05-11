@@ -35,9 +35,6 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
-        /*val out = scale * quat.toMat3D() * offset.toMat3D()
-        println(out)
-        (out).put(builder)*/
         if (mode != OutputMode.CSS) {
             throw IllegalStateException(OutputMode.CSS.expectedModeError(mode))
         }
@@ -45,17 +42,17 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         if (approx(scale, 0.0)) {
             builder.append("scale(0)")
         } else if (!approx(scale, 1.0)) {
-            builder.append("scale(").append(scale).append(")")
+            builder.append("scale(").append(scale, mode).append(")")
             id = false
         }
         if (!quat.approximatelyEquals(Quat.id)) {
             if (!id) builder.append(" ")
-            builder.append(quat)
+            builder.append(quat, mode)
             id = false
         }
         if (!offset.approximatelyEquals(Vec3.zero)) {
             if (!id) builder.append(" ")
-            builder.append("translate3d(").append(offset).append(")")
+            builder.append("translate3d(").append(offset, mode).append(")")
             id = false
         }
         if (id) builder.append("rotate3d(0)")
