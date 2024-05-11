@@ -34,6 +34,11 @@ class OutputBuilder(val indent: String = "  ", val newLine: String = "\n", val i
     }
 
     fun unindent(): OutputBuilder {
+        if (indentLevel == 0) {
+            println("Current contents:")
+            println(builder)
+            throw IllegalStateException("Cannot unindent any further")
+        }
         indentLevel -= 1
         return this
     }

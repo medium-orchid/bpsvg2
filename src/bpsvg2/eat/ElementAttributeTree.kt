@@ -17,7 +17,7 @@ class ElementAttributeTree(
             OutputMode.XML -> putXML(builder)
             OutputMode.CSS -> putCSS(builder)
             OutputMode.Path -> putPath(builder)
-            OutputMode.Text -> if (name != null) builder.append(name)
+            OutputMode.Text -> if (name != null) builder.newline().append(name)
         }
     }
 
@@ -33,11 +33,11 @@ class ElementAttributeTree(
             }
         }
         for (child in children) {
-            val cData = builder.cDataStrict && child.mode != OutputMode.XML
+            val cData = builder.cDataStrict && child.mode != OutputMode.XML && child.mode != OutputMode.Path
             if (cData) {
                 builder.newline().append("<![CDATA[").indent()
             }
-            child.put(builder, mode)
+            child.put(builder, child.mode)
             if (cData) {
                 builder.unindent().newline().append("]]>")
             }
@@ -60,7 +60,7 @@ class ElementAttributeTree(
         val empty = attributes.isEmpty() && children.isEmpty()
         if (name != null) {
             builder.newline().append("$name")
-            if (empty) {
+            if (!empty) {
                 builder.append(" {").indent()
             } else {
                 builder.append(";")
@@ -70,7 +70,7 @@ class ElementAttributeTree(
             builder.newline().append("${i.first}: ").append(i.second, mode).append(";")
         }
         for (child in children) {
-            child.put(builder, mode)
+            child.put(builder, child.mode)
         }
         if (name != null && !empty) {
             builder.unindent().newline().append("}")
@@ -110,5 +110,12 @@ class ElementAttributeTree(
             }
         }
         return null
+    }
+
+    fun print(level: Int = 0) {
+        println("->".repeat(level) + " [${mode.name}] $name")
+        for (i in children) {
+            i.print(level + 1)
+        }
     }
 }

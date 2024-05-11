@@ -10,6 +10,8 @@ import java.io.File
 
 open class CommonElement(private val backingTree: ElementAttributeTree): DataType {
 
+    constructor(mode: OutputMode, tag: String? = null): this(ElementAttributeTree(mode, tag))
+
     fun addAttributes(vararg attributes: Attribute) {
         for (i in attributes) {
             addAttribute(i)
@@ -18,6 +20,10 @@ open class CommonElement(private val backingTree: ElementAttributeTree): DataTyp
 
     fun addChild(element: CommonElement) {
         backingTree.children.add(element.backingTree)
+    }
+
+    fun string(content: String) {
+        backingTree.children.add(ElementAttributeTree(OutputMode.Text, content))
     }
 
     fun addAttribute(attribute: Attribute, first: Boolean = false, forceAdd: Boolean = false) {
@@ -72,6 +78,7 @@ open class CommonElement(private val backingTree: ElementAttributeTree): DataTyp
     }
 
     fun saveTo(file: String, builder: OutputBuilder? = null) {
+        backingTree.print()
         val out = builder ?: OutputBuilder()
         put(out, backingTree.mode)
         File(file).writeText(out.toString())

@@ -1,9 +1,8 @@
 package bpsvg2
 
-import bpsvg2.eat.ElementAttributeTree
 import bpsvg2.eat.OutputMode
 
-class SVGElement(tag: String? = null) : CommonElement(ElementAttributeTree(OutputMode.XML, tag)) {
+class SVGElement(tag: String? = null) : CommonElement(OutputMode.XML, tag) {
 
     val a: SVGElement get() = makeChild(this, "a")
     val animate: SVGElement get() = makeChild(this, "animate")
@@ -48,7 +47,7 @@ class SVGElement(tag: String? = null) : CommonElement(ElementAttributeTree(Outpu
     val mask: SVGElement get() = makeChild(this, "mask")
     val metadata: SVGElement get() = makeChild(this, "metadata")
     val mpath: SVGElement get() = makeChild(this, "mpath")
-    //val path: PathElement.Name get() = PathElement.Name(this)
+    val path: PathElement get() = PathElement.makeChild(this, "path")
     val pattern: SVGElement get() = makeChild(this, "pattern")
     val polygon: SVGElement get() = makeChild(this, "polygon")
     val polyline: SVGElement get() = makeChild(this, "polyline")
@@ -57,7 +56,7 @@ class SVGElement(tag: String? = null) : CommonElement(ElementAttributeTree(Outpu
     val script: SVGElement get() = makeChild(this, "script")
     val set: SVGElement get() = makeChild(this, "set")
     val stop: SVGElement get() = makeChild(this, "stop")
-    //val style: StyleElement.Name get() = StyleElement.Name(this)
+    val style: CSSElement get() = CSSElement.makeChild(makeChild(this, "style"))
     val svg: SVGElement get() = makeChild(this, "svg")
     val switch: SVGElement get() = makeChild(this, "switch")
     val symbol: SVGElement get() = makeChild(this, "symbol")
@@ -75,7 +74,7 @@ class SVGElement(tag: String? = null) : CommonElement(ElementAttributeTree(Outpu
             return child
         }
 
-        fun root(vararg attributes: Attribute, operation: SVGOperation): SVGElement {
+        fun root(vararg attributes: Attribute, operation: SVGOperation? = null): SVGElement {
             val root = SVGElement()
             val head = SVGElement("?xml")
             val body = SVGElement("svg")
@@ -86,7 +85,7 @@ class SVGElement(tag: String? = null) : CommonElement(ElementAttributeTree(Outpu
                 "xmlns:xlink" to "http://www.w3.org/1999/xlink"
             )
             body.addAttributes(*attributes)
-            body.operation()
+            if (operation != null) body.operation()
             root.addChild(body)
             return root
         }

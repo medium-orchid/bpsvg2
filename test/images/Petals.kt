@@ -1,44 +1,47 @@
 package images
 
+import bpsvg2.*
 import bpsvg2.math.*
 import bpsvg2.math.d2.*
 
 fun main() {
-    /*SVG(
+    SVGElement.root(
         "width" to 600.px, "height" to 600.px,
         "viewBox" to Rect.byCenter(Vec2.zero, 600, 600)
     ) {
         style {
-            svg("background-color" to "beige")
-            select("#heading",
+            select("svg")(
+                "background-color" to "beige"
+            )
+            select("#heading")(
                 "font-size" to 24.px,
                 "font-weight" to "bold",
             )
-            select("#caption",
+            select("#caption")(
                 "font-size" to 12.px,
             )
-            select("#flower:hover",
+            select("#flower:hover")(
                 "cursor" to "crosshair",
             )
-            select("#fade-stop-1",
+            select("#fade-stop-1")(
                 "stop-color" to "blue",
             )
-            select("#fade-stop-2",
+            select("#fade-stop-2")(
                 "stop-color" to "white",
             )
-            select(".segment-fill",
+            select(".segment-fill")(
                 "fill" to get("segment-fill-fill"),
             )
-            select(".segment-fill:hover",
+            select(".segment-fill:hover")(
                 "fill" to get("segment-fill-fill-hover"),
                 "stroke" to get("segment-fill-stroke-hover")
             )
-            select(".segment-edge",
+            select(".segment-edge")(
                 "fill" to get("segment-edge-fill"),
                 "stroke" to get("segment-edge-stroke"),
                 "stroke-width" to get("segment-edge-stroke-width")
             )
-            select("#outer-petals",
+            select("#outer-petals")(
                 "opacity" to 0.75,
                 set("segment-fill-fill") to "azure",
                 set("segment-fill-fill-hover") to "plum",
@@ -50,7 +53,7 @@ fun main() {
                 set("segment-edge-stroke-hover") to "slateblue",
                 set("segment-edge-stroke-width") to 3,
             )
-            select("#inner-petals",
+            select("#inner-petals")(
                 set("segment-fill-fill") to "yellow",
                 set("segment-fill-fill-hover") to "darkseagreen",
                 set("segment-fill-stroke") to "yellow",
@@ -68,36 +71,39 @@ fun main() {
         desc {
             string("Mozilla CSS Getting Started - SVG demonstration")
         }
-        define("fade", radialGradient(
-            "*c" to Vec2.zero, "r" to 200,
-            "gradientUnits" to "userSpaceOnUse"
-        ) {
-            stop("id" to "fade-stop-1", "offset" to 33.percent)
-            stop("id" to "fade-stop-2", "offset" to 95.percent)
-        })
-        define("segment", g("class" to "segment") {
-            path("class" to "segment-fill") {
-                moveTo(Vec2.zero)
-                verticalBy(-200)
-                arcBy(40, 40, 0, largeArc = false, clockwise = false, Vec2(-62, 10))
-                close()
+        defs {
+            radialGradient(
+                id("fade"),
+                "*c" to Vec2.zero, "r" to 200,
+                "gradientUnits" to "userSpaceOnUse"
+            ) {
+                stop("id" to "fade-stop-1", "offset" to 33.percent)
+                stop("id" to "fade-stop-2", "offset" to 95.percent)
             }
-            path("class" to "segment-edge") {
-                moveTo(Vec2(0, -200))
-                arcBy(40, 40, 0, largeArc = false, clockwise = false, Vec2(-62, 10))
-            }
-        })
-        define("quadrant", g {
-            for (i in 0..<5) {
-                use(href("segment"), "transform" to (i * 18.deg).toOrtho())
-            }
-        })
-        define("petals", g {
-            for (i in 0..<4) {
-                use(href("quadrant"), "transform" to (i * 90.deg).toOrtho()) {
+            g("class" to "segment", id("segment")) {
+                path("class" to "segment-fill") {
+                    moveTo(Vec2.zero)
+                    verticalBy(-200)
+                    arcBy(40, 40, 0.deg, largeArc = false, clockwise = false, Vec2(-62, 10))
+                    close()
+                }
+                path("class" to "segment-edge") {
+                    moveTo(Vec2(0, -200))
+                    arcBy(40, 40, 0.deg, largeArc = false, clockwise = false, Vec2(-62, 10))
                 }
             }
-        })
+            g(id("quadrant")) {
+                for (i in 0..<5) {
+                    use(href("segment"), "transform" to (i * 18.deg).toOrtho())
+                }
+            }
+            g(id("petals")) {
+                for (i in 0..<4) {
+                    use(href("quadrant"), "transform" to (i * 90.deg).toOrtho()) {
+                    }
+                }
+            }
+        }
         text("id" to "heading", "*" to Vec2(-280, -270)) {
             string("SVG demonstration")
         }
@@ -115,5 +121,5 @@ fun main() {
                 "transform" to Ortho2D(1.0/3, 9.deg)
             )
         }
-    }.to("out/petals.svg")*/
+    }.saveTo("out/petals.svg")
 }
