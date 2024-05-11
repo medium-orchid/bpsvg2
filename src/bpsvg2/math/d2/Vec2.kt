@@ -33,7 +33,8 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
 
     private fun guard(other: Vec2) {
         if ((this.approximatelyEquals(zero) && this.unit == null)
-            || (other.approximatelyEquals(zero) && other.unit == null)) {
+            || (other.approximatelyEquals(zero) && other.unit == null)
+        ) {
             return
         }
         if (this.unit != other.unit) {

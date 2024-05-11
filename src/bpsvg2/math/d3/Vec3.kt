@@ -42,7 +42,8 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
 
     private fun guard(other: Vec3) {
         if ((this.approximatelyEquals(zero) && this.unit == null)
-            || (other.approximatelyEquals(zero) && other.unit == null)) {
+            || (other.approximatelyEquals(zero) && other.unit == null)
+        ) {
             return
         }
         if (this.unit != other.unit) {

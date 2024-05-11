@@ -22,7 +22,7 @@ class CSSElement(tag: String? = null, root: Boolean = false) : CommonElement(Out
         return makeChild(this, "@keyframes $identifier")
     }
 
-    operator fun invoke(vararg attributes: Attribute, operation: CSSOperation? = null) : CSSElement {
+    operator fun invoke(vararg attributes: Attribute, operation: CSSOperation? = null): CSSElement {
         for (i in attributes) {
             addAttributes(i)
         }

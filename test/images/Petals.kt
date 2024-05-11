@@ -111,14 +111,16 @@ fun main() {
             string("Move your mouse pointer over the flower.")
         }
         g(id("flower")) {
-            circle(id("overlay"),
+            circle(
+                id("overlay"),
                 "*c" to Vec2.zero, "r" to 200,
                 "stroke" to "none",
                 "fill" to url("fade"),
             )
             use(id("outer-petals"), href("petals"))
-            use(id("inner-petals"), href("petals"),
-                "transform" to Ortho2D(1.0/3, 9.deg)
+            use(
+                id("inner-petals"), href("petals"),
+                "transform" to Ortho2D(1.0 / 3, 9.deg)
             )
         }
     }.saveTo("out/petals.svg")

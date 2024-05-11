@@ -8,22 +8,28 @@ fun main() {
         val m = randomMatrix()
         assert(
             Mat2D.id.approximatelyEquals(
-            m * m.inverse()
-        ))
+                m * m.inverse()
+            )
+        )
         assert(
             Mat2D.id.approximatelyEquals(
-            m.pow(3) * m.pow(-3)
-        ))
-        assert(m.pow(3).approximatelyEquals(
-            m * m * m
-        ))
+                m.pow(3) * m.pow(-3)
+            )
+        )
+        assert(
+            m.pow(3).approximatelyEquals(
+                m * m * m
+            )
+        )
         assert(
             Mat2D.id.approximatelyEquals(
-            Mat2D.reflect(Random.nextDouble(0.0, 360.0).deg).pow(2)
-        ))
+                Mat2D.reflect(Random.nextDouble(0.0, 360.0).deg).pow(2)
+            )
+        )
     }
     assert(
         Mat2D.id.approximatelyEquals(
-        Mat2D.rotate((360 * 8.0 / 9.0).deg).pow(9)
-    ))
+            Mat2D.rotate((360 * 8.0 / 9.0).deg).pow(9)
+        )
+    )
 }

@@ -8,9 +8,9 @@ import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
 import java.io.File
 
-open class CommonElement(private val backingTree: ElementAttributeTree): DataType {
+open class CommonElement(private val backingTree: ElementAttributeTree) : DataType {
 
-    constructor(mode: OutputMode, tag: String? = null, root: Boolean = false):
+    constructor(mode: OutputMode, tag: String? = null, root: Boolean = false) :
             this(ElementAttributeTree(mode, tag, root))
 
     fun addAttributes(vararg attributes: Attribute) {
@@ -47,6 +47,7 @@ open class CommonElement(private val backingTree: ElementAttributeTree): DataTyp
                     addAttribute("${suffix}x" to "${s.x}$u", first, forceAdd)
                     addAttribute("${suffix}y" to "${s.y}$u", first, forceAdd)
                 }
+
                 is Rect -> {
                     val u = s.topLeft.unit ?: ""
                     addAttribute("${suffix}x" to "${s.topLeft.x}$u", first, forceAdd)

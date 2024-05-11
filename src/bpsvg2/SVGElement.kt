@@ -98,7 +98,7 @@ class SVGElement(tag: String? = null, root: Boolean = false) : CommonElement(Out
         return "style" to second
     }
 
-    operator fun invoke(vararg attributes: Attribute, operation: SVGOperation? = null) : SVGElement {
+    operator fun invoke(vararg attributes: Attribute, operation: SVGOperation? = null): SVGElement {
         for (i in attributes) {
             addAttribute(i)
         }

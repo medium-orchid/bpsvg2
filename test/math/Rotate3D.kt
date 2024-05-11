@@ -50,6 +50,6 @@ fun main() {
     // Powers
     for (i in 0..<100) {
         val q = randomUnitQuaternion()
-        assert((q*q*q).approximatelyEquals(q.pow(3)))
+        assert((q * q * q).approximatelyEquals(q.pow(3)))
     }
 }

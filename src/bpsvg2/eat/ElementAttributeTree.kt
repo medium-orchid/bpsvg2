@@ -9,7 +9,7 @@ class ElementAttributeTree(
     val mode: OutputMode,
     val name: String? = null,
     val root: Boolean = false
-): DataType {
+) : DataType {
     val attributes = arrayListOf<Attribute>()
     val children = arrayListOf<ElementAttributeTree>()
 
