@@ -8,7 +8,7 @@ import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
 import java.io.File
 
-open class CommonElement(private val backingTree: ElementAttributeTree) : DataType {
+open class Element(private val backingTree: ElementAttributeTree) : DataType {
 
     constructor(mode: OutputMode, tag: String? = null, root: Boolean = false) :
             this(ElementAttributeTree(mode, tag, root))
@@ -19,7 +19,7 @@ open class CommonElement(private val backingTree: ElementAttributeTree) : DataTy
         }
     }
 
-    fun addChild(element: CommonElement) {
+    fun addChild(element: Element) {
         backingTree.children.add(element.backingTree)
     }
 

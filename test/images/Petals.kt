@@ -5,7 +5,7 @@ import bpsvg2.math.*
 import bpsvg2.math.d2.*
 
 fun main() {
-    SVGElement.root(
+    SVG.root(
         "width" to 600.px, "height" to 600.px,
         "viewBox" to Rect.byCenter(Vec2.zero, 600, 600)
     ) {

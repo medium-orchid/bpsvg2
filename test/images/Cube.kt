@@ -14,7 +14,7 @@ fun main() {
     val view = 200.0.px
     val side = view / 2
     val viewBox = Rect.zeroCentered(view, view)
-    SVGElement.root("*" to viewBox) {
+    SVG.root("*" to viewBox) {
         defs {
             rect(
                 id("face"),

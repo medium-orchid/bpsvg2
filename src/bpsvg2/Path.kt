@@ -4,11 +4,11 @@ import bpsvg2.eat.OutputMode
 import bpsvg2.math.*
 import bpsvg2.math.d2.*
 
-class PathElement(tag: String? = null) : CommonElement(OutputMode.Path, tag) {
+class Path(tag: String? = null) : Element(OutputMode.Path, tag) {
 
     companion object {
-        fun makeChild(parent: CommonElement, tag: String? = null): PathElement {
-            val child = PathElement(tag)
+        fun makeChild(parent: Element, tag: String? = null): Path {
+            val child = Path(tag)
             parent.addChild(child)
             return child
         }
@@ -114,7 +114,7 @@ class PathElement(tag: String? = null) : CommonElement(OutputMode.Path, tag) {
         makeChild(this, "z")
     }
 
-    operator fun invoke(vararg attributes: Attribute, operation: PathOperation? = null): PathElement {
+    operator fun invoke(vararg attributes: Attribute, operation: PathOperation? = null): Path {
         for (i in attributes) {
             addAttributes(i)
         }

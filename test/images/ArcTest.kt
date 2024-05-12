@@ -5,7 +5,7 @@ import bpsvg2.math.Rect
 import bpsvg2.math.d2.*
 
 fun main() {
-    SVGElement.root("viewBox" to Rect(20, 20)) {
+    SVG.root("viewBox" to Rect(20, 20)) {
         val origin = Vec2(6.0, 10.0)
         val endPoint = Vec2(14.0, 10.0)
         val rx = 6.0
