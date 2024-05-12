@@ -29,6 +29,12 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
         return Angle(value + other.toValue(unit), unit)
     }
 
+    operator fun times(other: Vec2): Vec2 {
+        val s = sin()
+        val c = cos()
+        return Vec2(c * other.x - s * other.y, s * other.x + c * other.y)
+    }
+
     fun mod(): Angle {
         return Angle(value.mod(unit.turn), unit)
     }

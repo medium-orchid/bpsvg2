@@ -28,6 +28,10 @@ data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.
         return Ortho2D(scale * other, angle, scale * offset)
     }
 
+    operator fun times(other: Vec2): Vec2 {
+        return scale * (angle * other) + offset
+    }
+
     operator fun plus(other: Vec2): Ortho2D {
         return Ortho2D(scale, angle, offset + other)
     }
