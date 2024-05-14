@@ -78,9 +78,9 @@ class SVG(tag: String? = null, root: Boolean = false) : Element(OutputMode.XML, 
         fun root(vararg attributes: Attribute, operation: SVGOperation? = null): SVG {
             val root = SVG()
             val head = SVG("?xml")
-            val body = SVG("svg")
             head.addAttributes("version" to "1.0", "encoding" to "UTF-8")
             root.addChild(head)
+            val body = SVG("svg")
             body.addAttributes(
                 "xmlns" to "http://www.w3.org/2000/svg",
                 "xmlns:xlink" to "http://www.w3.org/1999/xlink"

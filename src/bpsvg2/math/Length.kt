@@ -3,6 +3,7 @@ package bpsvg2.math
 import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
+import bpsvg2.math.d2.Vec2
 
 data class Length(val l: Double, val unit: String? = null) : DataType {
 
@@ -47,5 +48,9 @@ data class Length(val l: Double, val unit: String? = null) : DataType {
 
     override fun toString(): String {
         return "$l${unit ?: ""}"
+    }
+
+    fun toVec2(): Vec2 {
+        return Vec2(this, this)
     }
 }

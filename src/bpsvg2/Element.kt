@@ -3,6 +3,7 @@ package bpsvg2
 import bpsvg2.eat.ElementAttributeTree
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
+import bpsvg2.math.Length
 import bpsvg2.math.Rect
 import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
@@ -23,8 +24,8 @@ open class Element(private val backingTree: ElementAttributeTree) : DataType {
         backingTree.children.add(element.backingTree)
     }
 
-    fun string(content: String) {
-        backingTree.children.add(ElementAttributeTree(OutputMode.Text, content))
+    fun string(content: Any) {
+        backingTree.children.add(ElementAttributeTree(OutputMode.Text, content.toString()))
     }
 
     fun addAttribute(attribute: Attribute, first: Boolean = false, forceAdd: Boolean = false) {
@@ -39,15 +40,31 @@ open class Element(private val backingTree: ElementAttributeTree) : DataType {
                 is Ortho3D -> if (s.approximatelyEquals(Ortho3D.id)) return
             }
         }
-        if (f.startsWith("*")) {
+        if (f.startsWith("**")) {
+            val suffix = f.substring(2)
+            when (s) {
+                is Length -> {
+                    addAttribute("${suffix}width" to s, first, forceAdd)
+                    addAttribute("${suffix}height" to s, first, forceAdd)
+                }
+                is Vec2 -> {
+                    val u = s.unit ?: ""
+                    addAttribute("${suffix}width" to "${s.x}$u", first, forceAdd)
+                    addAttribute("${suffix}height" to "${s.y}$u", first, forceAdd)
+                }
+            }
+        } else if (f.startsWith("*")) {
             val suffix = f.substring(1)
             when (s) {
+                is Length -> {
+                    addAttribute("${suffix}x" to s, first, forceAdd)
+                    addAttribute("${suffix}y" to s, first, forceAdd)
+                }
                 is Vec2 -> {
                     val u = s.unit ?: ""
                     addAttribute("${suffix}x" to "${s.x}$u", first, forceAdd)
                     addAttribute("${suffix}y" to "${s.y}$u", first, forceAdd)
                 }
-
                 is Rect -> {
                     val u = s.topLeft.unit ?: ""
                     addAttribute("${suffix}x" to "${s.topLeft.x}$u", first, forceAdd)

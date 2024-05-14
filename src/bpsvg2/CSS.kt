@@ -18,6 +18,14 @@ class CSS(tag: String? = null, root: Boolean = false) : Element(OutputMode.CSS, 
         return makeChild(this, tag)
     }
 
+    fun byID(tag: String): CSS {
+        return makeChild(this, "#$tag")
+    }
+
+    fun byClass(tag: String): CSS {
+        return makeChild(this, ".$tag")
+    }
+
     fun keyframes(identifier: String): CSS {
         return makeChild(this, "@keyframes $identifier")
     }

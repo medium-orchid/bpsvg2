@@ -4,6 +4,7 @@ typealias Attribute = Pair<String, Any>
 typealias SVGOperation = SVG.() -> Unit
 typealias CSSOperation = CSS.() -> Unit
 typealias PathOperation = Path.() -> Unit
+typealias HTMLOperation = HTML.() -> Unit
 
 fun href(id: String): Pair<String, String> {
     return "href" to "#$id"

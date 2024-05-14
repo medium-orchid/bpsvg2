@@ -38,21 +38,23 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         if (mode != OutputMode.CSS) {
             throw IllegalStateException(OutputMode.CSS.expectedModeError(mode))
         }
-        var id = true
         if (approx(scale, 0.0)) {
             builder.append("scale(0)")
-        } else if (!approx(scale, 1.0)) {
+            return
+        }
+            var id = true
+        if (!offset.approximatelyEquals(Vec3.zero)) {
+            builder.append("translate3d(").append(offset, mode).append(")")
+            id = false
+        }
+        if (!approx(scale, 1.0)) {
+            if (!id) builder.append(" ")
             builder.append("scale(").append(scale, mode).append(")")
             id = false
         }
         if (!quat.approximatelyEquals(Quat.id)) {
             if (!id) builder.append(" ")
             builder.append(quat, mode)
-            id = false
-        }
-        if (!offset.approximatelyEquals(Vec3.zero)) {
-            if (!id) builder.append(" ")
-            builder.append("translate3d(").append(offset, mode).append(")")
             id = false
         }
         if (id) builder.append("rotate3d(0)")

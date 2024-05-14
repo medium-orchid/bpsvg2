@@ -47,6 +47,8 @@ class ElementAttributeTree(
             if (children.isEmpty()) {
                 if (name[0] == '?') {
                     builder.append("?>")
+                } else if (name[0] == '!') {
+                    builder.append(">")
                 } else {
                     builder.append(" />")
                 }

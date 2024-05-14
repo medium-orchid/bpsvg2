@@ -185,7 +185,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         if (n == 0.0) {
             builder.append("rotate3d(0)")
         } else {
-            builder.append("rotate3d(").join(mode, w, t).append(")")
+            builder.append("rotate3d(").join(mode, w / n, t).append(")")
         }
     }
 
