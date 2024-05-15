@@ -52,7 +52,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
     }
 
     operator fun times(other: Ortho3D): Ortho3D {
-        return Ortho3D(other.scale, this * other.quat, other.offset)
+        return Ortho3D(other.scale, this * other.quat, this * other.offset)
     }
 
     operator fun plus(other: Quat): Quat {

@@ -26,8 +26,10 @@ class CSS(tag: String? = null, root: Boolean = false) : Element(OutputMode.CSS, 
         return makeChild(this, ".$tag")
     }
 
-    fun keyframes(identifier: String): CSS {
-        return makeChild(this, "@keyframes $identifier")
+    fun keyframes(identifier: String, operation: CSSOperation? = null): CSS {
+        val element = makeChild(this, "@keyframes $identifier")
+        if (operation != null) element.operation()
+        return element
     }
 
     operator fun invoke(vararg attributes: Attribute, operation: CSSOperation? = null): CSS {

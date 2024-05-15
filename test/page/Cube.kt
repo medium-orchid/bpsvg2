@@ -23,6 +23,12 @@ fun main() {
         Vec3.X.axisAngle(0.75.turns), //Bottom
     )
 
+    val frames = arrayOf(
+        "from",
+        "50%",
+        "to",
+    )
+
     HTML.root("lang" to "en-US") {
         head {
             title { string("Cube example") }
@@ -36,16 +42,12 @@ fun main() {
                     "animation-name" to "spin",
                     "animation-direction" to "alternate",
                 )
-                keyframes("spin")() {
-                    select("from") (
-                        "transform" to Quat.randomUnit().toMat3D()
-                    )
-                    select("50%") (
-                        "transform" to Quat.randomUnit().toMat3D()
-                    )
-                    select("to") (
-                        "transform" to Quat.randomUnit().toMat3D()
-                    )
+                keyframes("spin") {
+                    for (i in frames) {
+                        select(i) (
+                            "transform" to Quat.randomUnit().toMat3D()
+                        )
+                    }
                 }
                 byClass("face")(
                     "display" to "flex",

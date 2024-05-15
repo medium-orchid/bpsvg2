@@ -7,7 +7,7 @@ fun approx(a: Double, b: Double): Boolean {
     return abs(a - b) < EPS
 }
 
-const val EPS: Double = 1E-6
+const val EPS: Double = 1E-9
 
 fun randomNormal(): Double {
     return sqrt(-2 * ln(Random.nextDouble())) * cos(2 * PI * Random.nextDouble())

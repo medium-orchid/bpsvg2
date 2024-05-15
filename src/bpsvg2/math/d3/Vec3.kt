@@ -17,6 +17,10 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         }
     }
 
+    val xl get() = Length(x, unit)
+    val yl get() = Length(y, unit)
+    val zl get() = Length(z, unit)
+
     companion object {
         val zero = Vec3(0, 0, 0)
         val X = Vec3(1, 0, 0)
