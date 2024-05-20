@@ -37,23 +37,26 @@ data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
-        var id = true
-        if (approx(scale, 0.0)) {
+        if (approximatelyEquals(id)) {
+            builder.append("scale(1)")
+            return
+        } else if (approx(scale, 0.0)) {
             builder.append("scale(0)")
-        } else if (!approx(scale, 1.0)) {
+            return
+        }
+        var empty = true
+        if (!offset.approximatelyEquals(Vec2.zero)) {
+            builder.append("translate(").append(offset).append(")")
+            empty = false
+        }
+        if (!approx(scale, 1.0)) {
+            if (empty) builder.append(" ")
             builder.append("scale(").append(scale).append(")")
-            id = false
+            empty = false
         }
         if (!angle.approximatelyEquals(Angle.id)) {
-            if (!id) builder.append(" ")
+            if (empty) builder.append(" ")
             builder.append("rotate(").append(angle).append(")")
-            id = false
         }
-        if (!offset.approximatelyEquals(Vec2.zero)) {
-            if (!id) builder.append(" ")
-            builder.append("translate(").append(offset).append(")")
-            id = false
-        }
-        if (id) builder.append("rotate(0)")
     }
 }

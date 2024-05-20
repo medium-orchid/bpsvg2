@@ -49,8 +49,11 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         if (approx(scale, 0.0)) {
             builder.append("scale(0)")
             return
+        } else if (approximatelyEquals(id)) {
+            builder.append("scale(1)")
+            return
         }
-            var id = true
+        var empty = true
         if (!offset.approximatelyEquals(Vec3.zero)) {
             val x0 = approx(offset.x, 0.0)
             val y0 = approx(offset.y, 0.0)
@@ -64,18 +67,17 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
             } else {
                 builder.append("translate3d(").append(offset, mode).append(")")
             }
-            id = false
+            empty = false
         }
         if (!approx(scale, 1.0)) {
-            if (!id) builder.append(" ")
+            if (!empty) builder.append(" ")
             builder.append("scale(").append(scale, mode).append(")")
-            id = false
+            empty = false
         }
         if (!quat.approximatelyEquals(Quat.id)) {
-            if (!id) builder.append(" ")
+            if (!empty) builder.append(" ")
             builder.append(quat, mode)
-            id = false
+            empty = false
         }
-        if (id) builder.append("rotate3d(0)")
     }
 }
