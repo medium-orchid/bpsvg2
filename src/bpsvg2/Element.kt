@@ -9,7 +9,7 @@ import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
 import java.io.File
 
-open class Element(private val backingTree: ElementAttributeTree) : DataType {
+open class Element(val backingTree: ElementAttributeTree) : DataType {
 
     constructor(mode: OutputMode, tag: String? = null, root: Boolean = false) :
             this(ElementAttributeTree(mode, tag, root))
@@ -26,10 +26,6 @@ open class Element(private val backingTree: ElementAttributeTree) : DataType {
 
     fun string(content: Any) {
         backingTree.children.add(ElementAttributeTree(OutputMode.Text, content.toString()))
-    }
-
-    fun empty() {
-        string("")
     }
 
     fun addAttribute(attribute: Attribute, first: Boolean = false, forceAdd: Boolean = false) {

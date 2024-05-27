@@ -1,8 +1,9 @@
 package bpsvg2
 
+import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
 
-class HTMLElement(tag: String? = null, root: Boolean = false) : Element(OutputMode.XML, tag, root) {
+class HTMLElement(tag: String? = null, root: Boolean = false) : Element(OutputMode.HTML, tag, root) {
 
     val a: HTMLElement get() = makeChild(this, "a")
     val abbr: HTMLElement get() = makeChild(this, "abbr")
@@ -116,6 +117,7 @@ class HTMLElement(tag: String? = null, root: Boolean = false) : Element(OutputMo
     val xmp: HTMLElement get() = makeChild(this, "xmp")
 
     companion object {
+
         fun makeChild(parent: Element, tag: String? = null): HTMLElement {
             val child = HTMLElement(tag)
             parent.addChild(child)

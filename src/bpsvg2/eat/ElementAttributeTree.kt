@@ -1,9 +1,6 @@
 package bpsvg2.eat
 
 import bpsvg2.*
-import bpsvg2.math.*
-import bpsvg2.math.d2.*
-import bpsvg2.math.d3.*
 
 class ElementAttributeTree(
     val mode: OutputMode,
@@ -13,16 +10,27 @@ class ElementAttributeTree(
     val attributes = arrayListOf<Attribute>()
     val children = arrayListOf<ElementAttributeTree>()
 
+    companion object {
+        private val voidElements = setOf(
+            "area", "base", "br", "col", "embed", "hr", "img", "input",
+            "link", "meta", "source", "track", "wbr",
+        )
+    }
+
     override fun put(builder: OutputBuilder, mode: OutputMode) {
         when (this.mode) {
-            OutputMode.XML -> putXML(builder)
+            OutputMode.XML -> putXML(builder, false)
+            OutputMode.HTML -> putXML(builder, true)
             OutputMode.CSS -> putCSS(builder)
             OutputMode.Path -> putPath(builder)
             OutputMode.Text -> putText(builder)
         }
     }
 
-    fun putXML(builder: OutputBuilder) {
+    fun putXML(builder: OutputBuilder, htmlMode: Boolean) {
+        if (htmlMode && !voidElements.contains(name)) {
+            children.add(ElementAttributeTree(OutputMode.Text, ""))
+        }
         if (name != null) {
             builder.newline().append("<$name")
             for (i in attributes) {
@@ -49,8 +57,10 @@ class ElementAttributeTree(
                     builder.append("?>")
                 } else if (name[0] == '!') {
                     builder.append(">")
-                } else {
+                } else if (!htmlMode) {
                     builder.append(" />")
+                } else {
+                    builder.append(">")
                 }
             } else {
                 builder.unindent()
