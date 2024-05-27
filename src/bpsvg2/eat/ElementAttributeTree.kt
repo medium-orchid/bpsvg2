@@ -18,7 +18,7 @@ class ElementAttributeTree(
             OutputMode.XML -> putXML(builder)
             OutputMode.CSS -> putCSS(builder)
             OutputMode.Path -> putPath(builder)
-            OutputMode.Text -> if (name != null) builder.newline().append(name)
+            OutputMode.Text -> putText(builder)
         }
     }
 
@@ -96,6 +96,12 @@ class ElementAttributeTree(
             }
         }
         builder.unindent().newline().append("\" />")
+    }
+
+    fun putText(builder: OutputBuilder) {
+        if (!name.isNullOrEmpty()) {
+            builder.newline().append(name)
+        }
     }
 
     fun valueOf(attribute: String): Any? {

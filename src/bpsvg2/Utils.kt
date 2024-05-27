@@ -1,10 +1,10 @@
 package bpsvg2
 
 typealias Attribute = Pair<String, Any>
-typealias SVGOperation = SVG.() -> Unit
-typealias CSSOperation = CSS.() -> Unit
+typealias SVGOperation = SVGElement.() -> Unit
+typealias CSSOperation = CSSElement.() -> Unit
 typealias PathOperation = Path.() -> Unit
-typealias HTMLOperation = HTML.() -> Unit
+typealias HTMLOperation = HTMLElement.() -> Unit
 
 fun href(id: String): Pair<String, String> {
     return "href" to "#$id"

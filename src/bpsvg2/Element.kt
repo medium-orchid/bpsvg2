@@ -28,6 +28,10 @@ open class Element(private val backingTree: ElementAttributeTree) : DataType {
         backingTree.children.add(ElementAttributeTree(OutputMode.Text, content.toString()))
     }
 
+    fun empty() {
+        string("")
+    }
+
     fun addAttribute(attribute: Attribute, first: Boolean = false, forceAdd: Boolean = false) {
         val f = attribute.first
         val s = attribute.second

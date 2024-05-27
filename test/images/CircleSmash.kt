@@ -10,7 +10,7 @@ fun main() {
     val color1 = "#00bfff40"
     val color2 = "#ff149340"
     val n = 10
-    SVG.root("viewBox" to viewBox) {
+    SVGElement.root("viewBox" to viewBox) {
         val circleID = "myCircle"
         val gradientID = "myGradient"
         defs {

@@ -6,7 +6,7 @@ import bpsvg2.math.d2.*
 
 fun main() {
     val viewBox = Rect(10, 10)
-    SVG.root("viewBox" to viewBox) {
+    SVGElement.root("viewBox" to viewBox) {
         val circleID = "circ"
         val gradientID = "grad"
         defs {

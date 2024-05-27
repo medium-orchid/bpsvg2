@@ -29,7 +29,7 @@ fun main() {
         "to",
     )
 
-    HTML.root("lang" to "en-US") {
+    HTMLElement.root("lang" to "en-US") {
         head {
             title { string("Cube example") }
             style {

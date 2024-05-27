@@ -33,7 +33,7 @@ fun main() {
         "to",
     )
 
-    SVG.root("**" to size) {
+    SVGElement.root("**" to size) {
         style {
             select("*") (
                 "transform-origin" to "center",
