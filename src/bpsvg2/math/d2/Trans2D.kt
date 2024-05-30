@@ -5,35 +5,35 @@ import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
 
-data class Ortho2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
+data class Trans2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
 
     companion object {
-        val id = Ortho2D(1.0, Angle.id)
+        val id = Trans2D(1.0, Angle.id)
     }
 
-    fun approximatelyEquals(other: Ortho2D): Boolean {
+    fun approximatelyEquals(other: Trans2D): Boolean {
         return approx(scale, other.scale)
                 && angle.approximatelyEquals(other.angle)
                 && offset.approximatelyEquals(other.offset)
     }
 
-    operator fun times(other: Ortho2D): Ortho2D {
+    operator fun times(other: Trans2D): Trans2D {
         // k't'(kt + x) + x'
         // k't'kt + k't'x + x'
         val newOffset = scale * angle.toMat2D() * other.offset + offset
-        return Ortho2D(scale * other.scale, angle + other.angle, newOffset)
+        return Trans2D(scale * other.scale, angle + other.angle, newOffset)
     }
 
-    operator fun times(other: Double): Ortho2D {
-        return Ortho2D(scale * other, angle, scale * offset)
+    operator fun times(other: Double): Trans2D {
+        return Trans2D(scale * other, angle, scale * offset)
     }
 
     operator fun times(other: Vec2): Vec2 {
         return scale * (angle * other) + offset
     }
 
-    operator fun plus(other: Vec2): Ortho2D {
-        return Ortho2D(scale, angle, offset + other)
+    operator fun plus(other: Vec2): Trans2D {
+        return Trans2D(scale, angle, offset + other)
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {

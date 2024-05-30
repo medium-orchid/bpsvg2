@@ -17,11 +17,11 @@ operator fun Int.times(other: Vec2): Vec2 {
     return other * this.toDouble()
 }
 
-operator fun Double.times(other: Ortho2D): Ortho2D {
+operator fun Double.times(other: Trans2D): Trans2D {
     return other * this
 }
 
-operator fun Int.times(other: Ortho2D): Ortho2D {
+operator fun Int.times(other: Trans2D): Trans2D {
     return other * this.toDouble()
 }
 
@@ -33,9 +33,9 @@ operator fun Int.times(other: Angle): Angle {
     return other * this.toDouble()
 }
 
-val Double.ortho2D: Ortho2D get() = Ortho2D(this, Angle.id, Vec2.zero)
+val Double.trans2D: Trans2D get() = Trans2D(this, Angle.id, Vec2.zero)
 
-val Int.ortho2D: Ortho2D get() = Ortho2D(this.toDouble(), Angle.id, Vec2.zero)
+val Int.trans2D: Trans2D get() = Trans2D(this.toDouble(), Angle.id, Vec2.zero)
 
 val Double.rad: Angle get() = Angle(this, AngleUnits.RAD)
 

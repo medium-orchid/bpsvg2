@@ -51,8 +51,8 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         return Quat(other * r, other * i, other * j, other * k)
     }
 
-    operator fun times(other: Ortho3D): Ortho3D {
-        return Ortho3D(other.scale, this * other.quat, this * other.offset)
+    operator fun times(other: Trans3D): Trans3D {
+        return Trans3D(other.scale, this * other.quat, this * other.offset)
     }
 
     operator fun plus(other: Quat): Quat {
@@ -171,8 +171,8 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         return pow(n.toDouble())
     }
 
-    fun toOrtho(): Ortho3D {
-        return Ortho3D(1.0, this)
+    fun toTrans(): Trans3D {
+        return Trans3D(1.0, this)
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {

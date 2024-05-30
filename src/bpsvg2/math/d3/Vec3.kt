@@ -106,8 +106,8 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         return "Vec3($x, $y, $z)${unit ?: ""}"
     }
 
-    fun toOrtho(): Ortho3D {
-        return Ortho3D(1.0, Quat.id, this)
+    fun toTrans(): Trans3D {
+        return Trans3D(1.0, Quat.id, this)
     }
 
     fun toMat3D(): Mat3D {
@@ -119,8 +119,8 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         )
     }
 
-    fun axisAngle(angle: Angle): Ortho3D {
-        return Ortho3D(1.0, Quat.fromAxisAngle(this, angle), zero)
+    fun axisAngle(angle: Angle): Trans3D {
+        return Trans3D(1.0, Quat.fromAxisAngle(this, angle), zero)
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {

@@ -14,12 +14,12 @@ fun main() {
 
     val size = 500.px
     val side = 250.px
-    val offset = ((side / 2) * Vec3.Z).toOrtho()
+    val offset = ((side / 2) * Vec3.Z).toTrans()
 
     val colors = Array(6) {i -> "hsla(${360 * i / 6}, 75%, 50%, 0.75)"}
 
     val rotations = arrayOf(
-        Ortho3D.id, //Front
+        Trans3D.id, //Front
         Vec3.Y.axisAngle(0.25.turns), //Right
         Vec3.Y.axisAngle(0.5.turns), //Back
         Vec3.Y.axisAngle(0.75.turns), //Left

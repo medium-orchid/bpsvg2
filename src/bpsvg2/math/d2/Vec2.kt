@@ -95,7 +95,7 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
         return "Vec2($x, $y)${unit ?: ""}"
     }
 
-    fun toOrtho(): Ortho2D {
-        return Ortho2D(1.0, Angle.id, this)
+    fun toTrans(): Trans2D {
+        return Trans2D(1.0, Angle.id, this)
     }
 }

@@ -26,11 +26,11 @@ operator fun Int.plus(other: Quat): Quat {
     return other + this.toDouble()
 }
 
-operator fun Double.times(other: Ortho3D): Ortho3D {
+operator fun Double.times(other: Trans3D): Trans3D {
     return other * this
 }
 
-operator fun Int.times(other: Ortho3D): Ortho3D {
+operator fun Int.times(other: Trans3D): Trans3D {
     return other * this.toDouble()
 }
 
@@ -46,6 +46,6 @@ operator fun Length.times(other: Vec3): Vec3 {
     return other * this
 }
 
-val Double.ortho3D: Ortho3D get() = Ortho3D(this, Quat.id, Vec3.zero)
+val Double.trans3D: Trans3D get() = Trans3D(this, Quat.id, Vec3.zero)
 
-val Int.ortho3D: Ortho3D get() = Ortho3D(this.toDouble(), Quat.id, Vec3.zero)
+val Int.trans3D: Trans3D get() = Trans3D(this.toDouble(), Quat.id, Vec3.zero)

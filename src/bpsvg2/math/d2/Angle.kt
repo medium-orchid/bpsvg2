@@ -51,8 +51,8 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
         return Mat2D.rotate(this)
     }
 
-    fun toOrtho(): Ortho2D {
-        return Ortho2D(1.0, this, Vec2.zero)
+    fun toTrans(): Trans2D {
+        return Trans2D(1.0, this, Vec2.zero)
     }
 
     fun sin(): Double {

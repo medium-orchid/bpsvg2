@@ -5,13 +5,13 @@ import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
 
-data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.zero) : DataType {
+data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.zero) : DataType {
 
     companion object {
-        val id = Ortho3D(1.0, Quat.id)
+        val id = Trans3D(1.0, Quat.id)
     }
 
-    fun approximatelyEquals(other: Ortho3D): Boolean {
+    fun approximatelyEquals(other: Trans3D): Boolean {
         return approx(scale, other.scale)
                 && quat.approximatelyEquals(other.quat)
                 && offset.approximatelyEquals(other.offset)
@@ -21,25 +21,25 @@ data class Ortho3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         return offset.toMat3D() * Mat3D.scale(scale) * quat.toMat3D()
     }
 
-    operator fun times(other: Ortho3D): Ortho3D {
+    operator fun times(other: Trans3D): Trans3D {
         val newOffset = scale * quat * other.offset + offset
-        return Ortho3D(scale * other.scale, quat * other.quat, newOffset)
+        return Trans3D(scale * other.scale, quat * other.quat, newOffset)
     }
 
-    operator fun times(other: Double): Ortho3D {
-        return Ortho3D(scale * other, quat, scale * offset)
+    operator fun times(other: Double): Trans3D {
+        return Trans3D(scale * other, quat, scale * offset)
     }
 
     operator fun times(other: Vec3): Vec3 {
         return scale * (quat * (offset + other))
     }
 
-    operator fun plus(other: Vec3): Ortho3D {
-        return Ortho3D(scale, quat, offset + other)
+    operator fun plus(other: Vec3): Trans3D {
+        return Trans3D(scale, quat, offset + other)
     }
 
-    operator fun minus(other: Vec3): Ortho3D {
-        return Ortho3D(scale, quat, offset - other)
+    operator fun minus(other: Vec3): Trans3D {
+        return Trans3D(scale, quat, offset - other)
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {

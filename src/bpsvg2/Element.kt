@@ -36,8 +36,8 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
                 is Mat2D -> if (s.approximatelyEquals(Mat2D.id)) return
                 is Mat3D -> if (s.approximatelyEquals(Mat3D.id)) return
                 is Quat -> if (s.approximatelyEquals(Quat.id)) return
-                is Ortho2D -> if (s.approximatelyEquals(Ortho2D.id)) return
-                is Ortho3D -> if (s.approximatelyEquals(Ortho3D.id)) return
+                is Trans2D -> if (s.approximatelyEquals(Trans2D.id)) return
+                is Trans3D -> if (s.approximatelyEquals(Trans3D.id)) return
             }
         }
         if (f.startsWith("**")) {
@@ -71,6 +71,15 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
                     addAttribute("${suffix}y" to "${s.topLeft.y}$u", first, forceAdd)
                     addAttribute("${suffix}width" to s.width, first, forceAdd)
                     addAttribute("${suffix}height" to s.height, first, forceAdd)
+                }
+            }
+        } else if (f.startsWith("%")) {
+            val suffix = f.substring(1)
+            when (s) {
+                is Vec2 -> {
+                    val u = s.unit ?: ""
+                    addAttribute("x$suffix" to "${s.x}$u", first, forceAdd)
+                    addAttribute("y$suffix" to "${s.y}$u", first, forceAdd)
                 }
             }
         } else {

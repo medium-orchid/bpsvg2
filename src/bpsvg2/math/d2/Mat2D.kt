@@ -131,11 +131,11 @@ data class Mat2D(
                 && approx(a * b + c * d, 0.0)
     }
 
-    fun toOrtho(): Ortho2D {
+    fun toOrtho(): Trans2D {
         if (isOrthogonal()) {
             val k = det()
             val r = Angle.atan2(b, a)
-            return Ortho2D(k, r, Vec2(x, y))
+            return Trans2D(k, r, Vec2(x, y))
         } else {
             throw IllegalArgumentException("Matrix is not orthogonal")
         }

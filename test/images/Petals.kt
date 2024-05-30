@@ -94,12 +94,12 @@ fun main() {
             }
             g(id("quadrant")) {
                 for (i in 0..<5) {
-                    use(href("segment"), "transform" to (i * 18.deg).toOrtho())
+                    use(href("segment"), "transform" to (i * 18.deg).toTrans())
                 }
             }
             g(id("petals")) {
                 for (i in 0..<4) {
-                    use(href("quadrant"), "transform" to (i * 90.deg).toOrtho()) {
+                    use(href("quadrant"), "transform" to (i * 90.deg).toTrans()) {
                     }
                 }
             }
@@ -120,7 +120,7 @@ fun main() {
             use(id("outer-petals"), href("petals"))
             use(
                 id("inner-petals"), href("petals"),
-                "transform" to Ortho2D(1.0 / 3, 9.deg)
+                "transform" to Trans2D(1.0 / 3, 9.deg)
             )
         }
     }.saveTo("out/petals.svg")
