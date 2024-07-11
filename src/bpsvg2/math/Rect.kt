@@ -5,15 +5,15 @@ import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.d2.Vec2
 import bpsvg2.eat.OutputMode
 
-data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : DataType {
+data class Rect(val topLeft: Vec2, val width: Dimension, val height: Dimension) : DataType {
 
-    constructor(width: Length, height: Length) : this(Vec2.zero.u(width.unit), width, height)
+    constructor(width: Dimension, height: Dimension) : this(Vec2.zero.u(width.unit), width, height)
 
-    constructor(topLeft: Vec2, width: Double, height: Double) : this(topLeft, width.length, height.length)
+    constructor(topLeft: Vec2, width: Double, height: Double) : this(topLeft, width.dimension, height.dimension)
 
     constructor(width: Double, height: Double) : this(Vec2.zero, width, height)
 
-    constructor(topLeft: Vec2, width: Int, height: Int) : this(topLeft, width.length, height.length)
+    constructor(topLeft: Vec2, width: Int, height: Int) : this(topLeft, width.dimension, height.dimension)
 
     constructor(width: Int, height: Int) : this(Vec2.zero, width, height)
 
@@ -23,7 +23,7 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : Data
     }
 
     companion object {
-        fun byCenter(center: Vec2, width: Length, height: Length): Rect {
+        fun byCenter(center: Vec2, width: Dimension, height: Dimension): Rect {
             val diagonal = Vec2(width, height) / 2.0
             return Rect(center - diagonal, width, height)
         }
@@ -38,7 +38,7 @@ data class Rect(val topLeft: Vec2, val width: Length, val height: Length) : Data
             return Rect(center - diagonal, width, height)
         }
 
-        fun zeroCentered(width: Length, height: Length): Rect {
+        fun zeroCentered(width: Dimension, height: Dimension): Rect {
             return byCenter(Vec2.zero, width, height)
         }
 

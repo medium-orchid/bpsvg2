@@ -1,6 +1,6 @@
 package bpsvg2.math.d3
 
-import bpsvg2.math.Length
+import bpsvg2.math.Dimension
 
 operator fun Double.times(other: Vec3): Vec3 {
     return other * this
@@ -42,7 +42,7 @@ operator fun Int.times(other: Mat3D): Mat3D {
     return other * this.toDouble()
 }
 
-operator fun Length.times(other: Vec3): Vec3 {
+operator fun Dimension.times(other: Vec3): Vec3 {
     return other * this
 }
 

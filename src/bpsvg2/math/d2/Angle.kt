@@ -3,7 +3,7 @@ package bpsvg2.math.d2
 import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
-import bpsvg2.math.approx
+import bpsvg2.math.*
 import kotlin.math.*
 import kotlin.random.Random
 
@@ -27,6 +27,10 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
 
     operator fun plus(other: Angle): Angle {
         return Angle(value + other.toValue(unit), unit)
+    }
+
+    operator fun minus(other: Angle): Angle {
+        return Angle(value - other.toValue(unit), unit)
     }
 
     operator fun times(other: Vec2): Vec2 {
@@ -61,6 +65,10 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
 
     fun cos(): Double {
         return cos(toValue(AngleUnits.RAD))
+    }
+
+    fun unitVector(): Vec2 {
+        return Vec2(cos(), sin())
     }
 
     operator fun times(other: Double): Angle {

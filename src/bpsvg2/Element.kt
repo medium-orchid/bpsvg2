@@ -3,7 +3,7 @@ package bpsvg2
 import bpsvg2.eat.ElementAttributeTree
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
-import bpsvg2.math.Length
+import bpsvg2.math.Dimension
 import bpsvg2.math.Rect
 import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
@@ -43,7 +43,7 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
         if (f.startsWith("**")) {
             val suffix = f.substring(2)
             when (s) {
-                is Length -> {
+                is Dimension -> {
                     addAttribute("${suffix}width" to s, first, forceAdd)
                     addAttribute("${suffix}height" to s, first, forceAdd)
                 }
@@ -56,7 +56,7 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
         } else if (f.startsWith("*")) {
             val suffix = f.substring(1)
             when (s) {
-                is Length -> {
+                is Dimension -> {
                     addAttribute("${suffix}x" to s, first, forceAdd)
                     addAttribute("${suffix}y" to s, first, forceAdd)
                 }

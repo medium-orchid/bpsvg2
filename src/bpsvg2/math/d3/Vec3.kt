@@ -11,15 +11,15 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
 
     constructor(x: Int, y: Int, z: Int, unit: String? = null) : this(x.toDouble(), y.toDouble(), z.toDouble(), unit)
 
-    constructor(x: Length, y: Length, z: Length) : this(x.l, y.l, z.l, x.unit) {
+    constructor(x: Dimension, y: Dimension, z: Dimension) : this(x.value, y.value, z.value, x.unit) {
         if (x.unit != y.unit || x.unit != z.unit) {
             throw IllegalArgumentException("$x and $y do not have matching units")
         }
     }
 
-    val xl get() = Length(x, unit)
-    val yl get() = Length(y, unit)
-    val zl get() = Length(z, unit)
+    val xl get() = Dimension(x, unit)
+    val yl get() = Dimension(y, unit)
+    val zl get() = Dimension(z, unit)
 
     companion object {
         val zero = Vec3(0, 0, 0)
@@ -81,9 +81,9 @@ data class Vec3(val x: Double, val y: Double, val z: Double, val unit: String? =
         return Vec3(x * other, y * other, z * other, unit)
     }
 
-    operator fun times(other: Length): Vec3 {
+    operator fun times(other: Dimension): Vec3 {
         if (this.unit != null && other.unit != null) throw IllegalArgumentException("Both length and vector have units")
-        return Vec3(x * other.l, y * other.l, z * other.l, unit ?: other.unit)
+        return Vec3(x * other.value, y * other.value, z * other.value, unit ?: other.unit)
     }
 
     operator fun div(other: Double): Vec3 {

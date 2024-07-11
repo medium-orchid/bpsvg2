@@ -13,37 +13,12 @@ fun randomNormal(): Double {
     return sqrt(-2 * ln(Random.nextDouble())) * cos(2 * PI * Random.nextDouble())
 }
 
-operator fun Double.times(other: Length): Length {
+operator fun Double.times(other: Dimension): Dimension {
     return other * this
 }
 
-operator fun Int.times(other: Length): Length {
-    return other * this.toDouble()
-}
-
-infix fun Double.u(unit: String): Length {
-    return Length(this, unit)
-}
-
-val Double.length: Length get() = Length(this)
-
-val Double.percent: Length get() = Length(this, "%")
-
-val Double.em: Length get() = Length(this, "em")
-
-val Double.rem: Length get() = Length(this, "rem")
-
-val Double.px: Length get() = Length(this, "px")
-
-val Int.length: Length get() = Length(this.toDouble())
-
-val Int.percent: Length get() = Length(this.toDouble(), "%")
-
-val Int.em: Length get() = Length(this.toDouble(), "em")
-
-val Int.rem: Length get() = Length(this.toDouble(), "rem")
-
-val Int.px: Length get() = Length(this.toDouble(), "px")
+operator fun Double.invoke(unit: U) = Dimension(this, unit)
+operator fun Int.invoke(unit: U) = Dimension(this.toDouble(), unit)
 
 fun Boolean.flag(): Int {
     return if (this) {
@@ -51,4 +26,8 @@ fun Boolean.flag(): Int {
     } else {
         0
     }
+}
+
+operator fun <V> Double.times(vector: Vector<V>): V {
+    return vector * this
 }

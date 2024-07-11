@@ -4,60 +4,43 @@ import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
+import kotlin.math.pow
 import kotlin.math.sqrt
 
-data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataType {
+data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
 
-    constructor(x: Int, y: Int, unit: String? = null) : this(x.toDouble(), y.toDouble(), unit)
-
-    constructor(x: Length, y: Length) : this(x.l, y.l, x.unit) {
-        if (x.unit != y.unit) throw IllegalArgumentException("$x and $y do not have matching units")
-    }
+    constructor(x: Double, y: Double) : this(x(U.UNITLESS), y(U.UNITLESS))
 
     companion object {
-        val zero = Vec2(0, 0)
-        val center = Vec2(50.percent, 50.percent)
+        val zero = Vec2(0.0, 0.0)
+        val center = Vec2(50(U.PERCENT), 50(U.PERCENT))
+        val X = Vec2(1.0, 0.0)
+        val Y = Vec2(0.0, 1.0)
     }
 
-    init {
-        if (unit == "") throw IllegalArgumentException("Unitless vectors should have null unit")
+    operator fun invoke(unitX: U, unitY: U): Vec2 {
+        return Vec2(x.convert(unitX), y.convert(unitY))
     }
 
     fun approximatelyEquals(other: Vec2): Boolean {
-        return unit == other.unit && approx(x, other.x) && approx(y, other.y)
+        return approx(x.value, other.x.convertValue(x.unit))
+                && approx(y.value, other.y.convertValue(y.unit))
     }
 
-    fun u(unit: String? = null): Vec2 {
-        return Vec2(x, y, unit)
+    override operator fun plus(other: Vec2): Vec2 {
+        return Vec2(this.x + other.x, this.y + other.y)
     }
 
-    private fun guard(other: Vec2) {
-        if ((this.approximatelyEquals(zero) && this.unit == null)
-            || (other.approximatelyEquals(zero) && other.unit == null)
-        ) {
-            return
+    override operator fun minus(other: Vec2): Vec2 {
+        return Vec2(this.x - other.x, this.y - other.y)
+    }
+
+    fun norm(): Dimension {
+        val unit = when (x.unit) {
+            U.UNITLESS -> y.unit
+            else -> x.unit
         }
-        if (this.unit != other.unit) {
-            throw IllegalArgumentException("$this and $other have different units and are not compatible")
-        }
-    }
-
-    operator fun plus(other: Vec2): Vec2 {
-        guard(other)
-        return Vec2(this.x + other.x, this.y + other.y, unit ?: other.unit)
-    }
-
-    operator fun minus(other: Vec2): Vec2 {
-        guard(other)
-        return Vec2(this.x - other.x, this.y - other.y, unit ?: other.unit)
-    }
-
-    fun normSquared(): Double {
-        return x * x + y * y
-    }
-
-    fun norm(): Double {
-        return sqrt(normSquared())
+        return Dimension(sqrt(x.convertValue(unit).pow(2) + y.convertValue(unit).pow(2)), unit)
     }
 
     fun normalized(): Vec2 {
@@ -65,34 +48,36 @@ data class Vec2(val x: Double, val y: Double, val unit: String? = null) : DataTy
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
-        builder.append(x)
-        builder.withComma(unit ?: "")
+        builder.withComma(x)
         builder.append(y)
-        builder.append(unit ?: "")
     }
 
-    operator fun times(other: Double): Vec2 {
-        return Vec2(x * other, y * other, unit)
+    override operator fun times(other: Double): Vec2 {
+        return Vec2(x * other, y * other)
     }
 
-    operator fun div(other: Double): Vec2 {
-        return Vec2(x / other, y / other, unit)
+    override operator fun div(other: Double): Vec2 {
+        return Vec2(x / other, y / other)
+    }
+
+    operator fun div(other: Dimension): Vec2 {
+        return Vec2(x / other, y / other)
     }
 
     operator fun div(other: Int): Vec2 {
         return this / other.toDouble()
     }
 
-    fun dot(other: Vec2): Double {
+    fun dot(other: Vec2): Dimension {
         return x * other.x + y * other.y
     }
 
-    fun cross(other: Vec2): Double {
+    fun cross(other: Vec2): Dimension {
         return x * other.y - y * other.x
     }
 
     override fun toString(): String {
-        return "Vec2($x, $y)${unit ?: ""}"
+        return "Vec2($x, $y)"
     }
 
     fun toTrans(): Trans2D {
