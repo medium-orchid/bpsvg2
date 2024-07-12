@@ -7,20 +7,11 @@ import bpsvg2.eat.OutputMode
 
 data class Rect(val topLeft: Vec2, val width: Dimension, val height: Dimension) : DataType {
 
-    constructor(width: Dimension, height: Dimension) : this(Vec2.zero.u(width.unit), width, height)
+    constructor(width: Dimension, height: Dimension) : this(Vec2.zero, width, height)
 
-    constructor(topLeft: Vec2, width: Double, height: Double) : this(topLeft, width.dimension, height.dimension)
+    constructor(topLeft: Vec2, width: Double, height: Double) : this(topLeft, width.d, height.d)
 
     constructor(width: Double, height: Double) : this(Vec2.zero, width, height)
-
-    constructor(topLeft: Vec2, width: Int, height: Int) : this(topLeft, width.dimension, height.dimension)
-
-    constructor(width: Int, height: Int) : this(Vec2.zero, width, height)
-
-    init {
-        if (topLeft.unit != width.unit || width.unit != height.unit)
-            throw IllegalArgumentException("Units for $topLeft, $width, and $height do not match.")
-    }
 
     companion object {
         fun byCenter(center: Vec2, width: Dimension, height: Dimension): Rect {
@@ -33,20 +24,11 @@ data class Rect(val topLeft: Vec2, val width: Dimension, val height: Dimension) 
             return Rect(center - diagonal, width, height)
         }
 
-        fun byCenter(center: Vec2, width: Int, height: Int): Rect {
-            val diagonal = Vec2(width, height) / 2.0
-            return Rect(center - diagonal, width, height)
-        }
-
         fun zeroCentered(width: Dimension, height: Dimension): Rect {
             return byCenter(Vec2.zero, width, height)
         }
 
         fun zeroCentered(width: Double, height: Double): Rect {
-            return byCenter(Vec2.zero, width, height)
-        }
-
-        fun zeroCentered(width: Int, height: Int): Rect {
             return byCenter(Vec2.zero, width, height)
         }
     }
@@ -64,12 +46,11 @@ data class Rect(val topLeft: Vec2, val width: Dimension, val height: Dimension) 
     }
 
     fun point(vec: Vec2): Vec2 {
-        if (vec.unit != "%") throw IllegalArgumentException("Vector $vec is not a percent vector")
-        return topLeft + Vec2(width * vec.x / 100.0, height * vec.y / 100.0)
+        return topLeft + Vec2(
+            width * vec.x.convertValue(CSSUnits.PERCENT) / 100.0,
+            height * vec.y.convertValue(CSSUnits.PERCENT) / 100.0
+        )
     }
 
-    val centered: Pair<String, Vec2>
-        get() {
-            return "*" to point(Vec2.center)
-        }
+    val centered: Pair<String, Vec2> get() = "*" to point(Vec2.center)
 }

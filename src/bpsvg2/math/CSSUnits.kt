@@ -1,6 +1,6 @@
 package bpsvg2.math
 
-enum class U {
+enum class CSSUnits {
     UNITLESS, PERCENT,
     // Lengths
     // - Font units

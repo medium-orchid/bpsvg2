@@ -1,41 +1,22 @@
 package bpsvg2.math.d2
 
-operator fun Double.times(other: Mat2D): Mat2D {
+import bpsvg2.math.*
+
+operator fun Dimension.times(other: Vec2): Vec2 {
+    return Vec2(this * other.x, this * other.y)
+}
+
+operator fun Dimension.times(other: Mat2D): Mat2D {
     return Mat2D(
-        this * other.a, this * other.b,
-        this * other.c, this * other.d,
-        this * other.x, this * other.y,
-        other.unit,
+        this * other.vx, this * other.vy, this * other.vc
     )
-}
-
-operator fun Double.times(other: Vec2): Vec2 {
-    return other * this
-}
-
-operator fun Int.times(other: Vec2): Vec2 {
-    return other * this.toDouble()
-}
-
-operator fun Double.times(other: Trans2D): Trans2D {
-    return other * this
-}
-
-operator fun Int.times(other: Trans2D): Trans2D {
-    return other * this.toDouble()
 }
 
 operator fun Double.times(other: Angle): Angle {
     return other * this
 }
 
-operator fun Int.times(other: Angle): Angle {
-    return other * this.toDouble()
-}
-
-val Double.trans2D: Trans2D get() = Trans2D(this, Angle.id, Vec2.zero)
-
-val Int.trans2D: Trans2D get() = Trans2D(this.toDouble(), Angle.id, Vec2.zero)
+val Double.trans2D: Trans2D get() = Trans2D(this.d, Angle.id, Vec2.zero)
 
 val Double.rad: Angle get() = Angle(this, AngleUnits.RAD)
 

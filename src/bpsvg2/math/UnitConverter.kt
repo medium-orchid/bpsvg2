@@ -6,17 +6,17 @@ class UnitConverter {
         const val EPS = 1E-10
     }
 
-    private val conversion = hashMapOf<Pair<U, U>, Double>()
+    private val conversion = hashMapOf<Pair<CSSUnits, CSSUnits>, Double>()
 
-    private fun addConversion(from: U, to: U, factor: Double) {
+    private fun addConversion(from: CSSUnits, to: CSSUnits, factor: Double) {
         conversion[from to to] = factor
         conversion[to to from] = 1 / factor
         fillConversions(from, to)
         fillConversions(to, from)
     }
 
-    private fun fillConversions(from: U, to: U) {
-        for (i in U.entries) {
+    private fun fillConversions(from: CSSUnits, to: CSSUnits) {
+        for (i in CSSUnits.entries) {
             if ((i to to !in conversion) && (i to from in conversion)) {
                 conversion[i to to] = conversion[i to from]!! * conversion[from to to]!!
             }
@@ -26,7 +26,7 @@ class UnitConverter {
         }
     }
 
-    fun convertValue(dim: Dimension, unit: U): Double {
+    fun convertValue(dim: Dimension, unit: CSSUnits): Double {
         if (unit == dim.unit) return dim.value
         if (dim.value < EPS) return 0.0
         val factor = conversion[dim.unit to unit]
@@ -34,24 +34,24 @@ class UnitConverter {
         return factor * dim.value
     }
 
-    fun convert(dim: Dimension, unit: U): Dimension {
+    fun convert(dim: Dimension, unit: CSSUnits): Dimension {
         if (unit == dim.unit) return dim
         return Dimension(convertValue(dim, unit), unit)
     }
 
     init {
-        addConversion(U.PX, U.CM, 96 / 2.54)
-        addConversion(U.MM, U.CM, 10.0)
-        addConversion(U.Q, U.CM, 40.0)
-        addConversion(U.PX, U.IN, 96.0)
-        addConversion(U.PC, U.PT, 12.0)
-        addConversion(U.IN, U.PT, 72.0)
+        addConversion(CSSUnits.PX, CSSUnits.CM, 96 / 2.54)
+        addConversion(CSSUnits.MM, CSSUnits.CM, 10.0)
+        addConversion(CSSUnits.Q, CSSUnits.CM, 40.0)
+        addConversion(CSSUnits.PX, CSSUnits.IN, 96.0)
+        addConversion(CSSUnits.PC, CSSUnits.PT, 12.0)
+        addConversion(CSSUnits.IN, CSSUnits.PT, 72.0)
 
-        addConversion(U.MS, U.S, 1000.0)
+        addConversion(CSSUnits.MS, CSSUnits.S, 1000.0)
 
-        addConversion(U.KHZ, U.HZ, 1000.0)
+        addConversion(CSSUnits.KHZ, CSSUnits.HZ, 1000.0)
 
-        addConversion(U.DPCM, U.DPI, 2.54)
-        addConversion(U.DPI, U.DPPX, 96.0)
+        addConversion(CSSUnits.DPCM, CSSUnits.DPI, 2.54)
+        addConversion(CSSUnits.DPI, CSSUnits.DPPX, 96.0)
     }
 }

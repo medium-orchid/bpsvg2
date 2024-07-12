@@ -16,6 +16,11 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
             return Angle(kotlin.math.atan2(y, x))
         }
 
+        fun atan2(y: Dimension, x: Dimension): Angle {
+            val (yt, xt) = Dimension.toCommon(x, y)
+            return Angle(kotlin.math.atan2(yt.value, xt.value))
+        }
+
         fun random(): Angle {
             return Angle(Random.nextDouble(), AngleUnits.TURNS)
         }
@@ -56,7 +61,7 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
     }
 
     fun toTrans(): Trans2D {
-        return Trans2D(1.0, this, Vec2.zero)
+        return Trans2D(1.0.d, this, Vec2.zero)
     }
 
     fun sin(): Double {

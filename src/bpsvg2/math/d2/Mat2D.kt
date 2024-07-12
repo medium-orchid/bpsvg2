@@ -14,42 +14,36 @@ import kotlin.math.*
  * representing a 2D transformation
  */
 data class Mat2D(
-    val a: Double, val b: Double,
-    val c: Double, val d: Double,
-    val x: Double, val y: Double,
-    val unit: String? = null
+    val vx: Vec2, val vy: Vec2, val vc: Vec2
 ) : DataType {
+
+    constructor(a: Dimension, b: Dimension, c: Dimension, d: Dimension, x: Dimension, y: Dimension):
+            this(Vec2(a, c), Vec2(b, d), Vec2(x, y))
+
+    constructor(a: Double, b: Double, c: Double, d: Double, x: Double, y: Double):
+            this(Vec2(a, c), Vec2(b, d), Vec2(x, y))
+
+    val a: Dimension get() = vx.x
+    val b: Dimension get() = vy.x
+    val c: Dimension get() = vx.y
+    val d: Dimension get() = vy.y
+    val x: Dimension get() = vc.x
+    val y: Dimension get() = vc.y
 
     companion object {
 
         fun scale(k: Double): Mat2D {
-            return Mat2D(k, 0.0, 0.0, k, 0.0, 0.0, null)
+            return Mat2D(k * Vec2.X, k * Vec2.Y, Vec2.zero)
         }
 
         val id = scale(1.0)
 
-        fun offset(x: Double, y: Double, unit: String? = null): Mat2D {
-            return Mat2D(1.0, 0.0, 0.0, 1.0, x, y, unit)
+        fun offset(x: Dimension, y: Dimension): Mat2D {
+            return Mat2D(Vec2.X, Vec2.Y, Vec2(x, y))
         }
 
-        fun offset(by: Vec2): Mat2D {
-            return offset(by.x, by.y, by.unit)
-        }
-
-        fun offset(x: Int, y: Int, unit: String? = null): Mat2D {
-            return offset(x.toDouble(), y.toDouble(), unit)
-        }
-
-        private fun approx(a: Double, b: Double): Boolean {
-            return abs(a - b) < EPS
-        }
-
-        private fun offsetUnits(unit: String?): String {
-            return if (unit == null) {
-                "unitless"
-            } else {
-                "'${unit}'"
-            }
+        fun offset(v: Vec2): Mat2D {
+            return Mat2D(Vec2.X, Vec2.Y, v)
         }
 
         fun rotate(angle: Angle): Mat2D {
@@ -59,7 +53,7 @@ data class Mat2D(
         }
 
         fun reflect(angle: Angle): Mat2D {
-            val r = 2 * angle
+            val r = 2.0 * angle
             val c = r.cos()
             val s = r.sin()
             return Mat2D(c, s, s, -c, 0.0, 0.0)
@@ -71,30 +65,11 @@ data class Mat2D(
                 && approx(d, other.d) && approx(x, other.x) && approx(y, other.y)
     }
 
-    private fun vectorGuard(other: Vec2) {
-        if (this.hasOffset() && unit != other.unit) {
-            throw IllegalArgumentException(
-                "Matrix has incompatible offset units" +
-                        " (${offsetUnits(this.unit)} and ${offsetUnits(other.unit)})"
-            )
-        }
-    }
-
-    private fun matrixGuard(other: Mat2D) {
-        if (this.hasOffset() && other.hasOffset() && this.unit != other.unit) {
-            throw IllegalArgumentException(
-                "Matrices have incompatible offset units" +
-                        " (${offsetUnits(this.unit)} and ${offsetUnits(other.unit)})"
-            )
-        }
-    }
-
     fun hasOffset(): Boolean {
-        return x != 0.0 || y != 0.0
+        return vc.approx(Vec2.zero)
     }
 
     operator fun times(other: Mat2D): Mat2D {
-        matrixGuard(other)
         return Mat2D(
             this.a * other.a + this.c * other.b,
             this.b * other.a + this.d * other.b,
@@ -102,21 +77,18 @@ data class Mat2D(
             this.b * other.c + this.d * other.d,
             this.a * other.x + this.c * other.y + this.x,
             this.b * other.x + this.d * other.y + this.y,
-            this.unit ?: other.unit
         )
     }
 
     operator fun times(other: Vec2): Vec2 {
-        vectorGuard(other)
-        return Vec2(a * other.x + c * other.y + x, b * other.x + d * other.y + y, other.unit)
+        return Vec2(vx.dot(other), vy.dot(other)) + vc
     }
 
     operator fun plus(other: Vec2): Mat2D {
-        vectorGuard(other)
-        return Mat2D(a, b, c, d, x + other.x, y + other.y, other.unit)
+        return Mat2D(vx, vy, vc + other)
     }
 
-    fun det(): Double {
+    fun det(): Dimension {
         return a * d - b * c
     }
 
@@ -128,7 +100,7 @@ data class Mat2D(
         val k = det()
         return approx(a * a + c * c, k)
                 && approx(b * b + d * d, k)
-                && approx(a * b + c * d, 0.0)
+                && approx(a * b + c * d, 0.0.d)
     }
 
     fun toOrtho(): Trans2D {
@@ -155,7 +127,7 @@ data class Mat2D(
         } catch (e: Exception) {
             throw IllegalArgumentException("matrix is not invertible")
         }
-        return Mat2D(d, -b, -c, a, c * y - d * x, b * x - a * y).scale(1 / det)
+        return Mat2D(d, -b, -c, a, c * y - d * x, b * x - a * y).scale(one / det)
     }
 
     fun pow(n: Int): Mat2D {
@@ -166,11 +138,11 @@ data class Mat2D(
         } else if (n == 1) {
             return this
         }
-        if (b == 0.0 && c == 0.0) {
-            if (a == 0.0 && d == 0.0) {
-                return Mat2D(0.0, 0.0, 0.0, 0.0, n * x, n * y)
-            } else if (x == 0.0 && y == 0.0) {
-                return Mat2D(a.pow(n), 0.0, 0.0, d.pow(n), 0.0, 0.0)
+        if (approx(b.value, 0.0) && approx(c.value, 0.0)) {
+            if (approx(b.value, 0.0) && approx(d.value, 0.0)) {
+                return Mat2D.offset(n.toDouble() * x, n.toDouble() * y)
+            } else if (vc.approx(Vec2.zero)) {
+                return Mat2D(a.pow(n), zero, zero, d.pow(n), zero, zero)
             }
         }
         var remaining = n

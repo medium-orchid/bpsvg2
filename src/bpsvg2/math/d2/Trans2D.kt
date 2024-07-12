@@ -5,16 +5,16 @@ import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
 
-data class Trans2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
+data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
 
     companion object {
-        val id = Trans2D(1.0, Angle.id)
+        val id = Trans2D(1.0.d, Angle.id)
     }
 
     fun approximatelyEquals(other: Trans2D): Boolean {
         return approx(scale, other.scale)
                 && angle.approximatelyEquals(other.angle)
-                && offset.approximatelyEquals(other.offset)
+                && offset.approx(other.offset)
     }
 
     operator fun times(other: Trans2D): Trans2D {
@@ -40,16 +40,16 @@ data class Trans2D(val scale: Double, val angle: Angle, val offset: Vec2 = Vec2.
         if (approximatelyEquals(id)) {
             builder.append("scale(1)")
             return
-        } else if (approx(scale, 0.0)) {
+        } else if (approx(scale, zero)) {
             builder.append("scale(0)")
             return
         }
         var empty = true
-        if (!offset.approximatelyEquals(Vec2.zero)) {
+        if (!offset.approx(Vec2.zero)) {
             builder.append("translate(").append(offset).append(")")
             empty = false
         }
-        if (!approx(scale, 1.0)) {
+        if (!approx(scale, zero)) {
             if (empty) builder.append(" ")
             builder.append("scale(").append(scale).append(")")
             empty = false

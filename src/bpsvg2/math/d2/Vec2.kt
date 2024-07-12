@@ -9,20 +9,20 @@ import kotlin.math.sqrt
 
 data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
 
-    constructor(x: Double, y: Double) : this(x(U.UNITLESS), y(U.UNITLESS))
+    constructor(x: Double, y: Double) : this(x.d, y.d)
 
     companion object {
         val zero = Vec2(0.0, 0.0)
-        val center = Vec2(50(U.PERCENT), 50(U.PERCENT))
+        val center = Vec2(50(CSSUnits.PERCENT), 50(CSSUnits.PERCENT))
         val X = Vec2(1.0, 0.0)
         val Y = Vec2(0.0, 1.0)
     }
 
-    operator fun invoke(unitX: U, unitY: U): Vec2 {
+    operator fun invoke(unitX: CSSUnits, unitY: CSSUnits): Vec2 {
         return Vec2(x.convert(unitX), y.convert(unitY))
     }
 
-    fun approximatelyEquals(other: Vec2): Boolean {
+    fun approx(other: Vec2): Boolean {
         return approx(x.value, other.x.convertValue(x.unit))
                 && approx(y.value, other.y.convertValue(y.unit))
     }
@@ -37,7 +37,7 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
 
     fun norm(): Dimension {
         val unit = when (x.unit) {
-            U.UNITLESS -> y.unit
+            CSSUnits.UNITLESS -> y.unit
             else -> x.unit
         }
         return Dimension(sqrt(x.convertValue(unit).pow(2) + y.convertValue(unit).pow(2)), unit)
@@ -81,6 +81,6 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
     }
 
     fun toTrans(): Trans2D {
-        return Trans2D(1.0, Angle.id, this)
+        return Trans2D(one, Angle.id, this)
     }
 }

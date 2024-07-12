@@ -4,28 +4,48 @@ import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
 import bpsvg2.math.d2.Vec2
+import kotlin.math.pow
 
-data class Dimension(val value: Double, val unit: U) : DataType, Vector<Dimension> {
+data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<Dimension> {
 
     companion object {
-        fun niceName(unit: U): String {
+        fun niceName(unit: CSSUnits): String {
             return when (unit) {
-                U.HZ -> "Hz"
-                U.KHZ -> "kHz"
-                U.PERCENT -> "%"
+                CSSUnits.HZ -> "Hz"
+                CSSUnits.KHZ -> "kHz"
+                CSSUnits.PERCENT -> "%"
                 else -> unit.name.lowercase()
             }
         }
 
         val converter = UnitConverter()
+
+        fun toCommon(a: Dimension, b: Dimension): Pair<Dimension, Dimension> {
+            return when (a.unit) {
+                CSSUnits.UNITLESS -> a.convert(b.unit) to b
+                else -> a to b.convert(a.unit)
+            }
+        }
     }
 
-    fun convertValue(unit: U): Double {
+    fun convertValue(unit: CSSUnits): Double {
         return converter.convertValue(this, unit)
     }
 
-    fun convert( unit: U): Dimension {
+    fun convert(unit: CSSUnits): Dimension {
         return converter.convert(this, unit)
+    }
+
+    fun pow(n: Int): Dimension {
+        return when (n) {
+            0 -> 1.0.d
+            1 -> this
+            else -> if (unit == CSSUnits.UNITLESS) {
+                value.pow(n).d
+            } else {
+                throw IllegalArgumentException("cannot take $n-th power of a dimension with a unit")
+            }
+        }
     }
 
     operator fun unaryMinus(): Dimension {
@@ -38,7 +58,7 @@ data class Dimension(val value: Double, val unit: U) : DataType, Vector<Dimensio
     }
 
     override operator fun plus(other: Dimension): Dimension {
-        return if (unit == U.UNITLESS) {
+        return if (unit == CSSUnits.UNITLESS) {
             Dimension(converter.convertValue(this, other.unit) + other.value, other.unit)
         } else {
             Dimension(this.value + converter.convertValue(other, unit), unit)
@@ -46,7 +66,7 @@ data class Dimension(val value: Double, val unit: U) : DataType, Vector<Dimensio
     }
 
     override operator fun minus(other: Dimension): Dimension {
-        return if (unit == U.UNITLESS) {
+        return if (unit == CSSUnits.UNITLESS) {
             Dimension(converter.convertValue(this, other.unit) - other.value, other.unit)
         } else {
             Dimension(this.value - converter.convertValue(other, unit), unit)
@@ -58,8 +78,8 @@ data class Dimension(val value: Double, val unit: U) : DataType, Vector<Dimensio
     }
 
     operator fun times(other: Dimension): Dimension {
-        if (unit == U.UNITLESS) return other * value
-        if (other.unit == U.UNITLESS) return this * other.value
+        if (unit == CSSUnits.UNITLESS) return other * value
+        if (other.unit == CSSUnits.UNITLESS) return this * other.value
         throw IllegalArgumentException("cannot multiply two dimension with units")
     }
 
