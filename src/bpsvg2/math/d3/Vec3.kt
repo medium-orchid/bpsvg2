@@ -57,7 +57,7 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
     }
 
     operator fun times(other: Dimension): Vec3 {
-        return Vec3(x * other.value, y * other.value, z * other.value)
+        return Vec3(x * other, y * other, z * other)
     }
 
     operator fun div(other: Double): Vec3 {

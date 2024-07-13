@@ -86,8 +86,9 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
     }
 
     operator fun times(other: Dimension): Dimension {
-        if (unit == CSSUnits.UNITLESS) return other * value
-        if (other.unit == CSSUnits.UNITLESS) return this * other.value
+        val v = other.value * value
+        if (unit == CSSUnits.UNITLESS) return Dimension(v, other.unit)
+        if (other.unit == CSSUnits.UNITLESS) Dimension(v, unit)
         throw IllegalArgumentException("cannot multiply two dimension with units")
     }
 

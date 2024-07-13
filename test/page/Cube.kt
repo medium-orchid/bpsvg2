@@ -12,8 +12,8 @@ fun main() {
     val textColor = "white"
 
     val colors = Array(6) {i -> "hsla(${360 * i / 6}, 75%, 50%, 0.75)"}
-
     val offset = (size / 2 * Vec3.Z).toTrans()
+
     val rotations = arrayOf(
         Trans3D.id, //Front
         Vec3.Y.axisAngle(0.25.turns), //Right
