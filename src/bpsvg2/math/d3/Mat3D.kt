@@ -15,31 +15,64 @@ import bpsvg2.eat.OutputMode
  */
 
 data class Mat3D(
-    val a1: Double, val b1: Double, val c1: Double, val d1: Double,
-    val a2: Double, val b2: Double, val c2: Double, val d2: Double,
-    val a3: Double, val b3: Double, val c3: Double, val d3: Double,
-    val a4: Double, val b4: Double, val c4: Double, val d4: Double
+    val vx: Vec3, val vy: Vec3, val vz: Vec3, val vw: Vec3, val vc: Vec3, val w: Dimension
 ) : DataType {
+
+    val a1: Dimension get() = vx.x
+    val a2: Dimension get() = vx.y
+    val a3: Dimension get() = vx.z
+    val a4: Dimension get() = vc.x
+    val b1: Dimension get() = vy.x
+    val b2: Dimension get() = vy.y
+    val b3: Dimension get() = vy.z
+    val b4: Dimension get() = vc.y
+    val c1: Dimension get() = vz.x
+    val c2: Dimension get() = vz.y
+    val c3: Dimension get() = vz.z
+    val c4: Dimension get() = vc.z
+    val d1: Dimension get() = vw.x
+    val d2: Dimension get() = vw.y
+    val d3: Dimension get() = vw.z
+    val d4: Dimension get() = w
+
+    constructor(
+        a1: Dimension, b1: Dimension, c1: Dimension, d1: Dimension,
+        a2: Dimension, b2: Dimension, c2: Dimension, d2: Dimension,
+        a3: Dimension, b3: Dimension, c3: Dimension, d3: Dimension,
+        a4: Dimension, b4: Dimension, c4: Dimension, d4: Dimension
+    ) : this (
+        Vec3(a1, a2, a3), Vec3(b1, b2, b3), Vec3(c1, c2, c3), Vec3(d1, d2, d3),
+        Vec3(a4, b4, c4), d4
+    )
+
+    constructor(
+        a1: Dimension, b1: Dimension, c1: Dimension,
+        a2: Dimension, b2: Dimension, c2: Dimension,
+        a3: Dimension, b3: Dimension, c3: Dimension
+    ) : this(
+        a1, b1, c1, zero,
+        a2, b2, c2, zero,
+        a3, b3, c3, zero,
+        zero, zero, zero, one
+    )
 
     constructor(
         a1: Double, b1: Double, c1: Double,
         a2: Double, b2: Double, c2: Double,
         a3: Double, b3: Double, c3: Double
     ) : this(
-        a1, b1, c1, 0.0,
-        a2, b2, c2, 0.0,
-        a3, b3, c3, 0.0,
-        0.0, 0.0, 0.0, 1.0
+        a1.d, b1.d, c1.d,
+        a2.d, b2.d, c2.d,
+        a3.d, b3.d, c3.d
     )
 
     companion object {
 
         fun scale(k: Double): Mat3D {
             return Mat3D(
-                k, 0.0, 0.0, 0.0,
-                0.0, k, 0.0, 0.0,
-                0.0, 0.0, k, 0.0,
-                0.0, 0.0, 0.0, 1.0
+                k, 0.0, 0.0,
+                0.0, k, 0.0,
+                0.0, 0.0, k,
             )
         }
 
@@ -54,6 +87,7 @@ data class Mat3D(
     }
 
     operator fun times(other: Mat3D): Mat3D {
+        // Sorry
         /*
 #Sorry
 first_col = "abcd"
@@ -88,20 +122,13 @@ print("return Mat3D(\n" + ",\n".join([term(i, j) for j in range(4) for i in rang
     }
 
     operator fun times(other: Vec3): Vec3 {
-        val w = d1 * other.x + d2 * other.y + d3 * other.z + d4
-        return Vec3(
-            (a1 * other.x + a2 * other.y + a3 * other.z + a4) / w,
-            (b1 * other.x + b2 * other.y + b3 * other.z + b4) / w,
-            (c1 * other.x + c2 * other.y + c3 * other.z + c4) / w,
-        )
+        val s = vw.dot(other) + w
+        return ( Vec3(vx.dot(other), vy.dot(other), vz.dot(other)) + vc ) / s
     }
 
     operator fun times(other: Double): Mat3D {
         return Mat3D(
-            other * a1, other * b1, other * c1, other * d1,
-            other * a2, other * b2, other * c2, other * d2,
-            other * a3, other * b3, other * c3, other * d3,
-            other * a4, other * b4, other * c4, other * d4
+            other * vx, other * vy, other * vz, vw, other * vc, w
         )
     }
 

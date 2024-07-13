@@ -26,6 +26,13 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
                 else -> a to b.convert(a.unit)
             }
         }
+
+        fun commonUnit(vararg x: Dimension): CSSUnits {
+            for (i in x) {
+                if (i.unit != CSSUnits.UNITLESS) return i.unit
+            }
+            return CSSUnits.UNITLESS
+        }
     }
 
     fun convertValue(unit: CSSUnits): Double {

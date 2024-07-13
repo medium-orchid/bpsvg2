@@ -18,7 +18,7 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
         val Y = Vec2(0.0, 1.0)
     }
 
-    operator fun invoke(unitX: CSSUnits, unitY: CSSUnits): Vec2 {
+    fun convert(unitX: CSSUnits, unitY: CSSUnits): Vec2 {
         return Vec2(x.convert(unitX), y.convert(unitY))
     }
 
@@ -36,10 +36,7 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
     }
 
     fun norm(): Dimension {
-        val unit = when (x.unit) {
-            CSSUnits.UNITLESS -> y.unit
-            else -> x.unit
-        }
+        val unit = Dimension.commonUnit(x, y)
         return Dimension(sqrt(x.convertValue(unit).pow(2) + y.convertValue(unit).pow(2)), unit)
     }
 
@@ -62,10 +59,6 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
 
     operator fun div(other: Dimension): Vec2 {
         return Vec2(x / other, y / other)
-    }
-
-    operator fun div(other: Int): Vec2 {
-        return this / other.toDouble()
     }
 
     fun dot(other: Vec2): Dimension {

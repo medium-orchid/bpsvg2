@@ -9,7 +9,9 @@ import kotlin.math.*
 
 data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : DataType {
 
-    constructor(v: Vec3) : this(0.0, v.x, v.y, v.z)
+    constructor(v: Vec3) : this(0.0, v.x.convertValue(CSSUnits.UNITLESS),
+        v.y.convertValue(CSSUnits.UNITLESS),
+        v.z.convertValue(CSSUnits.UNITLESS))
 
     companion object {
         val zero = Quat(0.0, 0.0, 0.0, 0.0)
@@ -22,7 +24,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
             val r = angle / 2
             val s = r.sin()
             val w = v.normalized()
-            return Quat(r.cos(), s * w.x, s * w.y, s * w.z)
+            return Quat(r.cos(), s * w.x.value, s * w.y.value, s * w.z.value)
         }
 
         fun randomUnit(): Quat {
@@ -44,7 +46,16 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
     }
 
     operator fun times(other: Vec3): Vec3 {
-        return (this * Quat(other) * reciprocal()).vectorPart().u(other.unit)
+        if (approximatelyEquals(id)) return other
+        // Is Rodrigues the best to do?
+        val n = normalized()
+        val vn = sqrt(n.i*n.i + n.j*n.j + n.k*n.k)
+        val angle = 2.0 * Angle.atan2(vn, n.r)
+        val axis = Vec3(n.i, n.j, n.k) / (angle / 2.0).sin()
+        val cos = angle.cos()
+        return cos * other +
+                angle.sin() * axis.cross(other) +
+                (1 - cos) * axis.dot(other) * axis
     }
 
     operator fun times(other: Double): Quat {
@@ -171,7 +182,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         return pow(n.toDouble())
     }
 
-    fun toTrans(): Trans3D {
+    fun toOrtho(): Trans3D {
         return Trans3D(1.0, this)
     }
 
@@ -181,8 +192,8 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         }
         val w = vectorPart()
         val n = w.norm()
-        val t = 2 * Angle.atan2(n, r)
-        if (n == 0.0) {
+        val t = 2.0 * Angle.atan2(n, r.d)
+        if (approx(n, 0.0.d)) {
             builder.append("rotate3d(0)")
         } else {
             builder.append("rotate3d(").join(mode, w / n, t).append(")")
