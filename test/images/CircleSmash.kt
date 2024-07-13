@@ -6,7 +6,7 @@ import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
 
 fun main() {
-    val viewBox = Rect.zeroCentered(10, 10)
+    val viewBox = Rect.zeroCentered(10.0, 10.0)
     val color1 = "#00bfff40"
     val color2 = "#ff149340"
     val n = 10
@@ -15,8 +15,8 @@ fun main() {
         val gradientID = "myGradient"
         defs {
             linearGradient(id(gradientID), "gradientTransform" to Mat2D.rotate(90.deg)) {
-                stop("offset" to 20.percent, "stop-color" to color1)
-                stop("offset" to 80.percent, "stop-color" to color2)
+                stop("offset" to 20.pct, "stop-color" to color1)
+                stop("offset" to 80.pct, "stop-color" to color2)
             }
             circle(id(circleID), "r" to 5, "fill" to url("myGradient"))
         }

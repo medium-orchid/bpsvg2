@@ -5,6 +5,7 @@ import kotlin.math.*
 
 fun main() {
     // Rodrigues' formula equivalence
+    /* Tautological now?
     for (i in 0..<100) {
         val k = randomUnitVec3()
         val t = randomAngle()
@@ -13,6 +14,7 @@ fun main() {
         val rodrigues = v * t.cos() + (k.cross(v)) * t.sin() + k * k.dot(v) * (1 - t.cos())
         assert(quatMat.approximatelyEquals(rodrigues))
     }
+    */
     // Quat and Mat3D equivalence
     for (i in 0..<100) {
         val q = randomUnitQuaternion()

@@ -36,6 +36,18 @@ data class Mat3D(
     val d4: Dimension get() = w
 
     constructor(
+        a1: Double, b1: Double, c1: Double, d1: Double,
+        a2: Double, b2: Double, c2: Double, d2: Double,
+        a3: Double, b3: Double, c3: Double, d3: Double,
+        a4: Double, b4: Double, c4: Double, d4: Double
+    ) : this (
+        a1.d, b1.d, c1.d, d1.d,
+        a2.d, b2.d, c2.d, d2.d,
+        a3.d, b3.d, c3.d, d3.d,
+        a4.d, b4.d, c4.d, d4.d
+    )
+
+    constructor(
         a1: Dimension, b1: Dimension, c1: Dimension, d1: Dimension,
         a2: Dimension, b2: Dimension, c2: Dimension, d2: Dimension,
         a3: Dimension, b3: Dimension, c3: Dimension, d3: Dimension,

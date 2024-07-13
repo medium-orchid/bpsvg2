@@ -53,7 +53,7 @@ fun main() {
                     "display" to "flex",
                     "align-items" to "center",
                     "justify-content" to "center",
-                    "**" to 100.percent,
+                    "**" to 100.pct,
                     "position" to "absolute",
                     "backface-visibility" to "inherit",
                     "font-size" to fontSize,

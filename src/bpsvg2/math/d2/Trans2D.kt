@@ -7,6 +7,9 @@ import bpsvg2.eat.OutputMode
 
 data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
 
+    constructor(scale: Double, angle: Angle, offset: Vec2 = Vec2.zero):
+            this(scale.d, angle, offset)
+
     companion object {
         val id = Trans2D(1.0.d, Angle.id)
     }

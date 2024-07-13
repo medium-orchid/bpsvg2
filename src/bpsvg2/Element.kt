@@ -48,9 +48,8 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
                     addAttribute("${suffix}height" to s, first, forceAdd)
                 }
                 is Vec2 -> {
-                    val u = s.unit ?: ""
-                    addAttribute("${suffix}width" to "${s.x}$u", first, forceAdd)
-                    addAttribute("${suffix}height" to "${s.y}$u", first, forceAdd)
+                    addAttribute("${suffix}width" to s.x, first, forceAdd)
+                    addAttribute("${suffix}height" to s.y, first, forceAdd)
                 }
             }
         } else if (f.startsWith("*")) {
@@ -61,14 +60,12 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
                     addAttribute("${suffix}y" to s, first, forceAdd)
                 }
                 is Vec2 -> {
-                    val u = s.unit ?: ""
-                    addAttribute("${suffix}x" to "${s.x}$u", first, forceAdd)
-                    addAttribute("${suffix}y" to "${s.y}$u", first, forceAdd)
+                    addAttribute("${suffix}x" to s.x, first, forceAdd)
+                    addAttribute("${suffix}y" to s.y, first, forceAdd)
                 }
                 is Rect -> {
-                    val u = s.topLeft.unit ?: ""
-                    addAttribute("${suffix}x" to "${s.topLeft.x}$u", first, forceAdd)
-                    addAttribute("${suffix}y" to "${s.topLeft.y}$u", first, forceAdd)
+                    addAttribute("${suffix}x" to s.topLeft.x, first, forceAdd)
+                    addAttribute("${suffix}y" to s.topLeft.y, first, forceAdd)
                     addAttribute("${suffix}width" to s.width, first, forceAdd)
                     addAttribute("${suffix}height" to s.height, first, forceAdd)
                 }
@@ -77,9 +74,8 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
             val suffix = f.substring(1)
             when (s) {
                 is Vec2 -> {
-                    val u = s.unit ?: ""
-                    addAttribute("x$suffix" to "${s.x}$u", first, forceAdd)
-                    addAttribute("y$suffix" to "${s.y}$u", first, forceAdd)
+                    addAttribute("x$suffix" to s.x, first, forceAdd)
+                    addAttribute("y$suffix" to s.y, first, forceAdd)
                 }
             }
         } else {

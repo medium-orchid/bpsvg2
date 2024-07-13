@@ -32,6 +32,11 @@ operator fun Int.invoke(unit: CSSUnits) = Dimension(this.toDouble(), unit)
 val Double.d: Dimension get() = Dimension(this, CSSUnits.UNITLESS)
 val Double.pct: Dimension get() = Dimension(this, CSSUnits.PERCENT)
 val Double.px: Dimension get() = Dimension(this, CSSUnits.PX)
+
+val Int.d: Dimension get() = Dimension(this.toDouble(), CSSUnits.UNITLESS)
+val Int.pct: Dimension get() = Dimension(this.toDouble(), CSSUnits.PERCENT)
+val Int.px: Dimension get() = Dimension(this.toDouble(), CSSUnits.PX)
+
 val zero = 0.0.d
 val one = 1.0.d
 
@@ -45,4 +50,12 @@ fun Boolean.flag(): Int {
 
 operator fun <V> Double.times(vector: Vector<V>): V {
     return vector * this
+}
+
+operator fun <V> Int.times(vector: Vector<V>): V {
+    return vector * this.toDouble()
+}
+
+operator fun <V> Vector<V>.div(other: Int): V {
+    return this / other.toDouble()
 }

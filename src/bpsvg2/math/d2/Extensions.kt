@@ -16,6 +16,10 @@ operator fun Double.times(other: Angle): Angle {
     return other * this
 }
 
+operator fun Int.times(other: Angle): Angle {
+    return other * this.toDouble()
+}
+
 val Double.trans2D: Trans2D get() = Trans2D(this.d, Angle.id, Vec2.zero)
 
 val Double.rad: Angle get() = Angle(this, AngleUnits.RAD)

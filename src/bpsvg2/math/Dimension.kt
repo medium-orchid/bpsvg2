@@ -11,6 +11,7 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
     companion object {
         fun niceName(unit: CSSUnits): String {
             return when (unit) {
+                CSSUnits.UNITLESS -> ""
                 CSSUnits.HZ -> "Hz"
                 CSSUnits.KHZ -> "kHz"
                 CSSUnits.PERCENT -> "%"

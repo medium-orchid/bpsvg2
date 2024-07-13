@@ -7,7 +7,7 @@ import bpsvg2.math.d2.*
 fun main() {
     SVGElement.root(
         "width" to 600.px, "height" to 600.px,
-        "viewBox" to Rect.byCenter(Vec2.zero, 600, 600)
+        "viewBox" to Rect.byCenter(Vec2.zero, 600.0, 600.0)
     ) {
         style {
             select("svg")(
@@ -77,19 +77,19 @@ fun main() {
                 "*c" to Vec2.zero, "r" to 200,
                 "gradientUnits" to "userSpaceOnUse"
             ) {
-                stop("id" to "fade-stop-1", "offset" to 33.percent)
-                stop("id" to "fade-stop-2", "offset" to 95.percent)
+                stop("id" to "fade-stop-1", "offset" to 33.pct)
+                stop("id" to "fade-stop-2", "offset" to 95.pct)
             }
             g("class" to "segment", id("segment")) {
                 path("class" to "segment-fill") {
                     moveTo(Vec2.zero)
                     verticalBy(-200)
-                    arcBy(40, 40, 0.deg, largeArc = false, clockwise = false, Vec2(-62, 10))
+                    arcBy(40, 40, 0.deg, largeArc = false, clockwise = false, Vec2(-62.0, 10.0))
                     close()
                 }
                 path("class" to "segment-edge") {
-                    moveTo(Vec2(0, -200))
-                    arcBy(40, 40, 0.deg, largeArc = false, clockwise = false, Vec2(-62, 10))
+                    moveTo(-200 * Vec2.Y)
+                    arcBy(40, 40, 0.deg, largeArc = false, clockwise = false, Vec2(-62.0, 10.0))
                 }
             }
             g(id("quadrant")) {
@@ -104,10 +104,10 @@ fun main() {
                 }
             }
         }
-        text(id("heading"), "*" to Vec2(-280, -270)) {
+        text(id("heading"), "*" to Vec2(-280.0, -270.0)) {
             string("SVG demonstration")
         }
-        text(id("caption"), "*" to Vec2(-280, -250)) {
+        text(id("caption"), "*" to Vec2(-280.0, -250.0)) {
             string("Move your mouse pointer over the flower.")
         }
         g(id("flower")) {

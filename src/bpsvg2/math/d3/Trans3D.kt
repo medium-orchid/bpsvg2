@@ -55,15 +55,15 @@ data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
         }
         var empty = true
         if (!offset.approximatelyEquals(Vec3.zero)) {
-            val x0 = approx(offset.x, 0.0)
-            val y0 = approx(offset.y, 0.0)
-            val z0 = approx(offset.z, 0.0)
+            val x0 = approx(offset.x, zero)
+            val y0 = approx(offset.y, zero)
+            val z0 = approx(offset.z, zero)
             if (x0 && y0) {
-                builder.append("translateZ(").append(offset.zl, mode).append(")")
+                builder.append("translateZ(").append(offset.z, mode).append(")")
             } else if (y0 && z0) {
-                builder.append("translateX(").append(offset.xl, mode).append(")")
+                builder.append("translateX(").append(offset.x, mode).append(")")
             } else if (x0 && z0) {
-                builder.append("translateX(").append(offset.yl, mode).append(")")
+                builder.append("translateX(").append(offset.y, mode).append(")")
             } else {
                 builder.append("translate3d(").append(offset, mode).append(")")
             }
