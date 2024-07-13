@@ -22,7 +22,7 @@ data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
     }
 
     operator fun times(other: Trans3D): Trans3D {
-        val newOffset = scale * quat * other.offset + offset
+        val newOffset = scale * (quat * other.offset) + offset
         return Trans3D(scale * other.scale, quat * other.quat, newOffset)
     }
 
@@ -31,7 +31,7 @@ data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
     }
 
     operator fun times(other: Vec3): Vec3 {
-        return scale * (quat * (offset + other))
+        return scale * (quat * other) + offset
     }
 
     operator fun plus(other: Vec3): Trans3D {
@@ -63,7 +63,7 @@ data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
             } else if (y0 && z0) {
                 builder.append("translateX(").append(offset.x, mode).append(")")
             } else if (x0 && z0) {
-                builder.append("translateX(").append(offset.y, mode).append(")")
+                builder.append("translateY(").append(offset.y, mode).append(")")
             } else {
                 builder.append("translate3d(").append(offset, mode).append(")")
             }

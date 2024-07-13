@@ -45,7 +45,7 @@ fun main() {
                 keyframes("spin") {
                     for (i in frames) {
                         select(i) (
-                            "transform" to Quat.randomUnit().toMat3D()
+                            "transform" to Trans3D(1.0, Quat.randomUnit())
                         )
                     }
                 }

@@ -46,16 +46,9 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
     }
 
     operator fun times(other: Vec3): Vec3 {
-        if (approximatelyEquals(id)) return other
-        // Is Rodrigues the best to do?
         val n = normalized()
-        val vn = sqrt(n.i*n.i + n.j*n.j + n.k*n.k)
-        val angle = 2.0 * Angle.atan2(vn, n.r)
-        val axis = Vec3(n.i, n.j, n.k) / (angle / 2.0).sin()
-        val cos = angle.cos()
-        return cos * other +
-                angle.sin() * axis.cross(other) +
-                (1 - cos) * axis.dot(other) * axis
+        val axis = vectorPart()
+        return other + 2 * axis.cross(axis.cross(other) + r * other)
     }
 
     operator fun times(other: Double): Quat {
