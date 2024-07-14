@@ -3,6 +3,7 @@ package bpsvg2
 import bpsvg2.eat.OutputMode
 import bpsvg2.math.*
 import bpsvg2.math.d2.*
+import bpsvg2.math.geom.Curve
 
 class Path(tag: String? = null) : Element(OutputMode.Path, tag) {
 
@@ -58,6 +59,19 @@ class Path(tag: String? = null) : Element(OutputMode.Path, tag) {
     fun verticalBy(vararg y: Any) {
         val child = makeChild(this, "v")
         child.addAsSecondaryAttribute(*y)
+    }
+
+    fun fromCurve(c: Curve<Vec2>) {
+        moveTo(c.points[0])
+        val child = makeChild(this, when(c.degree) {
+            1 -> "L"
+            2 -> "Q"
+            3 -> "C"
+            else -> throw IllegalArgumentException("cannot add degree ${c.degree} curve to path")
+        })
+        for (i in c.points.takeLast(c.degree)) {
+            child.addAsSecondaryAttribute(i)
+        }
     }
 
     fun cubicTo(startingControl: Vec2, endingControl: Vec2, endPoint: Vec2) {

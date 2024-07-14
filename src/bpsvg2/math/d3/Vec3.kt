@@ -8,7 +8,7 @@ import bpsvg2.math.d2.Angle
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType {
+data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType, Vector<Vec3> {
 
     constructor(x: Double, y: Double, z: Double) : this(x.d, y.d, z.d)
 
@@ -31,11 +31,11 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return Vec3(x.convert(unitX), y.convert(unitY), z.convert(unitZ))
     }
 
-    operator fun plus(other: Vec3): Vec3 {
+    override operator fun plus(other: Vec3): Vec3 {
         return Vec3(this.x + other.x, this.y + other.y, this.z + other.z)
     }
 
-    operator fun minus(other: Vec3): Vec3 {
+    override operator fun minus(other: Vec3): Vec3 {
         return Vec3(this.x - other.x, this.y - other.y, this.z - other.z)
     }
 
@@ -52,7 +52,7 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return this / norm()
     }
 
-    operator fun times(other: Double): Vec3 {
+    override operator fun times(other: Double): Vec3 {
         return Vec3(x * other, y * other, z * other)
     }
 
@@ -60,7 +60,7 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return Vec3(x * other, y * other, z * other)
     }
 
-    operator fun div(other: Double): Vec3 {
+    override operator fun div(other: Double): Vec3 {
         return Vec3(x / other, y / other, z / other)
     }
 

@@ -16,6 +16,10 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
         val center = Vec2(50(CSSUnits.PERCENT), 50(CSSUnits.PERCENT))
         val X = Vec2(1.0, 0.0)
         val Y = Vec2(0.0, 1.0)
+
+        fun randomUnit(): Vec2 {
+            return Vec2(randomNormal(), randomNormal()).normalized()
+        }
     }
 
     fun convert(unitX: CSSUnits, unitY: CSSUnits): Vec2 {
