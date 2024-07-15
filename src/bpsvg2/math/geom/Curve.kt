@@ -12,6 +12,8 @@ class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>> {
 
     constructor(degree: Int, init: (Int) -> V): this(List(degree + 1, init))
 
+    constructor(vararg points: V): this(points.toList())
+
     val degree: Int = points.size - 1
 
     override fun plus(other: Curve<V>): Curve<V> {
@@ -78,6 +80,12 @@ class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>> {
 
     fun evaluate(t: Double): V {
         return deCasteljau(t)[0]
+    }
+
+    fun derivative(t: Double): V {
+        if (t > 0.5) return reversed().derivative(1 - t) // Avoid singularity @ t = 1
+        val dC = deCasteljau(t)
+        return degree * (dC[1] - dC[0])
     }
 
     fun splitT1(t: Double): Curve<V> {

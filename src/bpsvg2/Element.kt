@@ -7,6 +7,7 @@ import bpsvg2.math.Dimension
 import bpsvg2.math.Rect
 import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
+import bpsvg2.math.geom.Curve
 import java.io.File
 
 open class Element(val backingTree: ElementAttributeTree) : DataType {
@@ -68,6 +69,16 @@ open class Element(val backingTree: ElementAttributeTree) : DataType {
                     addAttribute("${suffix}y" to s.topLeft.y, first, forceAdd)
                     addAttribute("${suffix}width" to s.width, first, forceAdd)
                     addAttribute("${suffix}height" to s.height, first, forceAdd)
+                }
+                is Curve<*> -> {
+                    for (i in s.points.indices) {
+                        when (val p = s.points[i]) {
+                            is Vec2 -> {
+                                addAttribute("${suffix}x${i + 1}" to p.x, first, forceAdd)
+                                addAttribute("${suffix}y${i + 1}" to p.y, first, forceAdd)
+                            }
+                        }
+                    }
                 }
             }
         } else if (f.startsWith("%")) {
