@@ -31,10 +31,12 @@ operator fun Int.invoke(unit: CSSUnits) = Dimension(this.toDouble(), unit)
 
 val Double.d: Dimension get() = Dimension(this, CSSUnits.UNITLESS)
 val Double.pct: Dimension get() = Dimension(this, CSSUnits.PERCENT)
+val Double.percent: Dimension get() = Dimension(this, CSSUnits.PERCENT)
 val Double.px: Dimension get() = Dimension(this, CSSUnits.PX)
 
 val Int.d: Dimension get() = Dimension(this.toDouble(), CSSUnits.UNITLESS)
 val Int.pct: Dimension get() = Dimension(this.toDouble(), CSSUnits.PERCENT)
+val Int.percent: Dimension get() = Dimension(this.toDouble(), CSSUnits.PERCENT)
 val Int.px: Dimension get() = Dimension(this.toDouble(), CSSUnits.PX)
 
 val zero = 0.0.d
