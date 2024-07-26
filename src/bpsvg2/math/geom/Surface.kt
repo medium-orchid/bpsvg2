@@ -1,6 +1,7 @@
 package bpsvg2.math.geom
 
 import bpsvg2.math.*
+import bpsvg2.math.d2.*
 
 class Surface<V : Vector<V>> private constructor(
     private val uCurve: Curve<Curve<V>>, private val vCurve: Curve<Curve<V>>
@@ -24,12 +25,37 @@ class Surface<V : Vector<V>> private constructor(
         return uCurve.evaluate(u)
     }
 
-    fun vLine(u: Double): Curve<V> {
-        return vCurve.evaluate(u)
+    fun vLine(v: Double): Curve<V> {
+        return vCurve.evaluate(v)
     }
 
     fun evaluate(u: Double, v: Double): V {
         return uCurve.evaluate(u).evaluate(v)
+    }
+
+    fun uDerivative(u: Double, v: Double): V {
+        return vCurve.evaluate(v).derivative(u)
+    }
+
+    fun vDerivative(u: Double, v: Double): V {
+        return uCurve.evaluate(u).derivative(v)
+    }
+
+    fun chain(uvCurve: Differentiable<Vec2>): Differentiable<V> {
+        return Differentiable.Function( { t ->
+            val input = uvCurve.evaluate(t)
+            val u = input.x.convertValue(CSSUnits.UNITLESS)
+            val v = input.y.convertValue(CSSUnits.UNITLESS)
+            evaluate(u, v)
+        }, { t ->
+            val input = uvCurve.evaluate(t)
+            val d = uvCurve.derivative(t)
+            val u = input.x.convertValue(CSSUnits.UNITLESS)
+            val v = input.y.convertValue(CSSUnits.UNITLESS)
+            val du = d.x.convertValue(CSSUnits.UNITLESS)
+            val dv = d.y.convertValue(CSSUnits.UNITLESS)
+            du * uDerivative(u, v) + dv * vDerivative(u, v)
+        })
     }
 
     override fun plus(other: Surface<V>): Surface<V> {
@@ -47,5 +73,4 @@ class Surface<V : Vector<V>> private constructor(
     override fun div(other: Double): Surface<V> {
         return Surface(uCurve / other, vCurve / other)
     }
-
 }

@@ -2,7 +2,7 @@ package bpsvg2.math.geom
 
 import bpsvg2.math.*
 
-class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>> {
+class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>>, Differentiable<V>() {
 
     companion object {
         const val LINEAR = 1
@@ -78,11 +78,11 @@ class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>> {
         return arr
     }
 
-    fun evaluate(t: Double): V {
+    override fun evaluate(t: Double): V {
         return deCasteljau(t)[0]
     }
 
-    fun derivative(t: Double): V {
+    override fun derivative(t: Double): V {
         if (t > 0.5) return reversed().derivative(1 - t) // Avoid singularity @ t = 1
         val dC = deCasteljau(t)
         return degree * (dC[1] - dC[0])
