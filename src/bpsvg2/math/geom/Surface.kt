@@ -42,7 +42,7 @@ class Surface<V : Vector<V>> private constructor(
     }
 
     fun chain(uvCurve: Differentiable<Vec2>): Differentiable<V> {
-        return Differentiable.Function( { t ->
+        return Differentiable.Function(uvCurve.t0, uvCurve.t1, { t ->
             val input = uvCurve.evaluate(t)
             val u = input.x.convertValue(CSSUnits.UNITLESS)
             val v = input.y.convertValue(CSSUnits.UNITLESS)

@@ -4,6 +4,9 @@ import bpsvg2.math.*
 
 class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>>, Differentiable<V>() {
 
+    override val t0 = 0.0
+    override val t1 = 1.0
+
     companion object {
         const val LINEAR = 1
         const val QUADRATIC = 2
