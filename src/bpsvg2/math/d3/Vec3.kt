@@ -39,7 +39,7 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return Vec3(this.x - other.x, this.y - other.y, this.z - other.z)
     }
 
-    fun norm(): Dimension {
+    override fun norm(): Dimension {
         val unit = Dimension.commonUnit(x, y, z)
         return Dimension(sqrt(
             x.convertValue(unit).pow(2)

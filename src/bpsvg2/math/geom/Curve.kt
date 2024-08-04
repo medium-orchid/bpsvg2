@@ -91,6 +91,14 @@ class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>>, Differentiable
         return degree * (dC[1] - dC[0])
     }
 
+    override fun norm(): Dimension {
+        var n = points[0].norm()
+        for (i in 1..<points.size) {
+            n += points[i].norm()
+        }
+        return n
+    }
+
     fun splitT1(t: Double): Curve<V> {
         return Curve(deCasteljau(t))
     }

@@ -74,6 +74,12 @@ class Path(tag: String? = null) : Element(OutputMode.Path, tag) {
         }
     }
 
+    fun fromCurves(c: Iterable<Curve<Vec2>>) {
+        for (i in c) {
+            fromCurve(i)
+        }
+    }
+
     fun cubicTo(startingControl: Vec2, endingControl: Vec2, endPoint: Vec2) {
         val child = makeChild(this, "C")
         child.addAsSecondaryAttribute(startingControl, endingControl, endPoint)
