@@ -9,6 +9,7 @@ fun main() {
     SVGElement.root("viewBox" to Rect.zeroCentered(2.0, 2.0),
         "**" to 500.px) {
         val guides = 20
+        val depth = 2
         style {
             select("svg")(
                 "background-color" to "black",
@@ -25,29 +26,29 @@ fun main() {
             )
             select("#diagonal1")(
                 "fill" to "none",
-                "stroke" to "yellow",
+                "stroke" to "white",
                 "stroke-width" to 0.02,
             )
             select("#diagonal2")(
                 "fill" to "none",
-                "stroke" to "green",
+                "stroke" to "yellow",
                 "stroke-width" to 0.02,
             )
         }
-        val surface = Surface(Curve.LINEAR, Curve.LINEAR) { _,_ ->
+        val surface = Surface(Curve.CUBIC, Curve.CUBIC) { _,_ ->
             Vec2.randomUnit()
         }
         val perTick = 1.0 / (guides - 1)
         path(id("diagonal1")) {
             fromCurves(
                 surface.chain(Curve(Vec2.zero, Vec2.X + Vec2.Y))
-                    .approximate(4)
+                    .approximate(depth)
             )
         }
         path(id("diagonal2")) {
             fromCurves(
                 surface.chain(Curve(Vec2.X, Vec2.Y))
-                    .approximate(4)
+                    .approximate(depth)
             )
         }
         g(id("guides")) {

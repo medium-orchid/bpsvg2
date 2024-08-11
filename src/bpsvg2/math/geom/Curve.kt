@@ -85,10 +85,14 @@ class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>>, Differentiable
         return deCasteljau(t)[0]
     }
 
+    fun derivative(): Curve<V> {
+        return Curve(List(points.size - 1) {i ->
+            degree * (points[i + 1] - points[i])
+        })
+    }
+
     override fun derivative(t: Double): V {
-        if (t > 0.5) return reversed().derivative(1 - t) // Avoid singularity @ t = 1
-        val dC = deCasteljau(t)
-        return degree * (dC[1] - dC[0])
+        return derivative().evaluate(t)
     }
 
     override fun norm(): Dimension {
