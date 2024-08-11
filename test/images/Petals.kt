@@ -83,7 +83,7 @@ fun main() {
             g("class" to "segment", id("segment")) {
                 path("class" to "segment-fill") {
                     moveTo(Vec2.zero)
-                    verticalBy(-200)
+                    verticalBy((-200).d)
                     arcBy(40, 40, 0.deg, largeArc = false, clockwise = false, Vec2(-62.0, 10.0))
                     close()
                 }

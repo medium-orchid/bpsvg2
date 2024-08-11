@@ -23,29 +23,42 @@ fun main() {
             select("#v")(
                 "stroke" to "red",
             )
-            select("#diagonal")(
+            select("#diagonal1")(
                 "fill" to "none",
-                "stroke" to "white",
+                "stroke" to "yellow",
+                "stroke-width" to 0.02,
+            )
+            select("#diagonal2")(
+                "fill" to "none",
+                "stroke" to "green",
                 "stroke-width" to 0.02,
             )
         }
-        val surface = Surface(Curve.CUBIC, Curve.CUBIC) { _,_ ->
+        val surface = Surface(Curve.LINEAR, Curve.LINEAR) { _,_ ->
             Vec2.randomUnit()
         }
-        val path = Curve(Vec2.zero, Vec2.X + Vec2.Y)
         val perTick = 1.0 / (guides - 1)
-        path(id("diagonal")) {
-            fromCurves(surface.chain(path).approximate(4))
+        path(id("diagonal1")) {
+            fromCurves(
+                surface.chain(Curve(Vec2.zero, Vec2.X + Vec2.Y))
+                    .approximate(4)
+            )
+        }
+        path(id("diagonal2")) {
+            fromCurves(
+                surface.chain(Curve(Vec2.X, Vec2.Y))
+                    .approximate(4)
+            )
         }
         g(id("guides")) {
-            g(id("u")) {
-                for (i in 0..<guides) {
-                    path { fromCurve(surface.uLine(i * perTick)) }
-                }
-            }
             g(id("v")) {
                 for (i in 0..<guides) {
                     path { fromCurve(surface.vLine(i * perTick)) }
+                }
+            }
+            g(id("u")) {
+                for (i in 0..<guides) {
+                    path { fromCurve(surface.uLine(i * perTick)) }
                 }
             }
         }
