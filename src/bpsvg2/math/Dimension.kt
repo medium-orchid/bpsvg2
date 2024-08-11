@@ -4,6 +4,7 @@ import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
 import bpsvg2.math.d2.Vec2
+import kotlin.math.absoluteValue
 import kotlin.math.pow
 
 data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<Dimension> {
@@ -95,6 +96,10 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
 
     override operator fun div(other: Double): Dimension {
         return Dimension(value / other, unit)
+    }
+
+    override fun norm(): Dimension {
+        return Dimension(value.absoluteValue, unit)
     }
 
     operator fun div(other: Dimension): Double {

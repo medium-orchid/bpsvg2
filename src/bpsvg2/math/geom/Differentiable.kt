@@ -42,35 +42,37 @@ abstract class Differentiable<V: Vector<V>> {
         return Linear(this, scale, offset)
     }
 
-    fun approximate(maxSegments: Int, d: Double = EPS): Iterable<Curve<V>> {
+    fun approximate(maxDepth: Int, d: Double = EPS): Iterable<Curve<V>> {
         val l = mutableListOf<Curve<V>>()
-        approximateSegment(l, d, t0, t1, maxSegments)
+        approximateSegment(l, d, t0, t1, maxDepth)
         return l
     }
 
     private fun approximateSegment(
         l: MutableList<Curve<V>>, d: Double,
         a: Double, b: Double,
-        remaining: Int): Int {
-        if (remaining < 0) {
-            throw IllegalArgumentException("Cannot approximate")
-        }
+        remaining: Int) {
         val ba = b - a
         val fa = evaluate(a)
         val fpa = derivative(a)
         val fb = evaluate(b)
         val fpb = derivative(b)
-        val curve = Curve(fa, fa + ba * fpa / 3, fb - ba * fpb / 3)
+        val curve = Curve(fa, fa + ba * fpa / 3, fb - ba * fpb / 3, fb)
+        if (remaining <= 0) {
+            l.add(curve)
+            return
+        }
         for (i in 0..5) {
             val t = Random.nextDouble()
             val first = curve.evaluate(t) - evaluate(a + ba * t)
             val second = curve.derivative(t) - ba * derivative(a + ba * t)
             if ( first.norm().value > d || second.norm().value > d ) {
                 val ab = (a + b) / 2
-                val r = approximateSegment(l, d, a, ab, remaining)
-                return approximateSegment(l, d, ab, b, r)
+                approximateSegment(l, d, a, ab, remaining - 1)
+                approximateSegment(l, d, ab, b, remaining - 1)
+                return
             }
         }
-        return remaining - 1
+        l.add(curve)
     }
 }

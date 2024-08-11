@@ -73,4 +73,12 @@ class Surface<V : Vector<V>> private constructor(
     override fun div(other: Double): Surface<V> {
         return Surface(uCurve / other, vCurve / other)
     }
+
+    override fun norm(): Dimension {
+        var n = uCurve.points[0].norm()
+        for (i in 1..<uCurve.points.size) {
+            n += uCurve.points[i].norm()
+        }
+        return n
+    }
 }
