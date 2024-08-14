@@ -35,7 +35,7 @@ fun main() {
                 "stroke-width" to 0.02,
             )
         }
-        val surface = Surface(Curve.CUBIC, Curve.CUBIC) { _,_ ->
+        val surface = Surface(Curve.QUADRATIC, Curve.QUADRATIC) { _,_ ->
             Vec2.randomUnit()
         }
         val perTick = 1.0 / (guides - 1)
