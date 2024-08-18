@@ -39,6 +39,19 @@ data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Ve
         return Trans2D(scale, angle, offset + other)
     }
 
+    fun invert(): Trans2D {
+        // k't'(kt + x) + x' = id
+        // = k't'kt + k't'x + x'
+        // => k't'kt = id
+        // => k'k = 1 =>  [ k' = 1/k ]
+        // => t't = id => [ t' = t^-1 ]
+        // =>             [ x' = -k't'x ]
+        val newScale = 1.d / scale
+        val newAngle = -1 * angle
+        val newOffset = -newScale * (newAngle * offset)
+        return Trans2D(newScale, newAngle, newOffset)
+    }
+
     override fun put(builder: OutputBuilder, mode: OutputMode) {
         if (approximatelyEquals(id)) {
             builder.append("scale(1)")
