@@ -6,7 +6,8 @@ import bpsvg2.math.d2.Mat2D
 class LSystem {
 
     companion object {
-        private val identifier = Regex("[A-Za-z][^A-Za-z]?\\d+")
+        private val identifier = Regex("[A-Za-z]\\d*")
+        private val tokens = Regex("([A-Za-z]\\d*)|[()]")
     }
 
     class State {
@@ -25,10 +26,30 @@ class LSystem {
         }
 
         var iteration = 0
+
+        fun clone(): State {
+            val new = State()
+            new.orientation = orientation
+            new.partialPosition = partialPosition
+            new.iteration = iteration
+            return new
+        }
+
+        fun copy(other: State) {
+            orientation = other.orientation
+            partialPosition = other.partialPosition
+            iteration = other.iteration
+        }
+
+        fun next(): State {
+            val n = clone()
+            n.iteration += 1
+            return n
+        }
     }
 
-    private val variables = mutableMapOf<String, SVGStateOperation>()
-    private val constants = mutableMapOf<String, StateOperation>()
+    private val variables = mutableMapOf<String, String>()
+    private val constants = mutableMapOf<String, SVGStateOperation>()
     private val aliases = mutableMapOf<String, String>()
 
     private fun verifyNew(name: String) {
@@ -38,31 +59,57 @@ class LSystem {
         }
     }
 
-    private fun perform(svgElement: SVGElement, state: State, name: String) {
+    private fun alias(str: String): String {
+        var out = str
+        for ((k, v) in aliases) {
+            out = out.replace(k, v)
+        }
+        return out
+    }
+
+    private fun perform(element: SVGElement, state: State, prev: Map<String, State>, name: String) {
         val v = variables[name]
         if (v != null) {
-            svgElement.v(state)
+            element.use(href("$name${state.iteration - 1}"), "transform" to state.position)
             return
         }
         val c = constants[name]
         if (c != null) {
-            c(state)
+            element.c(state)
             return
         }
         throw IllegalArgumentException("$name is not defined")
     }
 
-    fun addVariable(name: String, operation: SVGStateOperation? = null): LSystem {
-        verifyNew(name)
-        if (operation == null) {
-            variables[name] = { state ->
-                if (state.iteration > 0) {
-                    use(id("$name${state.iteration}"))
+    fun perform(element: SVGElement, iterations: Int) {
+        if (iterations <= 0) throw IllegalArgumentException("iterations must be positive")
+        val aliased = mutableMapOf<String, Iterable<String>>()
+        for ((k, v) in variables) {
+            aliased[k] = tokens.findAll(v).map { x -> x.value }.toList()
+        }
+        var previousMap = variables.keys.associateWith { _ -> State() }
+        for (i in 0..<iterations) {
+            val stack = ArrayDeque<State>()
+            val nextMap = previousMap.mapValues { (_, v) -> v.next() }
+            for ((k, v) in aliased) {
+                val n = nextMap[k]!!
+                element.g(id("$k${n.iteration}")) {
+                    for (j in v) {
+                        when (j) {
+                            "(" -> stack.addLast(n.clone())
+                            ")" -> n.copy(stack.removeLast())
+                            else -> perform(this, n, previousMap, j)
+                        }
+                    }
                 }
             }
-        } else {
-            variables[name] = operation
+            previousMap = nextMap
         }
+    }
+
+    fun addVariable(name: String, value: String): LSystem {
+        verifyNew(name)
+        variables[name] = value
         return this
     }
 
@@ -82,7 +129,15 @@ class LSystem {
         return this
     }
 
-    fun addConstant(name: String, operation: StateOperation): LSystem {
+    fun addUseConstant(name: String, use: String): LSystem {
+        verifyNew(name)
+        constants[name] = { state ->
+            use(href(use), "transform" to state.position)
+        }
+        return this
+    }
+
+    fun addConstant(name: String, operation: SVGStateOperation): LSystem {
         verifyNew(name)
         constants[name] = operation
         return this

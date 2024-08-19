@@ -1,7 +1,5 @@
 package bpsvg2.math.geom
-
 import bpsvg2.math.*
-import java.lang.IllegalArgumentException
 import kotlin.random.Random
 
 abstract class Differentiable<V: Vector<V>> {
