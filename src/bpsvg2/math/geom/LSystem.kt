@@ -11,7 +11,7 @@ class LSystem {
         private val tokens = Regex("([A-Za-z]\\d*)|[()]")
     }
 
-    class State {
+    class State(var iteration: Int = 0) {
         var orientation = Trans2D.id
             set(value) {
                 partialPosition = value.inverse() * field * partialPosition
@@ -28,26 +28,16 @@ class LSystem {
             partialPosition = m * partialPosition
         }
 
-        var iteration = 0
-
         fun clone(): State {
             val new = State()
             new.orientation = orientation
             new.partialPosition = partialPosition
-            new.iteration = iteration
             return new
         }
 
         fun copy(other: State) {
             orientation = other.orientation
             partialPosition = other.partialPosition
-            iteration = other.iteration
-        }
-
-        fun next(): State {
-            val n = clone()
-            n.iteration += 1
-            return n
         }
     }
 
@@ -92,23 +82,21 @@ class LSystem {
                 x -> x.value
             }.toList()
         }
-        var previousMap = variables.keys.associateWith { _ -> State() }
         for (i in 0..<iterations) {
             val stack = ArrayDeque<State>()
-            val nextMap = previousMap.mapValues { (_, v) -> v.next() }
+            val states = variables.keys.associateWith { _ -> State(i + 1) }
             for ((k, v) in aliased) {
-                val n = nextMap[k]!!
-                element.g(id("$k${n.iteration}")) {
+                val n = states[k]!!
+                element.g(id("$k${i + 1}")) {
                     for (j in v) {
                         when (j) {
                             "(" -> stack.addLast(n.clone())
                             ")" -> n.copy(stack.removeLast())
-                            else -> perform(this, n, previousMap, j)
+                            else -> perform(this, n, states, j)
                         }
                     }
                 }
             }
-            previousMap = nextMap
         }
     }
 

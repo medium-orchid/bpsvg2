@@ -76,6 +76,14 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
         return Vec2(cos(), sin())
     }
 
+    fun radius(r: Dimension): Vec2 {
+        return Vec2(cos() * r, sin() * r)
+    }
+
+    fun radius(r: Double): Vec2 {
+        return Vec2(cos() * r, sin() * r)
+    }
+
     operator fun times(other: Double): Angle {
         return Angle(value * other, unit)
     }

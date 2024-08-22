@@ -39,6 +39,10 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
         return Vec2(this.x - other.x, this.y - other.y)
     }
 
+    operator fun unaryMinus(): Vec2 {
+        return Vec2(-x, -y)
+    }
+
     override fun norm(): Dimension {
         val unit = Dimension.commonUnit(x, y)
         return Dimension(sqrt(x.convertValue(unit).pow(2) + y.convertValue(unit).pow(2)), unit)
