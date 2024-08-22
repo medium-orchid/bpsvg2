@@ -7,7 +7,7 @@ import bpsvg2.eat.OutputMode
 
 data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
 
-    constructor(scale: Double, angle: Angle, offset: Vec2 = Vec2.zero):
+    constructor(scale: Double, angle: Angle = Angle.id, offset: Vec2 = Vec2.zero):
             this(scale.d, angle, offset)
 
     companion object {
@@ -39,7 +39,7 @@ data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Ve
         return Trans2D(scale, angle, offset + other)
     }
 
-    fun invert(): Trans2D {
+    fun inverse(): Trans2D {
         // k't'(kt + x) + x' = id
         // = k't'kt + k't'x + x'
         // => k't'kt = id

@@ -28,7 +28,7 @@ fun main() {
         )
         val trans = Trans2D(Random.nextDouble(0.5, 1.5), randomAngle(), Vec2.randomUnit())
         assert(
-            Trans2D.id.approximatelyEquals(trans * trans.invert())
+            Trans2D.id.approximatelyEquals(trans * trans.inverse())
         )
     }
     assert(

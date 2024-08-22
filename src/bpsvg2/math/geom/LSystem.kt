@@ -2,6 +2,7 @@ package bpsvg2.math.geom
 
 import bpsvg2.*
 import bpsvg2.math.d2.Mat2D
+import bpsvg2.math.d2.Trans2D
 
 class LSystem {
 
@@ -11,17 +12,19 @@ class LSystem {
     }
 
     class State {
-        var orientation = Mat2D.id
+        var orientation = Trans2D.id
             set(value) {
                 partialPosition = value.inverse() * field * partialPosition
                 field = value
             }
 
-        private var partialPosition = Mat2D.id
+        private var partialPosition = Trans2D.id
 
         val position get() = orientation * partialPosition
 
-        fun move(m: Mat2D) {
+        val fullPosition get() = position * orientation
+
+        fun move(m: Trans2D) {
             partialPosition = m * partialPosition
         }
 
@@ -70,7 +73,7 @@ class LSystem {
     private fun perform(element: SVGElement, state: State, prev: Map<String, State>, name: String) {
         val v = variables[name]
         if (v != null) {
-            element.use(href("$name${state.iteration - 1}"), "transform" to state.position)
+            element.use(href("$name${state.iteration - 1}"), "transform" to state.fullPosition)
             return
         }
         val c = constants[name]
@@ -85,7 +88,9 @@ class LSystem {
         if (iterations <= 0) throw IllegalArgumentException("iterations must be positive")
         val aliased = mutableMapOf<String, Iterable<String>>()
         for ((k, v) in variables) {
-            aliased[k] = tokens.findAll(v).map { x -> x.value }.toList()
+            aliased[k] = tokens.findAll(alias(v)).map {
+                x -> x.value
+            }.toList()
         }
         var previousMap = variables.keys.associateWith { _ -> State() }
         for (i in 0..<iterations) {
@@ -113,7 +118,7 @@ class LSystem {
         return this
     }
 
-    fun addOrientationConstant(name: String, operation: Mat2D): LSystem {
+    fun addOrientationConstant(name: String, operation: Trans2D): LSystem {
         verifyNew(name)
         constants[name] = { state ->
             state.orientation = operation * state.orientation
@@ -121,7 +126,7 @@ class LSystem {
         return this
     }
 
-    fun addMovementConstant(name: String, operation: Mat2D): LSystem {
+    fun addMovementConstant(name: String, operation: Trans2D): LSystem {
         verifyNew(name)
         constants[name] = { state ->
             state.move(operation)
@@ -132,7 +137,7 @@ class LSystem {
     fun addUseConstant(name: String, use: String): LSystem {
         verifyNew(name)
         constants[name] = { state ->
-            use(href(use), "transform" to state.position)
+            use(href(use), "transform" to state.fullPosition)
         }
         return this
     }
