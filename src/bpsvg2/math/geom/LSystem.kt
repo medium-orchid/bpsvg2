@@ -60,7 +60,7 @@ class LSystem {
         return out
     }
 
-    private fun perform(element: SVGElement, state: State, prev: Map<String, State>, name: String) {
+    private fun perform(element: SVGElement, state: State, name: String) {
         val v = variables[name]
         if (v != null) {
             element.use(href("$name${state.iteration - 1}"), "transform" to state.fullPosition)
@@ -92,7 +92,7 @@ class LSystem {
                         when (j) {
                             "(" -> stack.addLast(n.clone())
                             ")" -> n.copy(stack.removeLast())
-                            else -> perform(this, n, states, j)
+                            else -> perform(this, n, j)
                         }
                     }
                 }
