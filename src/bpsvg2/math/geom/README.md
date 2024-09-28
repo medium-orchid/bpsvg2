@@ -13,6 +13,10 @@ Similarly,
 $$P'(1) = 3(P_3 - P_2) = g'(1) = (b - a)f'(b)$$
 $$P_2 = \frac{a - b}{3}f'(b) + P_3 = \frac{a - b}{3}f'(b) + f(b)$$
 
+# Degree reduction of Bézier curves of cubic or lower degree
+
+
+
 # `LSystem`: Self-similar images using `Use`
 
 For each variable $X$, we assume there is a matching element `X0` in the document, likely in `defs`. When rendering, we maintain an orientation transform $A$ and a position transform $B$. When moving the position transform, we multiply on the left by the movement $M$ conjugated by the orientation transform, that is, $$B' = AMA^{-1}B$$

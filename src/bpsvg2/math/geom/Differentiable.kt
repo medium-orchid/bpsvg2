@@ -1,5 +1,6 @@
 package bpsvg2.math.geom
 import bpsvg2.math.*
+import bpsvg2.math.d2.*
 import kotlin.random.Random
 
 abstract class Differentiable<V: Vector<V>> {
@@ -30,6 +31,32 @@ abstract class Differentiable<V: Vector<V>> {
 
         override fun derivative(t: Double): W {
             return f.derivative(t * scale + offset) * scale
+        }
+    }
+
+    data class Mat2DTransformed(val f: Differentiable<Vec2>, val m: Mat2D): Differentiable<Vec2>() {
+        override val t0 = f.t0
+        override val t1 = f.t1
+
+        override fun evaluate(t: Double): Vec2 {
+            return m * f.evaluate(t)
+        }
+
+        override fun derivative(t: Double): Vec2 {
+            return m * f.derivative(t)
+        }
+    }
+
+    data class Trans2DTransformed(val f: Differentiable<Vec2>, val t: Trans2D): Differentiable<Vec2>() {
+        override val t0 = f.t0
+        override val t1 = f.t1
+
+        override fun evaluate(t: Double): Vec2 {
+            return t * f.evaluate(t)
+        }
+
+        override fun derivative(t: Double): Vec2 {
+            return t * f.derivative(t)
         }
     }
 

@@ -45,6 +45,10 @@ data class Rect(val topLeft: Vec2, val width: Dimension, val height: Dimension) 
         return "Rect(${topLeft.x}, ${topLeft.y})($width, $height)"
     }
 
+    operator fun plus(other: Vec2): Rect {
+        return Rect(topLeft + other, width, height)
+    }
+
     fun point(vec: Vec2): Vec2 {
         return topLeft + Vec2(
             width * vec.x.convertValue(CSSUnits.PERCENT) / 100.0,

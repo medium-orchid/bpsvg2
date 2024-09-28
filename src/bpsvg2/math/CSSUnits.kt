@@ -24,5 +24,9 @@ enum class CSSUnits {
     // Frequency
     HZ, KHZ,
     // Resolution
-    DPI, DPCM, DPPX,
+    DPI, DPCM, DPPX;
+
+    operator fun invoke(value: Double): Dimension {
+        return Dimension(value, this)
+    }
 }
