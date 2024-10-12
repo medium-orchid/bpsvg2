@@ -6,6 +6,7 @@ import bpsvg2.eat.OutputMode
 import bpsvg2.math.d2.Vec2
 import kotlin.math.absoluteValue
 import kotlin.math.pow
+import kotlin.math.sign
 
 data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<Dimension> {
 
@@ -112,5 +113,9 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
 
     fun toVec2(): Vec2 {
         return Vec2(this, this)
+    }
+
+    fun sign(): Double {
+        return value.sign
     }
 }
