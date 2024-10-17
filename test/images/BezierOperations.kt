@@ -3,7 +3,7 @@ package images
 import bpsvg2.*
 import bpsvg2.math.*
 import bpsvg2.math.d2.*
-import bpsvg2.math.geom.*
+import bpsvg2.geom.*
 import kotlin.random.Random
 
 fun main() {
@@ -38,7 +38,7 @@ fun main() {
                 "fill" to "green",
             )
         }
-        val curve = Curve(Curve.CUBIC) {_ -> Vec2(
+        val curve = Curve(Curve.CUBIC) { _ -> Vec2(
             2 * Random.nextDouble() - 1,
             2 * Random.nextDouble() - 1)
         }

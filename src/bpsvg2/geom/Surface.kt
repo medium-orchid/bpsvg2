@@ -1,4 +1,4 @@
-package bpsvg2.math.geom
+package bpsvg2.geom
 
 import bpsvg2.math.*
 import bpsvg2.math.d2.*

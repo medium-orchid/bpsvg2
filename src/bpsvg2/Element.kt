@@ -7,7 +7,7 @@ import bpsvg2.math.Dimension
 import bpsvg2.math.Rect
 import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
-import bpsvg2.math.geom.Curve
+import bpsvg2.geom.Curve
 import java.io.File
 
 open class Element(val backingTree: ElementAttributeTree) : DataType {

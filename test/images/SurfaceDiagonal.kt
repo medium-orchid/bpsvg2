@@ -1,9 +1,9 @@
 package images
 
 import bpsvg2.*
+import bpsvg2.geom.*
 import bpsvg2.math.*
 import bpsvg2.math.d2.*
-import bpsvg2.math.geom.*
 
 fun main() {
     SVGElement.root("viewBox" to Rect.zeroCentered(2.0, 2.0),

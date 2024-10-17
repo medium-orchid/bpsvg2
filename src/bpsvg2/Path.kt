@@ -3,7 +3,7 @@ package bpsvg2
 import bpsvg2.eat.OutputMode
 import bpsvg2.math.*
 import bpsvg2.math.d2.*
-import bpsvg2.math.geom.Curve
+import bpsvg2.geom.Curve
 
 class Path(tag: String? = null) : Element(OutputMode.Path, tag) {
 
