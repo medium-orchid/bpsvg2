@@ -4,7 +4,7 @@ import bpsvg2.math.*
 import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
 
-
+typealias Edge = Pair<Int, Int>
 
 fun Polygon<Vec3>.project(projection: Proj32): Polygon<Vec2> {
     return Polygon(vertices.map { v -> projection * v })
