@@ -12,4 +12,12 @@ class Polygon<V: Vector<V>>(val vertices: List<V>): Iterable<Line<V>> {
             }
         }
     }
+
+    fun centroid(): V {
+        var c = vertices[0]
+        for (i in 1..<vertices.size) {
+            c += vertices[i]
+        }
+        return c / vertices.size
+    }
 }

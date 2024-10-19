@@ -1,8 +1,15 @@
 package bpsvg2.geom.discrete
 
 import bpsvg2.math.d3.*
+import bpsvg2.math.*
 
 class Polyhedron(val vertices: Array<Vec3>) {
+
+    constructor(vertices: Array<Vec3>, vararg faces: IntArray) : this(vertices) {
+        for (i in faces) {
+            addFace(*i)
+        }
+    }
 
     val nextVertex = HashMap<Edge, Int>()
     val prevVertex = HashMap<Edge, Int>()
@@ -61,6 +68,18 @@ class Polyhedron(val vertices: Array<Vec3>) {
                 } while (c != i)
             }
         }
+    }
+
+    fun volume(): Dimension {
+        var v = zero
+        for (f in faces) {
+            val c = f.centroid()
+            for (i in f) {
+                val n = (i.x0 - c).cross(i.x1 - c)
+                v += i.x0.dot(n)
+            }
+        }
+        return v / 6
     }
 
     val doubledEdges: Iterator<Line<Vec3>> get() {
