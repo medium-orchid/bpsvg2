@@ -3,13 +3,49 @@ package bpsvg2.geom.discrete
 import bpsvg2.math.d3.*
 import bpsvg2.math.*
 
-class Polyhedron(val vertices: Array<Vec3>) {
+class Polyhedron() {
 
-    constructor(vertices: Array<Vec3>, vararg faces: IntArray) : this(vertices) {
+    companion object {
+        val tetrahedron = Polyhedron(
+            arrayOf(
+                Vec3(-1, -1,  1),
+                Vec3(-1,  1, -1),
+                Vec3( 1, -1, -1),
+                Vec3( 1,  1,  1),
+            ),
+            intArrayOf(0, 1, 2),
+            intArrayOf(2, 1, 3),
+            intArrayOf(3, 0, 2),
+            intArrayOf(3, 1, 0),
+        )
+        val octahedron = Polyhedron(
+            arrayOf(
+                Vec3(0, 0, -1),
+                Vec3(-1, 0, 0),
+                Vec3(0, 1, 0),
+                Vec3(0, -1, 0),
+                Vec3(0, 0, 1),
+                Vec3(1, 0, 0),
+            ),
+            intArrayOf(0, 1, 2),
+            intArrayOf(3, 4, 1),
+            intArrayOf(2, 5, 0),
+            intArrayOf(4, 5, 2),
+            intArrayOf(3, 5, 4),
+            intArrayOf(1, 4, 2),
+            intArrayOf(3, 1, 0),
+            intArrayOf(0, 5, 3),
+        )
+    }
+
+    constructor(vertices: Array<Vec3>, vararg faces: IntArray): this() {
+        this.vertices.addAll(vertices)
         for (i in faces) {
             addFace(*i)
         }
     }
+
+    val vertices = mutableListOf<Vec3>()
 
     val nextVertex = HashMap<Edge, Int>()
     val prevVertex = HashMap<Edge, Int>()

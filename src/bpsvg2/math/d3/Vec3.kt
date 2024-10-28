@@ -11,6 +11,7 @@ import kotlin.math.sqrt
 data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType, Vector<Vec3> {
 
     constructor(x: Double, y: Double, z: Double) : this(x.d, y.d, z.d)
+    constructor(x: Int, y: Int, z: Int) : this(x.d, y.d, z.d)
 
     companion object {
         val zero = Vec3(0.0, 0.0, 0.0)
