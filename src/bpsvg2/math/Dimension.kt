@@ -8,6 +8,7 @@ import java.lang.IllegalArgumentException
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.sign
+import kotlin.math.sqrt
 
 data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.0) : DataType, Vector<Dimension> {
 
@@ -68,6 +69,10 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
         }
     }
 
+    fun sqrt(): Dimension {
+        return Dimension(sqrt(value), unit, exp / 2)
+    }
+
     operator fun unaryMinus(): Dimension {
         return Dimension(-value, unit, exp)
     }
@@ -99,8 +104,14 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
 
     operator fun times(other: Dimension): Dimension {
         if (approx(this, zero) || approx(other, zero)) return zero
-        val (a, b) = toCommon(this, other)
-        return Dimension(a.value * b.value, a.unit, a.exp + b.exp)
+        return if (this.unit == CSSUnits.UNITLESS) {
+            Dimension(this.value * other.value, other.unit, other.exp)
+        } else if (other.unit == CSSUnits.UNITLESS) {
+            Dimension(this.value * other.value, this.unit, this.exp)
+        } else {
+            val (a, b) = toCommon(this, other)
+            return Dimension(a.value * b.value, a.unit, a.exp + b.exp)
+        }
     }
 
     override operator fun div(other: Double): Dimension {
@@ -117,7 +128,7 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
     }
 
     override fun toString(): String {
-        if (approx(exp, 1.0)) {
+        if (approx(exp, 1.0) || unit == CSSUnits.UNITLESS) {
             return "$value${niceName(unit)}"
         } else {
             return "$value${niceName(unit)}^$exp"

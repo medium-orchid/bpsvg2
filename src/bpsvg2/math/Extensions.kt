@@ -10,13 +10,13 @@ fun approx(a: Double, b: Double): Boolean {
 fun approx(a: Dimension, b: Dimension): Boolean {
     return try {
         val (c, d) = Dimension.toCommon(a, b)
-        return approx(c.value, d.value) && approx(a.exp, b.exp)
+        return approx(c.value, d.value) && c.approxExp(d)
     } catch (e: IllegalArgumentException) {
         false
     }
 }
 
-const val EPS: Double = 1E-9
+const val EPS: Double = 1E-8
 
 fun randomNormal(): Double {
     return sqrt(-2 * ln(Random.nextDouble())) * cos(2 * PI * Random.nextDouble())

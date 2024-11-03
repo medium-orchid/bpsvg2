@@ -41,12 +41,7 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
     }
 
     override fun norm(): Dimension {
-        val unit = Dimension.commonUnit(x, y, z)
-        return Dimension(sqrt(
-            x.convertValue(unit).pow(2)
-                    + y.convertValue(unit).pow(2))
-                    + z.convertValue(unit).pow(2),
-            unit)
+        return dot(this).sqrt()
     }
 
     fun normalized(): Vec3 {

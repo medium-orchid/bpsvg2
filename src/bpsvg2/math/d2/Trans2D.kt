@@ -46,7 +46,7 @@ data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Ve
         // => k'k = 1 =>  [ k' = 1/k ]
         // => t't = id => [ t' = t^-1 ]
         // =>             [ x' = -k't'x ]
-        val newScale = 1.d / scale
+        val newScale = 1.0 / scale.value
         val newAngle = -1 * angle
         val newOffset = -newScale * (newAngle * offset)
         return Trans2D(newScale, newAngle, newOffset)
