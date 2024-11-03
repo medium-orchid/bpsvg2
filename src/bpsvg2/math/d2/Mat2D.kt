@@ -96,6 +96,10 @@ data class Mat2D(
         return Mat2D(a * k, b * k, c * k, d * k, x * k, y * k)
     }
 
+    fun scale(k: Dimension): Mat2D {
+        return Mat2D(a * k, b * k, c * k, d * k, x * k, y * k)
+    }
+
     fun isOrthogonal(): Boolean {
         val k = det()
         return approx(a * a + c * c, k)

@@ -4,11 +4,12 @@ import bpsvg2.DataType
 import bpsvg2.eat.OutputBuilder
 import bpsvg2.eat.OutputMode
 import bpsvg2.math.d2.Vec2
+import java.lang.IllegalArgumentException
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.sign
 
-data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<Dimension> {
+data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.0) : DataType, Vector<Dimension> {
 
     companion object {
         fun niceName(unit: CSSUnits): String {
@@ -38,6 +39,11 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
         }
     }
 
+    fun approxExp(other: Dimension): Boolean {
+        if (this.unit == CSSUnits.UNITLESS || other.unit == CSSUnits.UNITLESS) return true
+        return approx(exp, other.exp)
+    }
+
     fun convertValue(unit: CSSUnits): Double {
         return converter.convertValue(this, unit)
     }
@@ -46,20 +52,24 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
         return converter.convert(this, unit)
     }
 
+    fun pow(n: Double): Dimension {
+        return if (approx(n, 0.0)) {
+            1.0.d
+        } else {
+            Dimension(value.pow(n), unit, exp * n)
+        }
+    }
+
     fun pow(n: Int): Dimension {
-        return when (n) {
-            0 -> 1.0.d
-            1 -> this
-            else -> if (unit == CSSUnits.UNITLESS) {
-                value.pow(n).d
-            } else {
-                throw IllegalArgumentException("cannot take $n-th power of a dimension with a unit")
-            }
+        return if (n == 0) {
+            1.0.d
+        } else {
+            Dimension(value.pow(n), unit, exp * n)
         }
     }
 
     operator fun unaryMinus(): Dimension {
-        return Dimension(-value, unit)
+        return Dimension(-value, unit, exp)
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {
@@ -68,31 +78,29 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
     }
 
     override operator fun plus(other: Dimension): Dimension {
-        return if (unit == CSSUnits.UNITLESS) {
-            Dimension(converter.convertValue(this, other.unit) + other.value, other.unit)
-        } else {
-            Dimension(this.value + converter.convertValue(other, unit), unit)
+        val (a, b) = toCommon(this, other)
+        if (!a.approxExp(b)) {
+            throw IllegalArgumentException("$a and $b have differing dimension")
         }
+        return Dimension(a.value + b.value, a.unit, a.exp)
     }
 
     override operator fun minus(other: Dimension): Dimension {
-        return if (unit == CSSUnits.UNITLESS) {
-            Dimension(converter.convertValue(this, other.unit) - other.value, other.unit)
-        } else {
-            Dimension(this.value - converter.convertValue(other, unit), unit)
+        val (a, b) = toCommon(this, other)
+        if (!a.approxExp(b)) {
+            throw IllegalArgumentException("$a and $b have differing dimension")
         }
+        return Dimension(a.value - b.value, a.unit, a.exp)
     }
 
     override operator fun times(other: Double): Dimension {
-        return Dimension(other * value, unit)
+        return Dimension(other * value, unit, exp)
     }
 
     operator fun times(other: Dimension): Dimension {
-        val v = other.value * value
         if (approx(this, zero) || approx(other, zero)) return zero
-        if (unit == CSSUnits.UNITLESS) return Dimension(v, other.unit)
-        if (other.unit == CSSUnits.UNITLESS) return Dimension(v, unit)
-        throw IllegalArgumentException("cannot multiply two dimension with units")
+        val (a, b) = toCommon(this, other)
+        return Dimension(a.value * b.value, a.unit, a.exp + b.exp)
     }
 
     override operator fun div(other: Double): Dimension {
@@ -100,15 +108,20 @@ data class Dimension(val value: Double, val unit: CSSUnits) : DataType, Vector<D
     }
 
     override fun norm(): Dimension {
-        return Dimension(value.absoluteValue, unit)
+        return Dimension(value.absoluteValue, unit, exp)
     }
 
-    operator fun div(other: Dimension): Double {
-        return this.convertValue(other.unit) / other.value
+    operator fun div(other: Dimension): Dimension {
+        val (a, b) = toCommon(this, other)
+        return Dimension(a.value / b.value, a.unit, a.exp - b.exp)
     }
 
     override fun toString(): String {
-        return "$value${niceName(unit)}"
+        if (approx(exp, 1.0)) {
+            return "$value${niceName(unit)}"
+        } else {
+            return "$value${niceName(unit)}^$exp"
+        }
     }
 
     fun toVec2(): Vec2 {

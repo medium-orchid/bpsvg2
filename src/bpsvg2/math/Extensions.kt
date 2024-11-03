@@ -10,7 +10,7 @@ fun approx(a: Double, b: Double): Boolean {
 fun approx(a: Dimension, b: Dimension): Boolean {
     return try {
         val (c, d) = Dimension.toCommon(a, b)
-        return approx(c.value, d.value)
+        return approx(c.value, d.value) && approx(a.exp, b.exp)
     } catch (e: IllegalArgumentException) {
         false
     }

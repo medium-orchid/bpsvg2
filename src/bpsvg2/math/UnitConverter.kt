@@ -1,5 +1,7 @@
 package bpsvg2.math
 
+import kotlin.math.pow
+
 class UnitConverter {
 
     companion object {
@@ -31,12 +33,12 @@ class UnitConverter {
         if (dim.value < EPS) return 0.0
         val factor = conversion[dim.unit to unit]
             ?: throw IllegalArgumentException("cannot convert $dim to ${Dimension.niceName(unit)}")
-        return factor * dim.value
+        return factor.pow(dim.exp) * dim.value
     }
 
     fun convert(dim: Dimension, unit: CSSUnits): Dimension {
         if (unit == dim.unit) return dim
-        return Dimension(convertValue(dim, unit), unit)
+        return Dimension(convertValue(dim, unit), unit, dim.exp)
     }
 
     init {
