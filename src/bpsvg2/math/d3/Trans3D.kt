@@ -27,7 +27,7 @@ data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
     }
 
     operator fun times(other: Double): Trans3D {
-        return Trans3D(scale * other, quat, scale * offset)
+        return Trans3D(scale * other, quat, other * offset)
     }
 
     operator fun times(other: Vec3): Vec3 {

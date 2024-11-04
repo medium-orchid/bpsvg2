@@ -4,10 +4,7 @@ import bpsvg2.*
 import bpsvg2.math.*
 import bpsvg2.math.d2.*
 import bpsvg2.math.d3.*
-/*
-    SVGs do not enjoy 3D transformations. We do not have to agree.
-    Faces do not animate together as a cube, but I like the effect.
- */
+
 fun main() {
 
     val duration = "10s"
@@ -41,12 +38,14 @@ fun main() {
                 "animation-duration" to duration,
                 "animation-direction" to "alternate",
             )
-            val cubeRotations = Array(frames.size) {_ -> Quat.randomUnit()}
+            val cubeRotations = Array(frames.size) {_ ->
+                Quat.randomUnit().toTrans()
+            }
             for (i in 0..<6) {
                 keyframes("spin$i") {
                     for (j in frames.indices) {
                         select(frames[j]) (
-                            "transform" to cubeRotations[j] * rotations[i] * offset
+                            "transform" to (cubeRotations[j] * rotations[i] * offset)
                         )
                     }
                 }

@@ -27,6 +27,7 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
 
         fun toCommon(a: Dimension, b: Dimension): Pair<Dimension, Dimension> {
             return when (a.unit) {
+                b.unit -> a to b
                 CSSUnits.UNITLESS -> a.convert(b.unit) to b
                 else -> a to b.convert(a.unit)
             }

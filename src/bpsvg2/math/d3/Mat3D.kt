@@ -88,6 +88,14 @@ data class Mat3D(
             )
         }
 
+        fun scale(k: Dimension): Mat3D {
+            return Mat3D(
+                k, 0.0.d, 0.0.d,
+                0.0.d, k, 0.0.d,
+                0.0.d, 0.0.d, k,
+            )
+        }
+
         val id = scale(1.0)
     }
 

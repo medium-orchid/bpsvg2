@@ -1,5 +1,6 @@
 package bpsvg2.math
 
+import kotlin.math.absoluteValue
 import kotlin.math.pow
 
 class UnitConverter {
@@ -30,7 +31,7 @@ class UnitConverter {
 
     fun convertValue(dim: Dimension, unit: CSSUnits): Double {
         if (unit == dim.unit) return dim.value
-        if (dim.value < EPS) return 0.0
+        if (dim.value.absoluteValue < EPS) return 0.0
         val factor = conversion[dim.unit to unit]
             ?: throw IllegalArgumentException("cannot convert $dim to ${Dimension.niceName(unit)}")
         return factor.pow(dim.exp) * dim.value

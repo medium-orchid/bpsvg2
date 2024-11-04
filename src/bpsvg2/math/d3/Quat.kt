@@ -46,7 +46,6 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
     }
 
     operator fun times(other: Vec3): Vec3 {
-        val n = normalized()
         val axis = vectorPart()
         return other + 2 * axis.cross(axis.cross(other) + r * other)
     }
@@ -82,7 +81,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
     }
 
     fun normSquared(): Double {
-        return r * r + i * i + j * j + k * k
+        return (r * r) + (i * i) + (j * j) + (k * k)
     }
 
     fun norm(): Double {
@@ -175,7 +174,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         return pow(n.toDouble())
     }
 
-    fun toOrtho(): Trans3D {
+    fun toTrans(): Trans3D {
         return Trans3D(1.0, this)
     }
 
@@ -189,7 +188,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
         if (approx(n, 0.0.d)) {
             builder.append("rotate3d(0)")
         } else {
-            builder.append("rotate3d(").join(mode, w / n, t).append(")")
+            builder.append("rotate3d(").join(mode, w.normalized(), t).append(")")
         }
     }
 
