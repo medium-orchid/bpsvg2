@@ -183,7 +183,7 @@ data class Quat(val r: Double, val i: Double, val j: Double, val k: Double) : Da
             throw IllegalStateException(OutputMode.CSS.expectedModeError(mode))
         }
         val w = vectorPart()
-        val t = 2.0 * Angle.atan2(w.norm(), r.d)
+        val t = 2.0 * Angle.atan2(r.d, w.norm())
         if (approx(w.norm(), 0.0.d)) {
             builder.append("rotate3d(0)")
         } else {

@@ -7,7 +7,7 @@ import bpsvg2.math.d3.*
 
 fun main() {
 
-    val duration = "20s"
+    val duration = "10s"
 
     val size = 500.px
     val side = 250.px
@@ -26,9 +26,7 @@ fun main() {
 
     val frames = arrayOf(
         "from",
-        "25%",
         "50%",
-        "75%",
         "to",
     )
 
@@ -47,7 +45,7 @@ fun main() {
                 keyframes("spin$i") {
                     for (j in frames.indices) {
                         select(frames[j]) (
-                            "transform" to (cubeRotations[j] * (rotations[i] * offset))
+                            "transform" to (cubeRotations[j] * rotations[i] * offset)
                         )
                     }
                 }
