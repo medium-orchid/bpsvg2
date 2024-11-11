@@ -5,13 +5,10 @@ import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
 
-data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Vec2.zero) : DataType {
-
-    constructor(scale: Double, angle: Angle = Angle.id, offset: Vec2 = Vec2.zero):
-            this(scale.d, angle, offset)
+data class Trans2D(val scale: Double = 1.0, val angle: Angle = Angle.id, val offset: Vec2 = Vec2.zero) : DataType {
 
     companion object {
-        val id = Trans2D(1.0.d, Angle.id)
+        val id = Trans2D(1.0, Angle.id)
     }
 
     fun approximatelyEquals(other: Trans2D): Boolean {
@@ -23,7 +20,7 @@ data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Ve
     operator fun times(other: Trans2D): Trans2D {
         // k't'(kt + x) + x'
         // k't'kt + k't'x + x'
-        val newOffset = scale * angle.toMat2D() * other.offset + offset
+        val newOffset = scale * (angle * other.offset) + offset
         return Trans2D(scale * other.scale, angle + other.angle, newOffset)
     }
 
@@ -46,8 +43,8 @@ data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Ve
         // => k'k = 1 =>  [ k' = 1/k ]
         // => t't = id => [ t' = t^-1 ]
         // =>             [ x' = -k't'x ]
-        val newScale = 1.0 / scale.value
-        val newAngle = -1 * angle
+        val newScale = 1.0 / scale
+        val newAngle = -angle
         val newOffset = -newScale * (newAngle * offset)
         return Trans2D(newScale, newAngle, newOffset)
     }
@@ -56,7 +53,7 @@ data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Ve
         if (approximatelyEquals(id)) {
             builder.append("scale(1)")
             return
-        } else if (approx(scale, zero)) {
+        } else if (approx(scale, 0.0)) {
             builder.append("scale(0)")
             return
         }
@@ -65,7 +62,7 @@ data class Trans2D(val scale: Dimension, val angle: Angle, val offset: Vec2 = Ve
             builder.append("translate(").append(offset).append(")")
             empty = false
         }
-        if (!approx(scale, zero)) {
+        if (!approx(scale, 0.0)) {
             if (empty) builder.append(" ")
             builder.append("scale(").append(scale).append(")")
             empty = false

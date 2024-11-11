@@ -15,7 +15,7 @@ fun main() {
     val offset = (size / 2 * Vec3.Z).toTrans()
 
     val rotations = arrayOf(
-        Trans3D.id, //Front
+        Quat.id, //Front
         Vec3.Y.axisAngle(0.25.turns), //Right
         Vec3.Y.axisAngle(0.5.turns), //Back
         Vec3.Y.axisAngle(0.75.turns), //Left
@@ -63,7 +63,7 @@ fun main() {
                 for (i in 0..<6) {
                     byClass("n${i + 1}") (
                         "background" to colors[i],
-                        "transform" to rotations[i] * offset,
+                        "transform" to Trans3D(1.0, rotations[i]) * offset,
                     )
                 }
             }

@@ -7,7 +7,7 @@ import bpsvg2.math.d3.*
 
 fun main() {
 
-    val duration = "10s"
+    val duration = "20s"
 
     val size = 500.px
     val side = 250.px
@@ -16,7 +16,7 @@ fun main() {
     val colors = Array(6) {i -> "hsla(${360 * i / 6}, 75%, 50%, 0.75)"}
 
     val rotations = arrayOf(
-        Trans3D.id, //Front
+        Quat.id, //Front
         Vec3.Y.axisAngle(0.25.turns), //Right
         Vec3.Y.axisAngle(0.5.turns), //Back
         Vec3.Y.axisAngle(0.75.turns), //Left
@@ -26,7 +26,9 @@ fun main() {
 
     val frames = arrayOf(
         "from",
+        "25%",
         "50%",
+        "75%",
         "to",
     )
 
@@ -39,13 +41,13 @@ fun main() {
                 "animation-direction" to "alternate",
             )
             val cubeRotations = Array(frames.size) {_ ->
-                Quat.randomUnit().toTrans()
+                Quat.randomUnit()
             }
             for (i in 0..<6) {
                 keyframes("spin$i") {
                     for (j in frames.indices) {
                         select(frames[j]) (
-                            "transform" to (cubeRotations[j] * rotations[i] * offset)
+                            "transform" to (cubeRotations[j] * (rotations[i] * offset))
                         )
                     }
                 }

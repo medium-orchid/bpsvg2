@@ -33,11 +33,21 @@ fun main() {
         val q = randomUnitQuaternion()
         val v = 1.px * randomUnitVec3()
         val w = 1.px * randomUnitVec3()
-        assert(
-            (q * p * (v + w))
-        .approximatelyEquals(
+        assert((
+            q * p * (v + w)
+        ).approximatelyEquals(
             (q.toTrans() * (p.toTrans() * w.toTrans())) * v
         ))
+    }
+    // Trans3D inversion
+    for (i in 0..<100) {
+        val t = Trans3D(0.25, Quat.randomUnit(), Vec3.randomUnit())
+        assert((
+            t * t.inverse()
+        ).approximatelyEquals(
+            Trans3D.id
+        ))
+        println(t * t.inverse())
     }
     // Mat3D multiplication
     for (i in 0..<100) {

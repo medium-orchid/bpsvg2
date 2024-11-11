@@ -81,6 +81,6 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
     }
 
     fun toTrans(): Trans2D {
-        return Trans2D(one, Angle.id, this)
+        return Trans2D(1.0, Angle.id, this)
     }
 }

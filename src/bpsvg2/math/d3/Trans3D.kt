@@ -5,7 +5,7 @@ import bpsvg2.eat.OutputBuilder
 import bpsvg2.math.*
 import bpsvg2.eat.OutputMode
 
-data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.zero) : DataType {
+data class Trans3D(val scale: Double = 1.0, val quat: Quat = Quat.id, val offset: Vec3 = Vec3.zero) : DataType {
 
     companion object {
         val id = Trans3D(1.0, Quat.id)
@@ -79,5 +79,12 @@ data class Trans3D(val scale: Double, val quat: Quat, val offset: Vec3 = Vec3.ze
             builder.append(quat, mode)
             empty = false
         }
+    }
+
+    fun inverse(): Trans3D {
+        val newScale = 1.0 / scale
+        val newQuat = quat.conjugate()
+        val newOffset = -newScale * (newQuat * offset)
+        return Trans3D(newScale, newQuat, newOffset)
     }
 }

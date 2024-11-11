@@ -124,15 +124,22 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
     }
 
     operator fun div(other: Dimension): Dimension {
-        val (a, b) = toCommon(this, other)
-        return Dimension(a.value / b.value, a.unit, a.exp - b.exp)
+        if (approx(this, zero) || approx(other, zero)) return zero
+        return if (this.unit == CSSUnits.UNITLESS) {
+            Dimension(this.value / other.value, other.unit, -other.exp)
+        } else if (other.unit == CSSUnits.UNITLESS) {
+            Dimension(this.value / other.value, this.unit, this.exp)
+        } else {
+            val (a, b) = toCommon(this, other)
+            return Dimension(a.value / b.value, a.unit, a.exp - b.exp)
+        }
     }
 
     override fun toString(): String {
-        if (approx(exp, 1.0) || unit == CSSUnits.UNITLESS) {
-            return "$value${niceName(unit)}"
+        return if (approx(exp, 1.0) || unit == CSSUnits.UNITLESS) {
+            "$value${niceName(unit)}"
         } else {
-            return "$value${niceName(unit)}^$exp"
+            "$value${niceName(unit)}^$exp"
         }
     }
 

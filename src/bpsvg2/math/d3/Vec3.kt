@@ -95,8 +95,8 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return cos * this + angle.sin() * axis.cross(this) + (1 - cos) * axis.dot(this) * axis
     }
 
-    fun axisAngle(angle: Angle): Trans3D {
-        return Trans3D(1.0, Quat.fromAxisAngle(this, angle), zero)
+    fun axisAngle(angle: Angle): Quat {
+        return Quat.fromAxisAngle(this, angle)
     }
 
     override fun put(builder: OutputBuilder, mode: OutputMode) {

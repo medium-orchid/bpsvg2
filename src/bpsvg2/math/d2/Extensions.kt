@@ -22,7 +22,7 @@ operator fun Int.times(other: Angle): Angle {
 
 operator fun Vec2.plus(other: Rect): Rect = other + this
 
-val Double.trans2D: Trans2D get() = Trans2D(this.d, Angle.id, Vec2.zero)
+val Double.trans2D: Trans2D get() = Trans2D(this, Angle.id, Vec2.zero)
 
 val Double.rad: Angle get() = Angle(this, AngleUnits.RAD)
 

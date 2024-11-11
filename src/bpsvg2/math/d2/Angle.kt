@@ -44,6 +44,10 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
         return Vec2(c * other.x - s * other.y, s * other.x + c * other.y)
     }
 
+    operator fun unaryMinus(): Angle {
+        return Angle(-value, unit)
+    }
+
     fun mod(): Angle {
         return Angle(value.mod(unit.turn), unit)
     }
@@ -61,7 +65,7 @@ data class Angle(val value: Double, val unit: AngleUnits = AngleUnits.RAD) : Dat
     }
 
     fun toTrans(): Trans2D {
-        return Trans2D(1.0.d, this, Vec2.zero)
+        return Trans2D(1.0, this, Vec2.zero)
     }
 
     fun sin(): Double {
