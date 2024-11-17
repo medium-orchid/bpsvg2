@@ -45,10 +45,43 @@ class Polyhedron() {
         }
     }
 
+    constructor(vertices: Array<Vec3>, nextVertex: Map<Edge, Int>, prevVertex: Map<Edge, Int>): this() {
+        this.vertices.addAll(vertices)
+        this.nextVertex.putAll(nextVertex)
+        this.prevVertex.putAll(prevVertex)
+    }
+
     val vertices = mutableListOf<Vec3>()
 
     val nextVertex = HashMap<Edge, Int>()
     val prevVertex = HashMap<Edge, Int>()
+
+    val edges get() = nextVertex.keys.union(prevVertex.keys)
+    val lines get() = edges.map { e -> Line(vertices[e.first], vertices[e.second])}
+
+    operator fun plus(other: Vec3): Polyhedron {
+        return Polyhedron(vertices.map { x -> x + other }.toTypedArray(), nextVertex, prevVertex)
+    }
+
+    operator fun minus(other: Vec3): Polyhedron {
+        return Polyhedron(vertices.map { x -> x - other }.toTypedArray(), nextVertex, prevVertex)
+    }
+
+    operator fun times(other: Dimension): Polyhedron {
+        return Polyhedron(vertices.map { x -> x * other }.toTypedArray(), nextVertex, prevVertex)
+    }
+
+    operator fun div(other: Dimension): Polyhedron {
+        return Polyhedron(vertices.map { x -> x / other }.toTypedArray(), nextVertex, prevVertex)
+    }
+
+    operator fun times(other: Double): Polyhedron {
+        return Polyhedron(vertices.map { x -> x * other }.toTypedArray(), nextVertex, prevVertex)
+    }
+
+    operator fun div(other: Double): Polyhedron {
+        return Polyhedron(vertices.map { x -> x / other }.toTypedArray(), nextVertex, prevVertex)
+    }
 
     fun next(edge: Edge): Edge {
         val n = nextVertex[edge] ?: throw IllegalArgumentException("$edge has no next")
@@ -116,6 +149,17 @@ class Polyhedron() {
             }
         }
         return v / 6
+    }
+
+    fun centroid(): Vec3 {
+        var n = vertices[0].zero()
+        var d = 0.d
+        for (i in lines) {
+            val norm = i.norm()
+            n += norm * i.midpoint()
+            d += norm
+        }
+        return n / d
     }
 
     val doubledEdges: Iterator<Line<Vec3>> get() {

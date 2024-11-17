@@ -26,11 +26,9 @@ class Polygon<V: Vector<V>>(val vertices: List<V>): Iterable<Line<V>> {
     fun centroid(): V {
         var n = vertices[0].zero()
         var d = 0.d
-        val k = vertices.size
-        for (i in vertices.indices) {
-            val j = (i + 1) % k
-            val norm = (vertices[i] - vertices[j]).norm()
-            n += norm * (vertices[i] + vertices[j]) / 2
+        for (i in this) {
+            val norm = i.norm()
+            n += norm * i.midpoint()
             d += norm
         }
         return n / d
