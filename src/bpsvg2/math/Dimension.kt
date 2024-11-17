@@ -123,6 +123,10 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
         return Dimension(value.absoluteValue, unit, exp)
     }
 
+    override fun zero(): Dimension {
+        return 0.d
+    }
+
     operator fun div(other: Dimension): Dimension {
         if (approx(this, zero) || approx(other, zero)) return zero
         return if (this.unit == CSSUnits.UNITLESS) {

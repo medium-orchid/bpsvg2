@@ -103,6 +103,10 @@ class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>>, Differentiable
         return n
     }
 
+    override fun zero(): Curve<V> {
+        return Curve(points.map { x -> x.zero() })
+    }
+
     fun splitT1(t: Double): Curve<V> {
         return Curve(deCasteljau(t))
     }

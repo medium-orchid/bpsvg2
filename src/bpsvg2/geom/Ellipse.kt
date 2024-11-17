@@ -37,4 +37,8 @@ class Ellipse<V: Vector<V>>(val r0: V, val r1: V): Vector<Ellipse<V>>, Different
     override fun norm(): Dimension {
         return r0.norm() + r1.norm()
     }
+
+    override fun zero(): Ellipse<V> {
+        return Ellipse(r0.zero(), r1.zero())
+    }
 }

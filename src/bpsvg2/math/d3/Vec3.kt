@@ -44,6 +44,10 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return dot(this).sqrt()
     }
 
+    override fun zero(): Vec3 {
+        return zero
+    }
+
     fun normalized(): Vec3 {
         return this / norm()
     }

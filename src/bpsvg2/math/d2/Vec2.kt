@@ -47,6 +47,10 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
         return dot(this).sqrt()
     }
 
+    override fun zero(): Vec2 {
+        return zero
+    }
+
     fun normalized(): Vec2 {
         return this / norm()
     }
