@@ -50,14 +50,18 @@ fun Boolean.flag(): Int {
     }
 }
 
-operator fun <V> Double.times(vector: Vector<V>): V {
-    return vector * this
-}
-
 operator fun <V> Int.times(vector: Vector<V>): V {
     return vector * this.toDouble()
 }
 
 operator fun <V> Vector<V>.div(other: Int): V {
     return this / other.toDouble()
+}
+
+operator fun <V: Vector<V>> Double.times(other: V): V {
+    return other * this
+}
+
+operator fun <V: Vector<V>> Dimension.times(other: V): V {
+    return other * this
 }

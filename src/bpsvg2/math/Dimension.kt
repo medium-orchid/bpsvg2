@@ -103,7 +103,7 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
         return Dimension(other * value, unit, exp)
     }
 
-    operator fun times(other: Dimension): Dimension {
+    override operator fun times(other: Dimension): Dimension {
         if (approx(this, zero) || approx(other, zero)) return zero
         return if (this.unit == CSSUnits.UNITLESS) {
             Dimension(this.value * other.value, other.unit, other.exp)
@@ -127,7 +127,7 @@ data class Dimension(val value: Double, val unit: CSSUnits, val exp: Double = 1.
         return 0.d
     }
 
-    operator fun div(other: Dimension): Dimension {
+    override operator fun div(other: Dimension): Dimension {
         if (approx(this, zero) || approx(other, zero)) return zero
         return if (this.unit == CSSUnits.UNITLESS) {
             Dimension(this.value / other.value, other.unit, -other.exp)

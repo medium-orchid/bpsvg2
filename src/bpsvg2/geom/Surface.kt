@@ -70,7 +70,15 @@ class Surface<V : Vector<V>> private constructor(
         return Surface(uCurve * other, vCurve * other)
     }
 
+    override fun times(other: Dimension): Surface<V> {
+        return Surface(uCurve * other, vCurve * other)
+    }
+
     override fun div(other: Double): Surface<V> {
+        return Surface(uCurve / other, vCurve / other)
+    }
+
+    override fun div(other: Dimension): Surface<V> {
         return Surface(uCurve / other, vCurve / other)
     }
 
@@ -80,5 +88,9 @@ class Surface<V : Vector<V>> private constructor(
             n += uCurve.points[i].norm()
         }
         return n
+    }
+
+    override fun zero(): Surface<V> {
+        return Surface(uCurve.zero(), vCurve.zero())
     }
 }

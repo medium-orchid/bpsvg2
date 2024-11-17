@@ -43,7 +43,15 @@ class Curve<V: Vector<V>>(val points: List<V>): Vector<Curve<V>>, Differentiable
         return Curve(points.map { v -> v * other })
     }
 
+    override fun times(other: Dimension): Curve<V> {
+        return Curve(points.map { v -> v * other })
+    }
+
     override fun div(other: Double): Curve<V> {
+        return Curve(points.map { v -> v / other })
+    }
+
+    override fun div(other: Dimension): Curve<V> {
         return Curve(points.map { v -> v / other })
     }
 

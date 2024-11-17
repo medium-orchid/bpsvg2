@@ -64,11 +64,15 @@ data class Vec2(val x: Dimension, val y: Dimension) : DataType, Vector<Vec2> {
         return Vec2(x * other, y * other)
     }
 
+    override fun times(other: Dimension): Vec2 {
+        return Vec2(x * other, y * other)
+    }
+
     override operator fun div(other: Double): Vec2 {
         return Vec2(x / other, y / other)
     }
 
-    operator fun div(other: Dimension): Vec2 {
+    override operator fun div(other: Dimension): Vec2 {
         return Vec2(x / other, y / other)
     }
 

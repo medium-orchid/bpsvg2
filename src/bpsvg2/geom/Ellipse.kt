@@ -30,7 +30,15 @@ class Ellipse<V: Vector<V>>(val r0: V, val r1: V): Vector<Ellipse<V>>, Different
         return Ellipse(other * r0, other * r1)
     }
 
+    override fun times(other: Dimension): Ellipse<V> {
+        return Ellipse(other * r0, other * r1)
+    }
+
     override fun div(other: Double): Ellipse<V> {
+        return Ellipse(r0 / other, r1 / other)
+    }
+
+    override fun div(other: Dimension): Ellipse<V> {
         return Ellipse(r0 / other, r1 / other)
     }
 

@@ -56,7 +56,7 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return Vec3(x * other, y * other, z * other)
     }
 
-    operator fun times(other: Dimension): Vec3 {
+    override operator fun times(other: Dimension): Vec3 {
         return Vec3(x * other, y * other, z * other)
     }
 
@@ -64,7 +64,7 @@ data class Vec3(val x: Dimension, val y: Dimension, val z: Dimension) : DataType
         return Vec3(x / other, y / other, z / other)
     }
 
-    operator fun div(other: Dimension): Vec3 {
+    override operator fun div(other: Dimension): Vec3 {
         return Vec3(x / other, y / other, z / other)
     }
 
